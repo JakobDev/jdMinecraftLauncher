@@ -222,7 +222,7 @@ class AboutTab(QWidget):
         self.licenseLabel = QLabel(env.translate("abouttab.label.license"))
         self.viewSourceButton = QPushButton(env.translate("abouttab.button.viewSource"))
 
-        self.viewSourceButton.clicked.connect(lambda: webbrowser.open("https://gitlab.com/JakobDev/jdReplace"))
+        self.viewSourceButton.clicked.connect(lambda: webbrowser.open("https://gitlab.com/JakobDev/jdMinecraftLauncher"))
 
         self.titleLabel.setAlignment(Qt.AlignCenter)
         self.fanmadeLabel.setAlignment(Qt.AlignCenter)
