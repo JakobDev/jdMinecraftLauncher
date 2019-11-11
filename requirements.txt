@@ -1,2 +1,4 @@
 PyQt5
+PyQtWebEngine
 mojang-api
+requests

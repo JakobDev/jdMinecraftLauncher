@@ -1,0 +1,3 @@
+include README.md
+include jdMinecraftLauncher/mclauncher-cmd.jar
+include jdMinecraftLauncher/translation/*

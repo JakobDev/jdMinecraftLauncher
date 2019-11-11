@@ -1,0 +1,6 @@
+__pycache__/
+
+#setup.py
+build/
+dist/
+jdMinecraftLauncher.egg-info/
