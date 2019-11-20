@@ -1,10 +1,9 @@
-#!/usr/bin/env python3
 from jdMinecraftLauncher.Functions import hasInternetConnection, showMessageBox
-from jdMinecraftLauncher.Enviroment import Enviroment
-from PyQt5.QtWidgets import QApplication
 from jdMinecraftLauncher.gui.LoginWindow import LoginWindow
 from jdMinecraftLauncher.gui.MainWindow import MainWindow
-import mojang_api
+from jdMinecraftLauncher.Enviroment import Enviroment
+from PyQt5.QtWidgets import QApplication
+import minecraft_launcher_lib
 import json
 import sys
 import os
@@ -19,8 +18,8 @@ def main():
         with open(os.path.join(env.dataPath,"mojang_account.json")) as f:
             env.account = json.load(f)
         if hasInternetConnection():
-            response = str(mojang_api.servers.authserver.validate_access_token(env.account["accessToken"],env.account["clientToken"]))
-            if response.find("Invalid token") == -1:
+            response = minecraft_launcher_lib.account.validate_access_token(env.account["accessToken"])
+            if response:
                 env.loadVersions()
                 env.mainWindow.updateAccountInformation()
                 env.mainWindow.show()

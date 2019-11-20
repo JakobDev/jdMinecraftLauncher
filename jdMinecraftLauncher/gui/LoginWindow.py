@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QLineEdit, QCheckBox, QPushButton, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
-from jdMinecraftLauncher.Functions import showMessageBox, getMojangData
-import mojang_api
+from jdMinecraftLauncher.Functions import showMessageBox
+import minecraft_launcher_lib
 import json
 import os
 
@@ -39,7 +39,7 @@ class LoginWindow(QWidget):
         self.mainLayout.setSizeConstraint(QLayout.SetFixedSize)
 
     def loginButtonClicked(self):
-        loginInformation = mojang_api.servers.authserver.authenticate_user(self.usernameInput.text(),self.passwordInput.text())
+        loginInformation = minecraft_launcher_lib.account.login_user(self.usernameInput.text(),self.passwordInput.text())
         
         if "errorMessage" in loginInformation:
             if loginInformation["errorMessage"] == "Invalid credentials. Invalid username or password.":
@@ -52,10 +52,10 @@ class LoginWindow(QWidget):
         self.env.accountData = loginInformation
         self.env.accountString = str(loginInformation)
         self.env.account = {}
-        self.env.account["name"] = getMojangData(self.env.accountString,"name")
-        self.env.account["accessToken"] = getMojangData(self.env.accountString,"accessToken")
-        self.env.account["clientToken"] = getMojangData(self.env.accountString,"clientToken")
-        self.env.account["uuid"] = getMojangData(self.env.accountString,"'id")
+        self.env.account["name"] = loginInformation["selectedProfile"]["name"]
+        self.env.account["accessToken"] = loginInformation["accessToken"]
+        self.env.account["clientToken"] = loginInformation["clientToken"]
+        self.env.account["uuid"] = loginInformation["selectedProfile"]["id"]
         if self.saveLogin.checkState():
             with open(os.path.join(self.env.dataPath,"mojang_account.json"), 'w', encoding='utf-8') as f:
                 json.dump(self.env.account, f, ensure_ascii=False, indent=4)

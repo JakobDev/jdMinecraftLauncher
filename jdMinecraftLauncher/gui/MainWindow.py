@@ -5,12 +5,13 @@ from PyQt5.QtGui import QPixmap, QCursor
 from jdMinecraftLauncher.gui.ProfileWindow import ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
 from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox
-import os
-import mojang_api
-import urllib
+from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import runMinecraft
+import mojang_api
 import webbrowser
+import urllib
 import shutil
+import os
 
 class ProfileEditorTab(QTableWidget):
     def __init__(self,env,mainwindow):
@@ -249,6 +250,7 @@ class GameOutputTab(QPlainTextEdit):
     def dataReady(self):
         cursor = self.textCursor()
         cursor.movePosition(cursor.End)
+        #print(self.process.readAll())
         cursor.insertText(bytes(self.process.readAll()).decode())
 
     def procStarted(self):
@@ -268,12 +270,11 @@ class GameOutputTab(QPlainTextEdit):
         self.profile = profile
         self.process = QProcess(self)
         self.process.setWorkingDirectory(self.env.dataPath)
-        self.process.start(profile.getJavaPath(),args)
+        self.process.start("java",args)#profile.getJavaPath(),args)
         self.process.readyRead.connect(self.dataReady)
         self.process.started.connect(self.procStarted)
         self.process.finished.connect(self.procFinish)
 
-        
 class Tabs(QTabWidget):
     def __init__(self,env,parrent):
         super().__init__()
@@ -350,6 +351,12 @@ class MainWindow(QWidget):
     
         self.setWindowTitle("jdMinecraftLauncher")
         self.setLayout(self.mainLayout)
+
+        self.installThread = InstallThread(enviroment)
+        self.installThread.text.connect(lambda text: self.progressBar.setFormat(text))
+        self.installThread.progress.connect(lambda progress: self.progressBar.setValue(progress))
+        self.installThread.progress_max.connect(lambda progress_max: self.progressBar.setMaximum(progress_max))
+        self.installThread.finished.connect(self.installFinish)
     
     def updateProfilList(self):
         self.profileComboBox.clear()
@@ -369,11 +376,7 @@ class MainWindow(QWidget):
     
     def playButtonClicked(self):
         profile = self.env.profiles[self.profileComboBox.currentIndex()]
-        versionInstalled = False
-        for i in self.env.installedVersion:
-            if i["id"] == profile.getVersionID():
-                versionInstalled =True
-        if versionInstalled:
+        if os.path.isdir(os.path.join(self.env.dataPath,"versions",profile.getVersionID())):
             self.startMinecraft(profile) 
         else:
             if self.env.offlineMode:
@@ -399,28 +402,15 @@ class MainWindow(QWidget):
         self.tabWidget.setCurrentIndex(tabid)
         o.executeCommand(profile,args)
 
-    def dataReady(self):
-        output = bytes(self.process.readAll()).decode().replace("\n","").split("#mclauncher-cmd#")
-        if len(output) ==2:
-            if output[0] == "setMax":
-                self.progressBar.setMaximum(int(output[1]))
-            elif output[0] == "setProgress":
-                self.progressBar.setValue(int(output[1]))
-            elif output[0] == "setStatus":
-                self.progressBar.setFormat(output[1])
-        
     def installFinish(self):
         self.env.updateInstalledVersions()
         self.tabWidget.versionTab.updateVersions()
         self.startMinecraft(self.env.profiles[self.profileComboBox.currentIndex()])
 
     def installVersion(self,profile):
-        self.process = QProcess(self)
-        self.process.setWorkingDirectory(self.env.dataPath)
-        self.process.start(profile.getJavaPath(),["-jar",os.path.join(self.env.currentDir,"mclauncher-cmd.jar"),"install",profile.getVersionID(),self.env.dataPath])
-        self.process.readyRead.connect(self.dataReady)
-        self.process.started.connect(lambda: self.playButton.setEnabled(False))
-        self.process.finished.connect(self.installFinish)
+        self.playButton.setEnabled(False)
+        self.installThread.setup(profile)
+        self.installThread.start()
 
 
     def updateAccountInformation(self):

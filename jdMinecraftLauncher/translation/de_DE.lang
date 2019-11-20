@@ -77,7 +77,7 @@ skintab.reset.text=Dein Skin wurde zurückgesetzt. Es dauert möglicherweise etw
 
 abouttab.label.title=jdMinecraftLauncher Version %s von JakobDev
 abouttab.label.fanmade=Dieser Launcher ist Fanmade und nicht offiziell von Mojang.
-abouttab.label.dependency=Dieses Programm benutzt mojang_api from Polyr und mclauncher-api von tomsik68.
+abouttab.label.dependency=Dieses Programm benutzt mojang_api from Polyr und minecraft-launcher-lib
 abouttab.label.license=Dieses Programm steht unter der GPL 3.0 Lizenz
 abouttab.button.viewSource=Quelltext anzeigen
 

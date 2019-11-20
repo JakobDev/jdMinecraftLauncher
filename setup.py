@@ -2,7 +2,7 @@
 from setuptools import find_packages, setup
 
 setup(name='jdMinecraftLauncher',
-    version='1.1',
+    version='1.2',
     description=' A Minecraft Launcher writen in Python',
     long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
@@ -16,6 +16,7 @@ setup(name='jdMinecraftLauncher',
         'PyQtWebEngine',
         'mojang-api',
         'requests',
+        'minecraft-launcher-lib',
     ],
     packages=find_packages(),
     entry_points={

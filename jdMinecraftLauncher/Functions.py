@@ -1,10 +1,9 @@
-import os
-import json
-import socket
-import platform
-import subprocess
-from pathlib import Path
 from PyQt5.QtWidgets import QMessageBox
+import subprocess
+import platform
+import socket
+import json
+import os
 
 
 def openFile(path):
@@ -38,14 +37,6 @@ def showMessageBox(title, text, env, callback=None):
         messageBox.buttonClicked.connect(callback)
     messageBox.exec_()
 
-
-def getMojangData(dataString, indexString):
-    indexFind = dataString.find(indexString)
-    resultString = dataString[indexFind + len(indexString) + 4:]
-    resultString = resultString[:-(len(resultString) - resultString.find("'"))]
-    return resultString
-
-
 def getJavaPath():
     if platform.system() == "Windows":
         return ""
@@ -54,17 +45,6 @@ def getJavaPath():
     else:
         result = subprocess.run(['which', 'java'], stdout=subprocess.PIPE)
         return result.stdout.decode().replace("\n", "")
-
-
-def getMinecraftFolder():
-    if platform.system() == "Windows":
-        return os.path.join(os.getenv('APPDATA'), ".minecraft")
-    elif platform.system() == "Darwin":
-        return os.path.join(str(Path.home()), "Library",
-                            "Application Support", "minecraft")
-    else:
-        return os.path.join(str(Path.home()), ".minecraft")
-
 
 def hasInternetConnection():
     try:

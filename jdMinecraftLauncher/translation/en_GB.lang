@@ -77,7 +77,7 @@ skintab.reset.text=Your Skin was resetet. It may take a while until it changed.
 
 abouttab.label.title=jdMinecraftLauncher Version %s made by JakobDev
 abouttab.label.fanmade=This Launcher is fanmade and not from Mojang.
-abouttab.label.dependency=This Program uses mojang_api from Polyr and mclauncher-api from tomsik68.
+abouttab.label.dependency=This Program uses mojang_api from Polyr and minecraft-launcher-lib
 abouttab.label.license=This Program is licensed GPL 3.0
 abouttab.button.viewSource=View Source
 

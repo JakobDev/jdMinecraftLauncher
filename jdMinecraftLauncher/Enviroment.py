@@ -1,8 +1,8 @@
-from jdMinecraftLauncher.Functions import getMinecraftFolder
 from jdMinecraftLauncher.TranslationHelper import TranslationHelper
+from jdMinecraftLauncher.Profile import Profile
 from PyQt5.QtCore import QLocale
 from PyQt5.QtGui import QIcon
-from jdMinecraftLauncher.Profile import Profile
+import minecraft_launcher_lib
 import requests
 import json
 import sys
@@ -10,25 +10,20 @@ import os
 
 class Enviroment():
     def __init__(self):
-        self.launcherVersion = "1.1"
+        self.launcherVersion = "1.2"
         self.offlineMode = False
         self.currentDir = os.path.dirname(os.path.realpath(__file__))
 
         if len(sys.argv) == 2:
             self.dataPath = sys.argv[1]
         else:
-            self.dataPath = getMinecraftFolder()
+            self.dataPath = minecraft_launcher_lib.utils.get_minecraft_directory()
 
         if not os.path.exists(self.dataPath):
             os.makedirs(self.dataPath)
 
         self.translations = TranslationHelper(QLocale.system().name())
 
-        #self.versions = requests.get("https://launchermeta.mojang.com/mc/game/version_manifest.json").json()
-        #with open('/home/jakob/Programmierung/Python/Minecraft/versions.json') as f:
-        #    self.versions = json.load(f)
-
-        #self.updateInstalledVersions()
         self.loadVersions()
 
         self.profiles = []
