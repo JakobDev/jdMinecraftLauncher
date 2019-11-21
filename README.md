@@ -4,3 +4,7 @@ jdMinecraftLauncher is a OpenSource Minecraft Launcher written in Python. You ne
 
 This program uses [minecraft-launcher-lib](https://pypi.org/project/minecraft-launcher-lib) to install and start Minecraft.
 
+You need [Python](https://www.python.org/) to run jdMinecraftLauncher.
+
+Install all needed dependencies before the first run:
+`pip install -r requirements.txt`

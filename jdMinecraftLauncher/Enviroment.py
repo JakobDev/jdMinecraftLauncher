@@ -1,4 +1,4 @@
-from jdMinecraftLauncher.TranslationHelper import TranslationHelper
+from jdTranslationHelper import jdTranslationHelper
 from jdMinecraftLauncher.Profile import Profile
 from PyQt5.QtCore import QLocale
 from PyQt5.QtGui import QIcon
@@ -10,7 +10,7 @@ import os
 
 class Enviroment():
     def __init__(self):
-        self.launcherVersion = "1.2"
+        self.launcherVersion = "1.3"
         self.offlineMode = False
         self.currentDir = os.path.dirname(os.path.realpath(__file__))
 
@@ -22,7 +22,8 @@ class Enviroment():
         if not os.path.exists(self.dataPath):
             os.makedirs(self.dataPath)
 
-        self.translations = TranslationHelper(QLocale.system().name())
+        self.translations = jdTranslationHelper(lang=QLocale.system().name())
+        self.translations.loadDirectory(os.path.join(self.currentDir,"translation"))
 
         self.loadVersions()
 

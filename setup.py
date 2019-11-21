@@ -2,7 +2,7 @@
 from setuptools import find_packages, setup
 
 setup(name='jdMinecraftLauncher',
-    version='1.2',
+    version='1.3',
     description=' A Minecraft Launcher writen in Python',
     long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
@@ -17,6 +17,7 @@ setup(name='jdMinecraftLauncher',
         'mojang-api',
         'requests',
         'minecraft-launcher-lib',
+        'jdTranslationHelper',
     ],
     packages=find_packages(),
     entry_points={
