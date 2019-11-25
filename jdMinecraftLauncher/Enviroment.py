@@ -10,7 +10,7 @@ import os
 
 class Enviroment():
     def __init__(self):
-        self.launcherVersion = "1.3"
+        self.launcherVersion = "1.4"
         self.offlineMode = False
         self.currentDir = os.path.dirname(os.path.realpath(__file__))
 

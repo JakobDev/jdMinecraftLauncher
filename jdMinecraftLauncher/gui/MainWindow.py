@@ -252,6 +252,7 @@ class GameOutputTab(QPlainTextEdit):
         cursor.movePosition(cursor.End)
         #print(self.process.readAll())
         cursor.insertText(bytes(self.process.readAll()).decode())
+        self.moveCursor(cursor.End)
 
     def procStarted(self):
         if self.profile.launcherVisibility != 2:
@@ -376,13 +377,13 @@ class MainWindow(QWidget):
     
     def playButtonClicked(self):
         profile = self.env.profiles[self.profileComboBox.currentIndex()]
-        if os.path.isdir(os.path.join(self.env.dataPath,"versions",profile.getVersionID())):
-            self.startMinecraft(profile) 
-        else:
-            if self.env.offlineMode:
-                showMessageBox("messagebox.installinternet.title","messagebox.installinternet.text",self.env)
+        if self.env.offlineMode:
+            if os.path.isdir(os.path.join(self.env.dataPath,"versions",profile.getVersionID())):
+                self.startMinecraft(profile)
             else:
-                self.installVersion(profile)
+                showMessageBox("messagebox.installinternet.title","messagebox.installinternet.text",self.env)
+        else:
+            self.installVersion(profile)
       
     def logoutButtonClicked(self):
         if self.env.offlineMode:
@@ -405,9 +406,10 @@ class MainWindow(QWidget):
     def installFinish(self):
         self.env.updateInstalledVersions()
         self.tabWidget.versionTab.updateVersions()
-        self.startMinecraft(self.env.profiles[self.profileComboBox.currentIndex()])
+        self.startMinecraft(self.env.current_running_profile)
 
     def installVersion(self,profile):
+        self.env.current_running_profile = profile
         self.playButton.setEnabled(False)
         self.installThread.setup(profile)
         self.installThread.start()
