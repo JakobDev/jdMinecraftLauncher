@@ -9,7 +9,7 @@ def runMinecraft(profile,env):
         "token": env.account["accessToken"],
         "launcherName": "jdMinecraftLauncher",
         "launcherVersion": env.launcherVersion,
-        "gameDir": profile.getGameDirectoryPath(),
+        "gameDirectory": profile.getGameDirectoryPath(),
     }
     if profile.customArguments:
         options["jvmArguments"] = []

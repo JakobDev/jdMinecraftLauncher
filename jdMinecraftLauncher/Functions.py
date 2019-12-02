@@ -37,14 +37,6 @@ def showMessageBox(title, text, env, callback=None):
         messageBox.buttonClicked.connect(callback)
     messageBox.exec_()
 
-def getJavaPath():
-    if platform.system() == "Windows":
-        return ""
-    elif platform.system() == "Darwin":
-        return ""
-    else:
-        result = subprocess.run(['which', 'java'], stdout=subprocess.PIPE)
-        return result.stdout.decode().replace("\n", "")
 
 def hasInternetConnection():
     try:

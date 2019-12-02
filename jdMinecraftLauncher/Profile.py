@@ -1,5 +1,4 @@
-from jdMinecraftLauncher.Functions import getJavaPath
-
+import minecraft_launcher_lib
 
 class Profile():
     def __init__(self, name, env):
@@ -18,7 +17,7 @@ class Profile():
         self.enableBeta = False
         self.enableAlpha = False
         self.customExecutable = False
-        self.executable = getJavaPath()
+        self.executable = minecraft_launcher_lib.utils.get_java_executable()
         self.customArguments = False
         self.arguments = "-Xms512M -Xmx512M"
         self.serverConnect = False
