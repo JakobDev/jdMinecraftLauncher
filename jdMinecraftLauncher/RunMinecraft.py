@@ -23,6 +23,8 @@ def runMinecraft(profile,env):
         options["server"] = profile.serverIP
         if profile.serverPort != "":
             options["port"] = profile.serverPort
+    if profile.demoMode:
+        options["demo"] = True
     command = minecraft_launcher_lib.command.get_minecraft_command(versionid,env.dataPath,options)
     command = command[1:]
     return command

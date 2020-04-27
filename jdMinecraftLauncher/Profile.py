@@ -23,6 +23,7 @@ class Profile():
         self.serverConnect = False
         self.serverIP = ""
         self.serverPort = ""
+        self.demoMode = False
 
     def getVersion(self):
         if self.useLatestVersion:
@@ -67,3 +68,4 @@ class Profile():
         self.serverConnect = objects["serverConnect"]
         self.serverIP = objects["serverIP"]
         self.serverPort = objects["serverPort"]
+        self.demoMode = objects["demoMode"]

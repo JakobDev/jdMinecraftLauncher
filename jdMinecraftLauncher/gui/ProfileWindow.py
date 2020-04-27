@@ -32,6 +32,7 @@ class ProfileWindow(QWidget):
         self.serverEdit = QLineEdit()
         self.portLabel = QLabel(self.env.translate("profilewindow.label.port"))
         self.portEdit = QLineEdit()
+        self.demoModeCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.demoMode"))
         self.cancelButton = QPushButton(self.env.translate("profilewindow.button.cancel"))
         self.openGameDirectoryButton = QPushButton(self.env.translate("profilewindow.button.openGameDir"))
         self.saveProfileButton = QPushButton(self.env.translate("profilewindow.button.saveProfile"))
@@ -105,6 +106,7 @@ class ProfileWindow(QWidget):
         self.mainLayout.addLayout(self.javaSettingsLayout)
         self.mainLayout.addWidget(self.serverCheckbox)
         self.mainLayout.addLayout(self.serverLayout)
+        self.mainLayout.addWidget(self.demoModeCheckbox)
         self.mainLayout.addLayout(self.buttonLayout)
 
         self.mainLayout.setSizeConstraint(QLayout.SetFixedSize)
@@ -156,6 +158,7 @@ class ProfileWindow(QWidget):
         self.serverCheckbox.setChecked(profile.serverConnect)
         self.serverEdit.setText(profile.serverIP)
         self.portEdit.setText(profile.serverPort)
+        self.demoModeCheckbox.setChecked(profile.demoMode)
         self.changeCustomResolution()
         self.changeServerConnect()
         self.updateVersionsList()
@@ -185,6 +188,7 @@ class ProfileWindow(QWidget):
         profile.arguments = self.jvmArgumentsEdit.text()
         profile.serverIP = self.serverEdit.text()
         profile.serverPort = self.portEdit.text()
+        profile.demoMode = bool(self.demoModeCheckbox.checkState())
         version = self.versionSelectCombobox.currentText()
         if version == self.env.translate("profilewindow.useLatestVersion"):
             profile.useLatestVersion = True

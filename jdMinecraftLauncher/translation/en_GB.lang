@@ -9,8 +9,12 @@ mainwindow.tab.news=News
 mainwindow.tab.profileEditor=Profile Editor
 mainwindow.tab.versionEditor=Version Editor
 mainwindow.tab.skin=Skin
+mainwindow.tab.options=Options
 mainwindow.tab.about=About
 mainwindow.tab.gameOutput=Game Output
+
+language.de_DE=German
+language.en_GB=Englisch
 
 loginwindow.title=Login
 loginwindow.label.message=Please Log in to your Mojang Account
@@ -43,6 +47,7 @@ profilewindow.checkbox.jvmArguments=JVM Arguments:
 profilewindow.checkbox.serverConnect=Connect to Server
 profilewindow.label.ip=Server IP:
 profilewindow.label.port=Server Port:
+profilewindow.checkbox.demoMode=Start in demo mode
 profilewindow.button.cancel=Cancel
 profilewindow.button.openGameDir=Open Game Dir
 profilewindow.button.saveProfile=Save Profile
@@ -74,6 +79,16 @@ skintab.upload.title=Skin uploaded
 skintab.upload.text=Your new Skin was uploaded. It may take a while until it changed.
 skintab.reset.title=Skin resetet
 skintab.reset.text=Your Skin was resetet. It may take a while until it changed.
+
+optionstab.label.language=Language:
+optionstab.combobox.systemLanguage=Use System Language
+optionstab.label.newsURL=News URL:
+optionstab.checkBox.allowMultiLaunch=Allow starting multiple instances (not recommended)
+
+accounttab.nameHeader=Name
+accounttab.switchHeader=Switch
+accounttab.button.switch=Switch
+account.newAccount=New Account
 
 abouttab.label.title=jdMinecraftLauncher Version %s made by JakobDev
 abouttab.label.fanmade=This Launcher is fanmade and not from Mojang.

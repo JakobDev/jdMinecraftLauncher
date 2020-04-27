@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QMessageBox
 import subprocess
 import platform
+import requests
+import shutil
 import socket
 import json
 import os
@@ -24,7 +26,7 @@ def saveProfiles(env):
             if value != env:
                 c[key] = value
         profileList.append(c)
-    with open(os.path.join(env.dataPath, "jdLauncher_profiles.json"), 'w', encoding='utf-8') as f:
+    with open(os.path.join(env.dataPath, "jdMinecraftLauncher","profiles.json"), 'w', encoding='utf-8') as f:
         json.dump(profileList, f, ensure_ascii=False, indent=4)
 
 
@@ -45,3 +47,15 @@ def hasInternetConnection():
     except OSError:
         return False
     return False
+
+def downloadFile(url,path):
+    if os.path.isfile(path):
+        return
+    try:
+        os.makedirs(os.path.dirname(path))
+    except:
+        pass
+    r = requests.get(url, stream=True)
+    with open(path, 'wb') as f:
+        r.raw.decode_content = True
+        shutil.copyfileobj(r.raw, f)

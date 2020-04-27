@@ -1,16 +1,17 @@
-from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QAction, QPushButton, QComboBox, QProgressBar, QLabel, QFileDialog, QMenu
+from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QAction, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QFileDialog, QMenu, QLineEdit
 from PyQt5.QtCore import QUrl, QLocale, Qt, QDir, QProcess
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
 from PyQt5.QtGui import QPixmap, QCursor
 from jdMinecraftLauncher.gui.ProfileWindow import ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
-from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox
+from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox, downloadFile
 from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import runMinecraft
 import mojang_api
 import webbrowser
 import urllib
 import shutil
+import json
 import os
 
 class ProfileEditorTab(QTableWidget):
@@ -29,7 +30,7 @@ class ProfileEditorTab(QTableWidget):
 
     def updateProfiles(self):
         while (self.rowCount() > 0):
-                self.removeRow(0)
+            self.removeRow(0)
         count = 0
         for i in self.env.profiles:
             nameItem = QTableWidgetItem(i.name)
@@ -171,11 +172,12 @@ class SkinTab(QWidget):
         self.setLayout(self.mainLayout)
 
     def updateSkin(self):
-        path = os.path.join(self.env.dataPath,"Userskin_Front.png")
+        path = os.path.join(self.env.dataPath,"jdMinecraftLauncher","userskin_front.png")
         if not self.env.offlineMode:
             if os.path.isfile(path):
                 os.remove(path)
-            urllib.request.urlretrieve('https://minotar.net/armor/body/%s/100.png' % self.env.account["uuid"],path)
+            #urllib.request.urlretrieve('https://minotar.net/armor/body/%s/100.png' % self.env.account["uuid"],path)
+            downloadFile('https://minotar.net/armor/body/%s/100.png' % self.env.account["uuid"],path)
         if os.path.isfile(path):
             self.picture.setPixmap(QPixmap(path))
 
@@ -213,6 +215,92 @@ class SkinTab(QWidget):
             if os.path.isfile(path[0]):
                 os.remove(path[0])
             urllib.request.urlretrieve("https://minotar.net/skin/" + self.env.account["uuid"],path[0])
+
+class OptionsTab(QWidget):
+    def __init__(self,env):
+        self.env = env
+        super().__init__()
+        self.languageComboBox = QComboBox()
+        self.urlEdit = QLineEdit()
+        self.allowMultiLaunchCheckBox = QCheckBox(env.translate("optionstab.checkBox.allowMultiLaunch"))
+
+        self.languageComboBox.addItem(env.translate("optionstab.combobox.systemLanguage"),"default")
+        for i in os.listdir(os.path.join(env.currentDir,"translation")):
+            self.languageComboBox.addItem(env.translate("language." + i[:-5],default=i[:-5]),i[:-5])
+
+        for i in range(self.languageComboBox.count()):
+            if self.languageComboBox.itemData(i) == env.settings.language:
+                self.languageComboBox.setCurrentIndex(i)
+
+        self.urlEdit.setText(env.settings.newsURL)
+        self.allowMultiLaunchCheckBox.setChecked(self.env.settings.enableMultiLaunch)
+
+        self.allowMultiLaunchCheckBox.stateChanged.connect(self.multiLaunchCheckBoxChanged)
+
+        gridLayout = QGridLayout()
+        gridLayout.addWidget(QLabel(env.translate("optionstab.label.language")),0,0)
+        gridLayout.addWidget(self.languageComboBox,0,1)
+        gridLayout.addWidget(QLabel(env.translate("optionstab.label.newsURL")),1,0)
+        gridLayout.addWidget(self.urlEdit,1,1)
+
+        mainLayout = QVBoxLayout()
+        mainLayout.addLayout(gridLayout)
+        mainLayout.addWidget(self.allowMultiLaunchCheckBox)
+        mainLayout.addStretch(1)
+        
+        self.setLayout(mainLayout)
+
+    def multiLaunchCheckBoxChanged(self):
+        self.env.settings.enableMultiLaunch = bool(self.allowMultiLaunchCheckBox.checkState())
+
+class SwitchAccountButton(QPushButton):
+    def __init__(self,text,env,pos):
+        self.env = env
+        self.pos = pos
+        super().__init__(text)
+        self.clicked.connect(self.clickCallback)
+
+    def clickCallback(self):
+        self.env.account = self.env.accountList[self.pos]
+        self.env.mainWindow.updateAccountInformation()
+        self.env.selectedAccount = self.pos
+
+class AccountTab(QTableWidget):
+    def __init__(self,env):
+        self.env = env
+        super().__init__(0,2)
+        self.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.setHorizontalHeaderLabels((self.env.translate("accounttab.nameHeader"),self.env.translate("accounttab.switchHeader")))
+        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
+        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+        self.verticalHeader().hide()
+        self.updateAccountList()
+
+    def updateAccountList(self):
+        while (self.rowCount() > 0):
+            self.removeRow(0)
+        count = 0
+        for i in self.env.accountList:
+            nameItem = QTableWidgetItem(i["name"])
+            nameItem.setFlags(nameItem.flags() ^ Qt.ItemIsEditable)
+            button = SwitchAccountButton(self.env.translate("accounttab.button.switch"),self.env,count)
+            self.insertRow(count)
+            self.setItem(count, 0, nameItem) 
+            self.setCellWidget(count,1,button)
+            #self.setItem(count, 1, versionItem) 
+            count += 1
+
+    def addAccount(self):
+        self.env.loginWindow.show()
+
+    def contextMenuEvent(self, event):
+        menu = QMenu(self)
+
+        addAccountAction = QAction(self.env.translate("account.newAccount"), self)
+        addAccountAction.triggered.connect(self.addAccount)
+        menu.addAction(addAccountAction)
+
+        menu.popup(QCursor.pos())
 
 class AboutTab(QWidget):
     def __init__(self,env):
@@ -255,6 +343,9 @@ class GameOutputTab(QPlainTextEdit):
         self.moveCursor(cursor.End)
 
     def procStarted(self):
+        if self.env.settings.enableMultiLaunch:
+            self.env.mainWindow.playButton.setEnabled(True)
+            return
         if self.profile.launcherVisibility != 2:
             self.env.mainWindow.hide()
         self.env.mainWindow.playButton.setEnabled(False)
@@ -282,7 +373,7 @@ class Tabs(QTabWidget):
         QWebEngineProfile.defaultProfile().setHttpAcceptLanguage(QLocale.system().name())
         QWebEngineProfile.defaultProfile().setHttpUserAgent("jdMinecraftLauncher/" + env.launcherVersion)
         webView = QWebEngineView()
-        webView.load(QUrl("https://www.minecraft.net"))
+        webView.load(QUrl(env.settings.newsURL))
         self.addTab(webView,env.translate("mainwindow.tab.news"))
         self.profileEditor = ProfileEditorTab(env,parrent)
         self.addTab(self.profileEditor,env.translate("mainwindow.tab.profileEditor"))
@@ -290,6 +381,10 @@ class Tabs(QTabWidget):
         self.addTab(self.versionTab,env.translate("mainwindow.tab.versionEditor"))
         self.skin = SkinTab(env)
         self.addTab(self.skin,env.translate("mainwindow.tab.skin"))
+        self.options = OptionsTab(env)
+        self.addTab(self.options,env.translate("mainwindow.tab.options"))
+        self.accountTab = AccountTab(env)
+        self.addTab(self.accountTab,"Account")
         about = AboutTab(env)
         self.addTab(about,env.translate("mainwindow.tab.about"))
 
@@ -358,7 +453,7 @@ class MainWindow(QWidget):
         self.installThread.progress.connect(lambda progress: self.progressBar.setValue(progress))
         self.installThread.progress_max.connect(lambda progress_max: self.progressBar.setMaximum(progress_max))
         self.installThread.finished.connect(self.installFinish)
-    
+
     def updateProfilList(self):
         self.profileComboBox.clear()
         for i in self.env.profiles:
@@ -389,12 +484,15 @@ class MainWindow(QWidget):
         if self.env.offlineMode:
             showMessageBox("messagebox.needinternet.title","messagebox.needinternet.text",self.env)
             return
-        if os.path.isfile(os.path.join(self.env.dataPath,"mojang_account.json")):
-            os.remove(os.path.join(self.env.dataPath,"mojang_account.json"))
         mojang_api.servers.authserver.invalidate_access_token(self.env.account["accessToken"],self.env.account["clientToken"])
-        self.close()
-        self.env.loginWindow.show()
-        self.env.loginWindow.setFocus()
+        del self.env.accountList[self.env.selectedAccount]
+        if len(self.env.accountList) == 0:
+            self.hide()
+            self.env.loginWindow.show()
+            self.env.loginWindow.setFocus()
+        else:
+            self.env.account = self.env.accountList[0]
+            self.updateAccountInformation()
 
     def startMinecraft(self,profile):
         args = runMinecraft(self.env.profiles[self.profileComboBox.currentIndex()],self.env)
@@ -414,11 +512,29 @@ class MainWindow(QWidget):
         self.installThread.setup(profile)
         self.installThread.start()
 
-
     def updateAccountInformation(self):
         self.accountLabel.setText(self.env.translate("mainwindow.label.account") % self.env.account["name"])
+        self.tabWidget.accountTab.updateAccountList()
         self.tabWidget.skin.updateSkin()
         if self.env.offlineMode:
             self.playButton.setText(self.env.translate("mainwindow.button.playOffline"))
         else:
             self.env.translate("mainwindow.button.play")
+
+    def closeEvent(self,event):
+        options = self.tabWidget.options            
+        self.env.settings.language = options.languageComboBox.currentData()
+        self.env.settings.newsURL = options.urlEdit.text()
+        self.env.settings.save(os.path.join(self.env.dataPath,"jdMinecraftLauncher","settings.json"))
+        with open(os.path.join(self.env.dataPath,"jdMinecraftLauncher","account.json"),"w") as f:
+            data = {}
+            data["selectedAccount"] = self.env.selectedAccount
+            data["accountList"] = []
+            for count, i in enumerate(self.env.accountList):
+                if i["name"] in self.env.disableAccountSave:
+                    if count == data["selectedAccount"]:
+                        data["selectedAccount"] = 0
+                else:
+                    data["accountList"].append(i)
+            json.dump(data, f, ensure_ascii=False, indent=4)
+        event.accept()

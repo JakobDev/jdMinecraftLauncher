@@ -14,9 +14,7 @@ def main():
     env.mainWindow = MainWindow(env)
     env.loginWindow = LoginWindow(env)
 
-    if os.path.isfile(os.path.join(env.dataPath,"mojang_account.json")):
-        with open(os.path.join(env.dataPath,"mojang_account.json")) as f:
-            env.account = json.load(f)
+    if hasattr(env,"account"):
         if hasInternetConnection():
             response = minecraft_launcher_lib.account.validate_access_token(env.account["accessToken"])
             if response:

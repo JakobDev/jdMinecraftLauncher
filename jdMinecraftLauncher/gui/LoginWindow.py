@@ -56,12 +56,30 @@ class LoginWindow(QWidget):
         self.env.account["accessToken"] = loginInformation["accessToken"]
         self.env.account["clientToken"] = loginInformation["clientToken"]
         self.env.account["uuid"] = loginInformation["selectedProfile"]["id"]
-        if self.saveLogin.checkState():
-            with open(os.path.join(self.env.dataPath,"mojang_account.json"), 'w', encoding='utf-8') as f:
-                json.dump(self.env.account, f, ensure_ascii=False, indent=4)
+        accountData = {
+            "name": loginInformation["selectedProfile"]["name"],
+            "accessToken": loginInformation["accessToken"],
+            "clientToken":  loginInformation["clientToken"],
+            "uuid": loginInformation["selectedProfile"]["id"]
+        }
+        if not self.saveLogin.checkState():
+            self.env.disableAccountSave.append(accountData["name"])
         self.close()
         self.usernameInput.setText("")
         self.passwordInput.setText("")
-        self.env.mainWindow.updateAccountInformation()
         self.env.mainWindow.show()
         self.env.mainWindow.setFocus()
+        for count, i in enumerate(self.env.accountList):
+            if i["name"] == accountData["name"]:
+                self.env.accountList[count] = accountData
+                self.env.selectedAccount = count
+                self.env.mainWindow.updateAccountInformation()
+                return
+        self.env.accountList.append(accountData)
+        self.env.selectedAccount = len(self.env.accountList) - 1
+        self.env.mainWindow.updateAccountInformation()
+
+def reset(self):
+     self.usernameInput.setText("")
+     self.passwordInput.setText("")
+     self.saveLogin.setChecked(True)
