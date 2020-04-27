@@ -2,7 +2,7 @@
 from setuptools import find_packages, setup
 
 setup(name='jdMinecraftLauncher',
-    version='1.5',
+    version='2.0',
     description=' A Minecraft Launcher writen in Python',
     long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
