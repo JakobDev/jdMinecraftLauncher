@@ -2,7 +2,7 @@
 from setuptools import find_packages, setup
 
 setup(name='jdMinecraftLauncher',
-    version='2.0',
+    version='2.1',
     description=' A Minecraft Launcher writen in Python',
     long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
@@ -18,6 +18,7 @@ setup(name='jdMinecraftLauncher',
         'requests',
         'minecraft-launcher-lib',
         'jdTranslationHelper',
+        'cryptography'
     ],
     packages=find_packages(),
     entry_points={

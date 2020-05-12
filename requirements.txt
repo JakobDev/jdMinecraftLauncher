@@ -4,3 +4,4 @@ mojang-api
 requests
 minecraft-launcher-lib
 jdTranslationHelper
+cryptography
