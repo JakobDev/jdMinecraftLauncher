@@ -60,10 +60,13 @@ class LoginWindow(QWidget):
             "name": loginInformation["selectedProfile"]["name"],
             "accessToken": loginInformation["accessToken"],
             "clientToken":  loginInformation["clientToken"],
-            "uuid": loginInformation["selectedProfile"]["id"]
+            "uuid": loginInformation["selectedProfile"]["id"],
+            "mail": self.usernameInput.text()
         }
         if not self.saveLogin.checkState():
             self.env.disableAccountSave.append(accountData["name"])
+        if self.env.settings.enablePasswordSave:
+            self.env.saved_passwords[self.usernameInput.text()] = self.passwordInput.text()
         self.close()
         self.usernameInput.setText("")
         self.passwordInput.setText("")
@@ -79,7 +82,10 @@ class LoginWindow(QWidget):
         self.env.selectedAccount = len(self.env.accountList) - 1
         self.env.mainWindow.updateAccountInformation()
 
-def reset(self):
-     self.usernameInput.setText("")
-     self.passwordInput.setText("")
-     self.saveLogin.setChecked(True)
+    def reset(self):
+        self.usernameInput.setText("")
+        self.passwordInput.setText("")
+        self.saveLogin.setChecked(True)
+
+    def setName(self,name):
+        self.usernameInput.setText(name)

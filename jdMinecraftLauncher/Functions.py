@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QMessageBox
+import minecraft_launcher_lib
 import subprocess
 import platform
 import requests
@@ -27,7 +28,7 @@ def saveProfiles(env):
                 c[key] = value
         profileList.append(c)
     with open(os.path.join(env.dataPath, "jdMinecraftLauncher","profiles.json"), 'w', encoding='utf-8') as f:
-        json.dump(profileList, f, ensure_ascii=False, indent=4)
+        json.dump({"selectedProfile":env.selectedProfile,"profileList":profileList}, f, ensure_ascii=False, indent=4)
 
 
 def showMessageBox(title, text, env, callback=None):
@@ -59,3 +60,22 @@ def downloadFile(url,path):
     with open(path, 'wb') as f:
         r.raw.decode_content = True
         shutil.copyfileobj(r.raw, f)
+
+def login_with_saved_passwords(env,account):
+    loginInformation = minecraft_launcher_lib.account.login_user(account["mail"],env.saved_passwords[account["mail"]])
+
+    if "errorMessage" in loginInformation:
+        return
+    
+    env.account["name"] = loginInformation["selectedProfile"]["name"]
+    env.account["accessToken"] = loginInformation["accessToken"]
+    env.account["clientToken"] = loginInformation["clientToken"]
+    env.account["uuid"] = loginInformation["selectedProfile"]["id"]
+    env.account["mail"] = account["mail"]
+    
+    for count, i in enumerate(env.accountList):
+        if i["name"] == env.account["name"]:
+            env.accountList[count] = env.account
+            env.selectedAccount = count
+            env.mainWindow.updateAccountInformation()
+            return

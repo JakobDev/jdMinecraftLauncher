@@ -1,17 +1,20 @@
-from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QAction, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QFileDialog, QMenu, QLineEdit
+from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QAction, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QFileDialog, QMenu, QLineEdit, QInputDialog
 from PyQt5.QtCore import QUrl, QLocale, Qt, QDir, QProcess
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
 from PyQt5.QtGui import QPixmap, QCursor
 from jdMinecraftLauncher.gui.ProfileWindow import ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
-from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox, downloadFile
+from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox, downloadFile, login_with_saved_passwords
 from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import runMinecraft
+from jdMinecraftLauncher import Crypto
+import minecraft_launcher_lib
 import mojang_api
 import webbrowser
 import urllib
 import shutil
 import json
+import sys
 import os
 
 class ProfileEditorTab(QTableWidget):
@@ -90,8 +93,8 @@ class ProfileEditorTab(QTableWidget):
             showMessageBox("profiletab.removeError.title","profiletab.removeError.text",self.env)
         else:
             del self.env.profiles[self.currentRow()]
+            self.env.selectedProfile = 0
             self.mainWindow.updateProfilList()
-            saveProfiles(self.env)
 
 class VersionEditorTab(QTableWidget):
     def __init__(self,env):
@@ -223,6 +226,7 @@ class OptionsTab(QWidget):
         self.languageComboBox = QComboBox()
         self.urlEdit = QLineEdit()
         self.allowMultiLaunchCheckBox = QCheckBox(env.translate("optionstab.checkBox.allowMultiLaunch"))
+        self.savePasswordsCheckBox = QCheckBox(env.translate("optionstab.checkBox.enablePasswordSave"))
 
         self.languageComboBox.addItem(env.translate("optionstab.combobox.systemLanguage"),"default")
         for i in os.listdir(os.path.join(env.currentDir,"translation")):
@@ -234,8 +238,10 @@ class OptionsTab(QWidget):
 
         self.urlEdit.setText(env.settings.newsURL)
         self.allowMultiLaunchCheckBox.setChecked(self.env.settings.enableMultiLaunch)
+        self.savePasswordsCheckBox.setChecked(self.env.settings.enablePasswordSave)
 
         self.allowMultiLaunchCheckBox.stateChanged.connect(self.multiLaunchCheckBoxChanged)
+        self.savePasswordsCheckBox.stateChanged.connect(self.savePasswordsCheckBoxChanged)
 
         gridLayout = QGridLayout()
         gridLayout.addWidget(QLabel(env.translate("optionstab.label.language")),0,0)
@@ -246,12 +252,26 @@ class OptionsTab(QWidget):
         mainLayout = QVBoxLayout()
         mainLayout.addLayout(gridLayout)
         mainLayout.addWidget(self.allowMultiLaunchCheckBox)
+        mainLayout.addWidget(self.savePasswordsCheckBox)
         mainLayout.addStretch(1)
         
         self.setLayout(mainLayout)
 
     def multiLaunchCheckBoxChanged(self):
         self.env.settings.enableMultiLaunch = bool(self.allowMultiLaunchCheckBox.checkState())
+
+    def savePasswordsCheckBoxChanged(self):
+        if bool(self.savePasswordsCheckBox.checkState()):
+            password,ok = QInputDialog.getText(self,self.env.translate("inputdialog.setPassword.title"),self.env.translate("inputdialog.setPassword.text"))
+            if ok and password != "":
+                self.env.encrypt_password = password
+                self.env.settings.enablePasswordSave = True
+            else:
+                self.savePasswordsCheckBox.setChecked(False)
+                self.env.settings.enablePasswordSave = False
+                print("jhg")
+        else:
+            self.env.settings.enablePasswordSave = False
 
 class SwitchAccountButton(QPushButton):
     def __init__(self,text,env,pos):
@@ -261,9 +281,17 @@ class SwitchAccountButton(QPushButton):
         self.clicked.connect(self.clickCallback)
 
     def clickCallback(self):
-        self.env.account = self.env.accountList[self.pos]
-        self.env.mainWindow.updateAccountInformation()
-        self.env.selectedAccount = self.pos
+        account = self.env.accountList[self.pos]
+        if minecraft_launcher_lib.account.validate_access_token(account["accessToken"]):
+            self.env.account = self.env.accountList[self.pos]
+            self.env.mainWindow.updateAccountInformation()
+            self.env.selectedAccount = self.pos
+        elif (account.get("mail","") in self.env.saved_passwords) and self.env.settings.enablePasswordSave:
+            login_with_saved_passwords(self.env,account)
+        else:
+            self.env.loginWindow.reset()
+            self.env.loginWindow.setName(account.get("mail",""))
+            self.env.loginWindow.show()
 
 class AccountTab(QTableWidget):
     def __init__(self,env):
@@ -291,6 +319,7 @@ class AccountTab(QTableWidget):
             count += 1
 
     def addAccount(self):
+        self.env.loginWindow.reset()
         self.env.loginWindow.show()
 
     def contextMenuEvent(self, event):
@@ -338,8 +367,10 @@ class GameOutputTab(QPlainTextEdit):
     def dataReady(self):
         cursor = self.textCursor()
         cursor.movePosition(cursor.End)
-        #print(self.process.readAll())
-        cursor.insertText(bytes(self.process.readAll()).decode())
+        try:
+            cursor.insertText(bytes(self.process.readAll()).decode(sys.stdout.encoding))
+        except UnicodeDecodeError:
+            cursor.insertText(bytes("?"))
         self.moveCursor(cursor.End)
 
     def procStarted(self):
@@ -407,11 +438,13 @@ class MainWindow(QWidget):
         self.accountButton = QPushButton(self.env.translate("mainwindow.button.logout"))
 
         self.progressBar.setTextVisible(True)
-
+        self.profileComboBox.setCurrentIndex(self.env.selectedProfile)
+        
         self.newProfileButton.clicked.connect(self.newProfileButtonClicked)
         self.editProfileButton.clicked.connect(self.editProfileButtonClicked)
         self.playButton.clicked.connect(self.playButtonClicked)
         self.accountButton.clicked.connect(self.logoutButtonClicked)
+        self.profileComboBox.currentIndexChanged.connect(self.profileComboBoxIndexChanged)
 
         self.profileSelectLayout = QHBoxLayout()
         self.profileSelectLayout.addWidget(self.profilLabel)
@@ -455,11 +488,16 @@ class MainWindow(QWidget):
         self.installThread.finished.connect(self.installFinish)
 
     def updateProfilList(self):
+        currentIndex = self.env.selectedProfile
         self.profileComboBox.clear()
         for i in self.env.profiles:
             self.profileComboBox.addItem(i.name)
         self.tabWidget.updateProfiles()
+        self.profileComboBox.setCurrentIndex(currentIndex)
 
+    def profileComboBoxIndexChanged(self, index):
+        self.env.selectedProfile = index
+        
     def newProfileButtonClicked(self):
         self.profileWindow.loadProfile(self.env.profiles[self.profileComboBox.currentIndex()],True,True)
         self.profileWindow.show()
@@ -522,7 +560,7 @@ class MainWindow(QWidget):
             self.env.translate("mainwindow.button.play")
 
     def closeEvent(self,event):
-        options = self.tabWidget.options            
+        options = self.tabWidget.options
         self.env.settings.language = options.languageComboBox.currentData()
         self.env.settings.newsURL = options.urlEdit.text()
         self.env.settings.save(os.path.join(self.env.dataPath,"jdMinecraftLauncher","settings.json"))
@@ -537,4 +575,16 @@ class MainWindow(QWidget):
                 else:
                     data["accountList"].append(i)
             json.dump(data, f, ensure_ascii=False, indent=4)
+        if self.env.settings.enablePasswordSave:
+            with open(os.path.join(self.env.dataPath,"jdMinecraftLauncher","saved_passwords.json"),"wb") as f:
+                password_str = json.dumps(self.env.saved_passwords)
+                key = Crypto.get_key(self.env.encrypt_password)
+                encryptet_str = Crypto.encrypt(password_str,key)
+                f.write(encryptet_str)
+        else:
+            try:
+                os.remove(os.path.join(self.env.dataPath,"jdMinecraftLauncher","saved_passwords.json"))
+            except:
+                pass
+        saveProfiles(self.env)
         event.accept()

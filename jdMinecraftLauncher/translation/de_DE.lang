@@ -84,6 +84,7 @@ optionstab.label.language=Sprache:
 optionstab.combobox.systemLanguage=Benutze Systemsprache
 optionstab.label.newsURL=News URL:
 optionstab.checkBox.allowMultiLaunch=Starten mehrer Instanzen gleichzeitig erlauben (nicht empfohlen)
+optionstab.checkBox.enablePasswordSave=Passwörter der Accounts verschlüsselt speichern (nicht empfohlen)
 
 accounttab.nameHeader=Name
 accounttab.switchHeader=Wechseln
@@ -102,3 +103,10 @@ messagebox.needinternet.title=Keine Internetverbindung
 messagebox.needinternet.text=Diese Funktion benötigt eine Internetverbindung
 messagebox.installinternet.title=Keine Internetverbindung
 messagebox.installinternet.text=Du benötigst eine Internetverbindung um neue Versionen zu installieren. Das Spielen bereits installierter Version ist allerdings auch ohne Internetverbindung möglich.
+messagebox.wrongEncryptPassword.title=Falsches Passwort
+messagebox.wrongEncryptPassword.text=Du hast ein falsches Passwort eingegeben. Bitte starte das Programm neu, um es erneut zu versuchen. Wenn du dich nicht mehr an dein Passwort erinnerts, klicke bei der Eingabe auf "Abbrechen".
+
+inputdialog.enterPassword.title=Passwort eingeben
+inputdialog.enterPassword.text=Bitte gib dein Passwort ein, um die Anmeldedaten zu entschlüsseln
+inputdialog.setPassword.title=Passwort festlegen
+inputdialog.setPassword.text=Bitte lege ein Passwort fest, um deine Anmeldedaten zu veschlüsseln

@@ -84,6 +84,7 @@ optionstab.label.language=Language:
 optionstab.combobox.systemLanguage=Use System Language
 optionstab.label.newsURL=News URL:
 optionstab.checkBox.allowMultiLaunch=Allow starting multiple instances (not recommended)
+optionstab.checkBox.enablePasswordSave=Store passwords of accounts encrypted (not recommended)
 
 accounttab.nameHeader=Name
 accounttab.switchHeader=Switch
@@ -102,3 +103,10 @@ messagebox.needinternet.title=No Internet Connection
 messagebox.needinternet.text=This Feature needs a internet connection
 messagebox.installinternet.title=No Internet Connection
 messagebox.installinternet.text=You need a internet connection to install a new version, but you are still able to play already installed versions.
+messagebox.wrongEncryptPassword.title=Wrong Password
+messagebox.wrongEncryptPassword.text=You entered a wrong password. Please restart the program to try again. If you do not remember your password, click "Cancel" when you enter it.
+
+inputdialog.enterPassword.title=Enter Password
+inputdialog.enterPassword.text=Please enter your password to decrypt your account passwords
+inputdialog.setPassword.title=Set Password
+inputdialog.setPassword.text=Please set a password, to encrypt you account passwords

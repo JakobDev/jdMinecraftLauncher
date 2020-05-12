@@ -1,4 +1,4 @@
-from jdMinecraftLauncher.Functions import hasInternetConnection, showMessageBox
+from jdMinecraftLauncher.Functions import hasInternetConnection, showMessageBox, login_with_saved_passwords
 from jdMinecraftLauncher.gui.LoginWindow import LoginWindow
 from jdMinecraftLauncher.gui.MainWindow import MainWindow
 from jdMinecraftLauncher.Enviroment import Enviroment
@@ -18,8 +18,10 @@ def main():
         if hasInternetConnection():
             response = minecraft_launcher_lib.account.validate_access_token(env.account["accessToken"])
             if response:
-                env.loadVersions()
                 env.mainWindow.updateAccountInformation()
+                env.mainWindow.show()
+            elif env.account.get("mail","") in env.saved_passwords:
+                login_with_saved_passwords(env,env.account)
                 env.mainWindow.show()
             else:
                 env.loginWindow.show()
