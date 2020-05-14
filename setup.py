@@ -2,14 +2,15 @@
 from setuptools import find_packages, setup
 
 setup(name='jdMinecraftLauncher',
-    version='2.1',
-    description=' A Minecraft Launcher writen in Python',
+    version='2.2',
+    description='A Minecraft Launcher writen in Python',
     long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
     author='JakobDev',
     author_email='jakobdev@gmx.de',
     url='https://gitlab.com/JakobDev/jdMinecraftLauncher',
     download_url='https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases',
+    python_requires='>=3.5',
     include_package_data=True,
     install_requires=[
         'PyQt5',

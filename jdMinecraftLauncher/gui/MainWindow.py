@@ -367,10 +367,7 @@ class GameOutputTab(QPlainTextEdit):
     def dataReady(self):
         cursor = self.textCursor()
         cursor.movePosition(cursor.End)
-        try:
-            cursor.insertText(bytes(self.process.readAll()).decode(sys.stdout.encoding))
-        except UnicodeDecodeError:
-            cursor.insertText(bytes("?"))
+        cursor.insertText(bytes(self.process.readAll()).decode(encoding=sys.stdout.encoding,errors="replace"))
         self.moveCursor(cursor.End)
 
     def procStarted(self):

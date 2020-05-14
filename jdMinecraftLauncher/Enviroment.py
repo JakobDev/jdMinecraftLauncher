@@ -15,7 +15,7 @@ import os
 
 class Enviroment():
     def __init__(self):
-        self.launcherVersion = "2.1"
+        self.launcherVersion = "2.2"
         self.offlineMode = False
         self.currentDir = os.path.dirname(os.path.realpath(__file__))
 

@@ -1,7 +1,25 @@
 image: "python:latest"
 
 stages:
+    - build
     - deploy
+
+build_exe:
+    stage: build
+    script:
+        - Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.8.2/python-3.8.2-amd64.exe -OutFile python-installer.exe
+        - .\python-installer.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0 | Out-Null
+        - $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+        - pip install -r requirements.txt
+        - pip install cx-Freeze
+        - python build_exe.py build
+    artifacts:
+        paths:
+            - build
+    only:
+        - tags
+    tags:
+        - windows
 
 pip_deploy:
     stage: deploy

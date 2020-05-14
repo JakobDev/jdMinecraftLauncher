@@ -197,6 +197,7 @@ class ProfileWindow(QWidget):
             profile.version = version
         if self.isNew:
             self.env.profiles.append(profile)
+            self.env.selectedProfile = len(self.env.profiles) - 1
         self.mainwindow.updateProfilList()
         saveProfiles(self.env)
         self.close()
