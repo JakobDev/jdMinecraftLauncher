@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QAction, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QFileDialog, QMenu, QLineEdit, QInputDialog
+from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QAction, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QFileDialog, QMenu, QLineEdit, QInputDialog, QSizePolicy
 from PyQt5.QtCore import QUrl, QLocale, Qt, QDir, QProcess
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
 from PyQt5.QtGui import QPixmap, QCursor
@@ -9,8 +9,9 @@ from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import runMinecraft
 from jdMinecraftLauncher import Crypto
 import minecraft_launcher_lib
-import mojang_api
 import webbrowser
+import tempfile
+import random
 import urllib
 import shutil
 import json
@@ -192,8 +193,7 @@ class SkinTab(QWidget):
         path = QFileDialog.getOpenFileName(self,self.env.translate("skintab.filepicker.upload.title"),self.env.translate("skintab.filepicker.filetype.png"))
 
         if path[0]:
-            p = mojang_api.user.player.Player(self.env.account["name"],self.env.account["uuid"])
-            mojang_api.servers.api.upload_skin(p,self.env.account["accessToken"],path[0])
+            minecraft_launcher_lib.account.upload_skin(self.env.account["uuid"],self.env.account["accessToken"],path[0])
             self.updateSkin()
             showMessageBox("skintab.upload.title","skintab.upload.text",self.env)
 
@@ -202,8 +202,7 @@ class SkinTab(QWidget):
             showMessageBox("messagebox.needinternet.title","messagebox.needinternet.text",self.env)
             return
 
-        p = mojang_api.user.player.Player(self.env.account["name"],self.env.account["uuid"])
-        mojang_api.servers.api.reset_skin(p,self.env.account["accessToken"])
+        minecraft_launcher_lib.account.reset_skin(self.env.account["uuid"],self.env.account["accessToken"])
         self.updateSkin()
         showMessageBox("skintab.reset.title","skintab.reset.text",self.env)
 
@@ -227,6 +226,7 @@ class OptionsTab(QWidget):
         self.urlEdit = QLineEdit()
         self.allowMultiLaunchCheckBox = QCheckBox(env.translate("optionstab.checkBox.allowMultiLaunch"))
         self.savePasswordsCheckBox = QCheckBox(env.translate("optionstab.checkBox.enablePasswordSave"))
+        self.extractNativesCheckBox = QCheckBox(env.translate("optionstab.checkBox.extractNatives"))
 
         self.languageComboBox.addItem(env.translate("optionstab.combobox.systemLanguage"),"default")
         for i in os.listdir(os.path.join(env.currentDir,"translation")):
@@ -239,9 +239,11 @@ class OptionsTab(QWidget):
         self.urlEdit.setText(env.settings.newsURL)
         self.allowMultiLaunchCheckBox.setChecked(self.env.settings.enableMultiLaunch)
         self.savePasswordsCheckBox.setChecked(self.env.settings.enablePasswordSave)
+        self.extractNativesCheckBox.setChecked(self.env.settings.extractNatives)
 
         self.allowMultiLaunchCheckBox.stateChanged.connect(self.multiLaunchCheckBoxChanged)
         self.savePasswordsCheckBox.stateChanged.connect(self.savePasswordsCheckBoxChanged)
+        self.extractNativesCheckBox.stateChanged.connect(self.extractNativesCheckBoxChanged)
 
         gridLayout = QGridLayout()
         gridLayout.addWidget(QLabel(env.translate("optionstab.label.language")),0,0)
@@ -253,6 +255,7 @@ class OptionsTab(QWidget):
         mainLayout.addLayout(gridLayout)
         mainLayout.addWidget(self.allowMultiLaunchCheckBox)
         mainLayout.addWidget(self.savePasswordsCheckBox)
+        mainLayout.addWidget(self.extractNativesCheckBox)
         mainLayout.addStretch(1)
         
         self.setLayout(mainLayout)
@@ -269,9 +272,11 @@ class OptionsTab(QWidget):
             else:
                 self.savePasswordsCheckBox.setChecked(False)
                 self.env.settings.enablePasswordSave = False
-                print("jhg")
         else:
             self.env.settings.enablePasswordSave = False
+
+    def extractNativesCheckBoxChanged(self):
+        self.env.settings.extractNatives = bool(self.extractNativesCheckBox.checkState())
 
 class SwitchAccountButton(QPushButton):
     def __init__(self,text,env,pos):
@@ -336,7 +341,7 @@ class AboutTab(QWidget):
         super().__init__()
         self.titleLabel = QLabel(env.translate("abouttab.label.title") % env.launcherVersion)
         self.fanmadeLabel = QLabel(env.translate("abouttab.label.fanmade"))
-        self.dependencyLabel = QLabel(env.translate("abouttab.label.dependency"))
+        self.dependencyLabel = QLabel(env.translate("abouttab.label.dependency").format(version=minecraft_launcher_lib.utils.get_library_version()))
         self.licenseLabel = QLabel(env.translate("abouttab.label.license"))
         self.viewSourceButton = QPushButton(env.translate("abouttab.button.viewSource"))
 
@@ -385,15 +390,18 @@ class GameOutputTab(QPlainTextEdit):
         elif self.profile.launcherVisibility == 1:
             self.env.mainWindow.close()
         self.env.mainWindow.playButton.setEnabled(True)
+        if self.natives_path != "":
+            shutil.rmtree(self.natives_path)
 
-    def executeCommand(self,profile,args):
+    def executeCommand(self,profile,args,natives_path):
         self.profile = profile
+        self.natives_path = natives_path
         self.process = QProcess(self)
         self.process.setWorkingDirectory(self.env.dataPath)
-        self.process.start("java",args)#profile.getJavaPath(),args)
         self.process.readyRead.connect(self.dataReady)
         self.process.started.connect(self.procStarted)
         self.process.finished.connect(self.procFinish)
+        self.process.start("java",args)
 
 class Tabs(QTabWidget):
     def __init__(self,env,parrent):
@@ -436,7 +444,8 @@ class MainWindow(QWidget):
 
         self.progressBar.setTextVisible(True)
         self.profileComboBox.setCurrentIndex(self.env.selectedProfile)
-        
+        self.playButton.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,QSizePolicy.Minimum))
+
         self.newProfileButton.clicked.connect(self.newProfileButtonClicked)
         self.editProfileButton.clicked.connect(self.editProfileButtonClicked)
         self.playButton.clicked.connect(self.playButtonClicked)
@@ -519,7 +528,7 @@ class MainWindow(QWidget):
         if self.env.offlineMode:
             showMessageBox("messagebox.needinternet.title","messagebox.needinternet.text",self.env)
             return
-        mojang_api.servers.authserver.invalidate_access_token(self.env.account["accessToken"],self.env.account["clientToken"])
+        minecraft_launcher_lib.account.invalidate_access_token(self.env.account["accessToken"],self.env.account["clientToken"])
         del self.env.accountList[self.env.selectedAccount]
         if len(self.env.accountList) == 0:
             self.hide()
@@ -530,11 +539,15 @@ class MainWindow(QWidget):
             self.updateAccountInformation()
 
     def startMinecraft(self,profile):
-        args = runMinecraft(self.env.profiles[self.profileComboBox.currentIndex()],self.env)
+        if self.env.settings.extractNatives:
+            natives_path = os.path.join(tempfile.gettempdir(),"minecraft_natives_" + str(random.randrange(0,10000000)))
+        else:
+            natives_path = ""
+        args = runMinecraft(self.env.profiles[self.profileComboBox.currentIndex()],self.env,natives_path)
         o = GameOutputTab(self.env)
         tabid = self.tabWidget.addTab(o,self.env.translate("mainwindow.tab.gameOutput"))
         self.tabWidget.setCurrentIndex(tabid)
-        o.executeCommand(profile,args)
+        o.executeCommand(profile,args,natives_path)
 
     def installFinish(self):
         self.env.updateInstalledVersions()

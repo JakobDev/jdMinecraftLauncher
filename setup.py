@@ -2,7 +2,7 @@
 from setuptools import find_packages, setup
 
 setup(name='jdMinecraftLauncher',
-    version='2.2',
+    version='2.3',
     description='A Minecraft Launcher writen in Python',
     long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
@@ -15,7 +15,6 @@ setup(name='jdMinecraftLauncher',
     install_requires=[
         'PyQt5',
         'PyQtWebEngine',
-        'mojang-api',
         'requests',
         'minecraft-launcher-lib',
         'jdTranslationHelper',

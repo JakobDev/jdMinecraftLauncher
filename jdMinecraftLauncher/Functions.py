@@ -6,6 +6,7 @@ import requests
 import shutil
 import socket
 import json
+import copy
 import os
 
 
@@ -66,16 +67,16 @@ def login_with_saved_passwords(env,account):
 
     if "errorMessage" in loginInformation:
         return
-    
+
     env.account["name"] = loginInformation["selectedProfile"]["name"]
     env.account["accessToken"] = loginInformation["accessToken"]
     env.account["clientToken"] = loginInformation["clientToken"]
     env.account["uuid"] = loginInformation["selectedProfile"]["id"]
     env.account["mail"] = account["mail"]
-    
+
     for count, i in enumerate(env.accountList):
         if i["name"] == env.account["name"]:
-            env.accountList[count] = env.account
+            env.accountList[count] = copy.copy(env.account)
             env.selectedAccount = count
             env.mainWindow.updateAccountInformation()
             return

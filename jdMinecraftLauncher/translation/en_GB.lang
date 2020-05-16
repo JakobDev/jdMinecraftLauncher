@@ -85,6 +85,7 @@ optionstab.combobox.systemLanguage=Use System Language
 optionstab.label.newsURL=News URL:
 optionstab.checkBox.allowMultiLaunch=Allow starting multiple instances (not recommended)
 optionstab.checkBox.enablePasswordSave=Store passwords of accounts encrypted (not recommended)
+optionstab.checkBox.extractNatives=Unpack natives separately for each instance
 
 accounttab.nameHeader=Name
 accounttab.switchHeader=Switch
@@ -93,7 +94,7 @@ account.newAccount=New Account
 
 abouttab.label.title=jdMinecraftLauncher Version %s made by JakobDev
 abouttab.label.fanmade=This Launcher is fanmade and not from Mojang.
-abouttab.label.dependency=This Program uses mojang_api from Polyr and minecraft-launcher-lib
+abouttab.label.dependency=This Program uses minecraft-launcher-lib version {version}
 abouttab.label.license=This Program is licensed GPL 3.0
 abouttab.button.viewSource=View Source
 

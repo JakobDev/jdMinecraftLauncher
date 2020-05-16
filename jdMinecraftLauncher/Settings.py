@@ -7,6 +7,7 @@ class Settings():
         self.newsURL = "https://www.minecraft.net"
         self.enableMultiLaunch = False
         self.enablePasswordSave = False
+        self.extractNatives = False
 
         if os.path.isfile(os.path.join(env.dataPath,"jdMinecraftLauncher","settings.json")):
             self.load(os.path.join(env.dataPath,"jdMinecraftLauncher","settings.json"))

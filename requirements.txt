@@ -1,6 +1,5 @@
 PyQt5
 PyQtWebEngine
-mojang-api
 requests
 minecraft-launcher-lib
 jdTranslationHelper

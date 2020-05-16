@@ -10,12 +10,13 @@ from PyQt5.QtGui import QIcon
 import minecraft_launcher_lib
 import requests
 import json
+import copy
 import sys
 import os
 
 class Enviroment():
     def __init__(self):
-        self.launcherVersion = "2.2"
+        self.launcherVersion = "2.3"
         self.offlineMode = False
         self.currentDir = os.path.dirname(os.path.realpath(__file__))
 
@@ -44,9 +45,9 @@ class Enviroment():
                 self.accountList = data.get("accountList",[])
                 self.selectedAccount = data.get("selectedAccount",0)
                 try:
-                    self.account = self.accountList[self.selectedAccount]
+                    self.account = copy.copy(self.accountList[self.selectedAccount])
                 except IndexError:
-                    self.account = self.accountList[0]
+                    self.account = copy.copy(self.accountList[0])
                     self.selectedAccount = 0
 
         self.saved_passwords = {}
@@ -109,9 +110,14 @@ class Enviroment():
         self.installedVersion = []
         if os.path.isdir(os.path.join(self.dataPath,"versions")):
             for v in os.listdir(os.path.join(self.dataPath,"versions")):
-                if os.path.isfile(os.path.join(self.dataPath,"versions",v,v + ".json")):
-                    with open(os.path.join(self.dataPath,"versions",v,v + ".json")) as f:
-                        vinfo = json.load(f)
+                json_path = os.path.join(self.dataPath,"versions",v,v + ".json")
+                if os.path.isfile(json_path):
+                    with open(json_path) as f:
+                        try:
+                            vinfo = json.load(f)
+                        except json.decoder.JSONDecodeError as e:
+                            print("Error while parsing " + json_path + ": " + e.args[0])
+                            continue
                     tmp = {}
                     tmp["id"] = vinfo["id"]
                     tmp["type"] = vinfo["type"]
