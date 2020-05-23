@@ -15,7 +15,7 @@ else:
 
 setup(
     name = "jdMinecraftLauncher",
-    version = "2.2",
+    version = "2.4",
     description = "A Minecraft Launcher writen in Python",
     options = {"build_exe": build_exe_options},
     executables = [target]

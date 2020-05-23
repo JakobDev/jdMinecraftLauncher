@@ -391,7 +391,10 @@ class GameOutputTab(QPlainTextEdit):
             self.env.mainWindow.close()
         self.env.mainWindow.playButton.setEnabled(True)
         if self.natives_path != "":
-            shutil.rmtree(self.natives_path)
+            try:
+                shutil.rmtree(self.natives_path)
+            except:
+                pass
 
     def executeCommand(self,profile,args,natives_path):
         self.profile = profile
