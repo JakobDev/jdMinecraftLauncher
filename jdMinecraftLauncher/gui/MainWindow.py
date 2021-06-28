@@ -404,7 +404,7 @@ class GameOutputTab(QPlainTextEdit):
         self.process.readyRead.connect(self.dataReady)
         self.process.started.connect(self.procStarted)
         self.process.finished.connect(self.procFinish)
-        self.process.start("java",args)
+        self.process.start(profile.getJavaPath(),args)
 
 class Tabs(QTabWidget):
     def __init__(self,env,parrent):
