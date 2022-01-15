@@ -484,6 +484,8 @@ class MainWindow(QWidget):
         options = self.tabWidget.options
         self.env.settings.language = options.languageComboBox.currentData()
         self.env.settings.newsURL = options.urlEdit.text()
+        self.env.settings.enableMultiLaunch = options.allowMultiLaunchCheckBox.isChecked()
+        self.env.settings.extractNatives = options.extractNativesCheckBox.isChecked()
         self.env.settings.save(os.path.join(self.env.dataPath,"jdMinecraftLauncher","settings.json"))
         with open(os.path.join(self.env.dataPath,"jdMinecraftLauncher","microsoft_accounts.json"),"w") as f:
             data = {}
