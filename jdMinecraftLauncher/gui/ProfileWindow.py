@@ -1,9 +1,12 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QCheckBox, QComboBox, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIntValidator
+from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QCheckBox, QComboBox, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIntValidator
 from jdMinecraftLauncher.Profile import Profile
 from jdMinecraftLauncher.Functions import saveProfiles, openFile
+import platform
+import shutil
 import os
+
 
 class ProfileWindow(QWidget):
     def __init__(self, enviroment, parrent):
@@ -33,6 +36,7 @@ class ProfileWindow(QWidget):
         self.portLabel = QLabel(self.env.translate("profilewindow.label.port"))
         self.portEdit = QLineEdit()
         self.demoModeCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.demoMode"))
+        self.gameModeCheckBox = QCheckBox(self.env.translate("profilewindow.checkbox.gameMode"))
         self.cancelButton = QPushButton(self.env.translate("profilewindow.button.cancel"))
         self.openGameDirectoryButton = QPushButton(self.env.translate("profilewindow.button.openGameDir"))
         self.saveProfileButton = QPushButton(self.env.translate("profilewindow.button.saveProfile"))
@@ -44,17 +48,17 @@ class ProfileWindow(QWidget):
         self.launcherVisibilityCombobox.addItem(self.env.translate("profilewindow.launcherVisibility.close"))
         self.launcherVisibilityCombobox.addItem(self.env.translate("profilewindow.launcherVisibility.keep"))
 
-        self.gameDirectoryCheckbox.stateChanged.connect(lambda: self.gameDirectoryEdit.setEnabled(self.gameDirectoryCheckbox.checkState()))
+        self.gameDirectoryCheckbox.stateChanged.connect(lambda: self.gameDirectoryEdit.setEnabled(self.gameDirectoryCheckbox.isChecked()))
         self.resolutionCheckbox.stateChanged.connect(self.changeCustomResolution)
-        self.launcherVisibilityCheckbox.stateChanged.connect(lambda: self.launcherVisibilityCombobox.setEnabled(self.launcherVisibilityCheckbox.checkState()))
+        self.launcherVisibilityCheckbox.stateChanged.connect(lambda: self.launcherVisibilityCombobox.setEnabled(self.launcherVisibilityCheckbox.isChecked()))
         self.enableSnapshots.stateChanged.connect(self.updateVersionsList)
         self.enableBeta.stateChanged.connect(self.updateVersionsList)
         self.enableAlpha.stateChanged.connect(self.updateVersionsList)
         self.cancelButton.clicked.connect(self.close)
         self.openGameDirectoryButton.clicked.connect(lambda: openFile(self.profil.getGameDirectoryPath()))
         self.saveProfileButton.clicked.connect(self.saveProfile)
-        self.executableCheckbox.stateChanged.connect(lambda: self.executableEdit.setEnabled(self.executableCheckbox.checkState()))
-        self.jvmArgumentsCheckbox.stateChanged.connect(lambda: self.jvmArgumentsEdit.setEnabled(self.jvmArgumentsCheckbox.checkState()))
+        self.executableCheckbox.stateChanged.connect(lambda: self.executableEdit.setEnabled(self.executableCheckbox.isChecked()))
+        self.jvmArgumentsCheckbox.stateChanged.connect(lambda: self.jvmArgumentsEdit.setEnabled(self.jvmArgumentsCheckbox.isChecked()))
         self.serverCheckbox.stateChanged.connect(self.changeServerConnect)
         
         self.resolutionLayout = QHBoxLayout()
@@ -104,24 +108,30 @@ class ProfileWindow(QWidget):
         self.mainLayout.addLayout(self.useVersionLayout)
         self.mainLayout.addWidget(QLabel(self.env.translate("profilewindow.javaSettings")))
         self.mainLayout.addLayout(self.javaSettingsLayout)
+        self.mainLayout.addWidget(QLabel(self.env.translate("profilewindow.checkbox.other")))
         self.mainLayout.addWidget(self.serverCheckbox)
         self.mainLayout.addLayout(self.serverLayout)
         self.mainLayout.addWidget(self.demoModeCheckbox)
+        if platform.system() == "Linux":
+            self.mainLayout.addWidget(self.gameModeCheckBox)
         self.mainLayout.addLayout(self.buttonLayout)
 
-        self.mainLayout.setSizeConstraint(QLayout.SetFixedSize)
+        self.mainLayout.setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
         self.setWindowTitle(self.env.translate("profilewindow.title"))
         self.setLayout(self.mainLayout)
         self.selectLatestVersion = True
-    
+
+        if not shutil.which("gamemoderun"):
+            self.gameModeCheckBox.setEnabled(False)
+
     def changeCustomResolution(self):
-        state = self.resolutionCheckbox.checkState()
+        state = self.resolutionCheckbox.isChecked()
         self.resolutionLabel.setEnabled(state)
         self.resolutionEditX.setEnabled(state)
         self.resolutionEditY.setEnabled(state)
 
     def changeServerConnect(self):
-        state = self.serverCheckbox.checkState()
+        state = self.serverCheckbox.isChecked()
         self.serverLabel.setEnabled(state)
         self.serverEdit.setEnabled(state)
         self.portLabel.setEnabled(state)
@@ -148,6 +158,7 @@ class ProfileWindow(QWidget):
         self.enableBeta.setChecked(profile.enableBeta)
         self.enableAlpha.setChecked(profile.enableAlpha)
         self.selectLatestVersion = profile.useLatestVersion
+        self.selectLatestSnapshot = profile.useLatestSnapshot
         self.selectedVersion = profile.version
         self.executableCheckbox.setChecked(profile.customExecutable)
         self.executableEdit.setEnabled(profile.customExecutable)
@@ -159,6 +170,7 @@ class ProfileWindow(QWidget):
         self.serverEdit.setText(profile.serverIP)
         self.portEdit.setText(profile.serverPort)
         self.demoModeCheckbox.setChecked(profile.demoMode)
+        self.gameModeCheckBox.setChecked(profile.useGameMode)
         self.changeCustomResolution()
         self.changeServerConnect()
         self.updateVersionsList()
@@ -171,29 +183,35 @@ class ProfileWindow(QWidget):
             profile = Profile(self.profileNameEdit.text(),self.env)
         else:
             profile.name = self.profileNameEdit.text()
-        profile.customGameDirectory = self.toBoolean(self.gameDirectoryCheckbox.checkState())
+        profile.customGameDirectory = self.toBoolean(self.gameDirectoryCheckbox.isChecked())
         profile.gameDirectoryPath = self.gameDirectoryEdit.text()
-        profile.customResolution = self.toBoolean(self.resolutionCheckbox.checkState())
+        profile.customResolution = self.toBoolean(self.resolutionCheckbox.isChecked())
         profile.resolutionX = self.resolutionEditX.text()
         profile.resolutionY = self.resolutionEditY.text()
-        profile.customLauncherVisibility = self.toBoolean(self.launcherVisibilityCheckbox.checkState())
+        profile.customLauncherVisibility = self.toBoolean(self.launcherVisibilityCheckbox.isChecked())
         profile.launcherVisibility = self.launcherVisibilityCombobox.currentIndex()
-        profile.enableSnapshots = self.toBoolean(self.enableSnapshots.checkState())
-        profile.enableBeta = self.toBoolean(self.enableBeta.checkState())
-        profile.enableAlpha = self.toBoolean(self.enableAlpha.checkState())
-        profile.customExecutable = self.toBoolean(self.executableCheckbox.checkState())
+        profile.enableSnapshots = self.toBoolean(self.enableSnapshots.isChecked())
+        profile.enableBeta = self.toBoolean(self.enableBeta.isChecked())
+        profile.enableAlpha = self.toBoolean(self.enableAlpha.isChecked())
+        profile.customExecutable = self.toBoolean(self.executableCheckbox.isChecked())
         profile.executable = self.executableEdit.text()
-        profile.customArguments = self.toBoolean(self.jvmArgumentsCheckbox.checkState())
-        profile.serverConnect = self.toBoolean(self.serverCheckbox.checkState())
+        profile.customArguments = self.toBoolean(self.jvmArgumentsCheckbox.isChecked())
+        profile.serverConnect = self.toBoolean(self.serverCheckbox.isChecked())
         profile.arguments = self.jvmArgumentsEdit.text()
         profile.serverIP = self.serverEdit.text()
         profile.serverPort = self.portEdit.text()
-        profile.demoMode = bool(self.demoModeCheckbox.checkState())
+        profile.demoMode = bool(self.demoModeCheckbox.isChecked())
+        profile.useGameMode = self.gameModeCheckBox.isChecked()
         version = self.versionSelectCombobox.currentText()
         if version == self.env.translate("profilewindow.useLatestVersion"):
             profile.useLatestVersion = True
+            profile.useLatestSnapshot = False
+        elif version == self.env.translate("profilewindoe.useLatestSnapshot"):
+            profile.useLatestSnapshot = True
+            profile.useLatestVersion = False
         else:
             profile.useLatestVersion = False
+            profile.useLatestSnapshot = False
             profile.version = version
         if self.isNew:
             self.env.profiles.append(profile)
@@ -205,26 +223,30 @@ class ProfileWindow(QWidget):
     def updateVersionsList(self):
         self.versionSelectCombobox.clear()
         self.versionSelectCombobox.addItem(self.env.translate("profilewindow.useLatestVersion"))
+        if self.enableSnapshots.isChecked():
+            self.versionSelectCombobox.addItem(self.env.translate("profilewindoe.useLatestSnapshot"))
         for i in self.env.versions["versions"]:
             if i["type"] == "release":
                 self.versionSelectCombobox.addItem("release " + i["id"])
-            elif i["type"] == "snapshot" and self.enableSnapshots.checkState():
+            elif i["type"] == "snapshot" and self.enableSnapshots.isChecked():
                 self.versionSelectCombobox.addItem("snapshot " + i["id"])
-            elif i["type"] == "old_beta" and self.enableBeta.checkState():
+            elif i["type"] == "old_beta" and self.enableBeta.isChecked():
                 self.versionSelectCombobox.addItem("old_beta " + i["id"])
-            elif i["type"] == "old_alpha" and self.enableAlpha.checkState():
+            elif i["type"] == "old_alpha" and self.enableAlpha.isChecked():
                 self.versionSelectCombobox.addItem("old_alpha " + i["id"])
         if self.selectLatestVersion:
             self.versionSelectCombobox.setCurrentIndex(0)
+        elif self.selectLatestSnapshot and self.enableSnapshots.isChecked():
+            self.versionSelectCombobox.setCurrentIndex(1)
         else:
             for i in range(self.versionSelectCombobox.count()):
                 if self.versionSelectCombobox.itemText(i) == self.selectedVersion:
                     self.versionSelectCombobox.setCurrentIndex(i)
 
     def toBoolean(self, value):
-        if value == Qt.Checked:
+        if value == Qt.CheckState.Checked:
             return True
-        elif value == Qt.Unchecked:
+        elif value == Qt.CheckState.Unchecked:
             return False
         else:
             return value

@@ -2,11 +2,10 @@ from jdTranslationHelper import jdTranslationHelper
 from jdMinecraftLauncher.Profile import Profile
 from jdMinecraftLauncher.Settings import Settings
 from jdMinecraftLauncher.Functions import showMessageBox
-from jdMinecraftLauncher import Crypto
-from cryptography.fernet import InvalidToken
-from PyQt5.QtWidgets import QInputDialog, QWidget
-from PyQt5.QtCore import QLocale
-from PyQt5.QtGui import QIcon
+from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
+from PyQt6.QtWidgets import QInputDialog, QWidget
+from PyQt6.QtCore import QLocale
+from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
 import requests
 import json
@@ -16,7 +15,7 @@ import os
 
 class Enviroment():
     def __init__(self):
-        self.launcherVersion = "2.5"
+        self.launcherVersion = "3.0"
         self.offlineMode = False
         self.currentDir = os.path.dirname(os.path.realpath(__file__))
 
@@ -27,6 +26,8 @@ class Enviroment():
 
         if not os.path.exists(os.path.join(self.dataPath,"jdMinecraftLauncher")):
             os.makedirs(os.path.join(self.dataPath,"jdMinecraftLauncher"))
+
+        self.secrets = MicrosoftSecrets(self)
 
         self.settings = Settings(self)
 
@@ -39,8 +40,8 @@ class Enviroment():
         self.accountList = []
         self.selectedAccount = 0
         self.disableAccountSave = []
-        if os.path.isfile(os.path.join(self.dataPath,"jdMinecraftLauncher","account.json")):
-            with open(os.path.join(self.dataPath,"jdMinecraftLauncher","account.json")) as f:
+        if os.path.isfile(os.path.join(self.dataPath,"jdMinecraftLauncher","microsoft_accounts.json")):
+            with open(os.path.join(self.dataPath,"jdMinecraftLauncher","microsoft_accounts.json")) as f:
                 data = json.load(f)
                 self.accountList = data.get("accountList",[])
                 self.selectedAccount = data.get("selectedAccount",0)
@@ -49,20 +50,6 @@ class Enviroment():
                 except IndexError:
                     self.account = copy.copy(self.accountList[0])
                     self.selectedAccount = 0
-
-        self.saved_passwords = {}
-        self.encrypt_password = ""
-        if os.path.isfile(os.path.join(self.dataPath,"jdMinecraftLauncher","saved_passwords.json")):
-            with open(os.path.join(self.dataPath,"jdMinecraftLauncher","saved_passwords.json"),"rb") as f:
-                self.encrypt_password, ok = QInputDialog.getText(QWidget(),self.translate("inputdialog.enterPassword.title"),self.translate("inputdialog.enterPassword.text"))
-                if ok:
-                    key = Crypto.get_key(self.encrypt_password)
-                    try:
-                        password_str = Crypto.decrypt(f.read(),key)
-                        self.saved_passwords = json.loads(password_str)
-                    except InvalidToken:
-                        showMessageBox("messagebox.wrongEncryptPassword.title","messagebox.wrongEncryptPassword.text",self)
-                        sys.exit(0)
 
         self.loadVersions()
 
@@ -82,7 +69,6 @@ class Enviroment():
                 self.profiles.append(p)
         else:
             self.profiles.append(Profile("Default",self))
-
 
     def translate(self, string, default=None):
         #Just a litle shortcut

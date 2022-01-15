@@ -7,15 +7,16 @@ if platform.system() == "Windows":
     target = Executable(
         script="jdMinecraftLauncher.py",
         base="Win32GUI",
-        targetName = "jdMinecraftLauncher.exe",
+        target_name = "jdMinecraftLauncher.exe",
+        icon="deploy/Icon.ico"
     )
 else:
-    build_exe_options = {"excludes": ["tkinter"]}
+    build_exe_options = {"excludes": ["tkinter", "test"]}
     target = Executable(script="jdMinecraftLauncher.py",)
 
 setup(
     name = "jdMinecraftLauncher",
-    version = "2.4",
+    version = "3.0",
     description = "A Minecraft Launcher writen in Python",
     options = {"build_exe": build_exe_options},
     executables = [target]

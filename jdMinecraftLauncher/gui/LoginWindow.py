@@ -1,79 +1,71 @@
-from PyQt5.QtWidgets import QWidget, QLineEdit, QCheckBox, QPushButton, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
-from jdMinecraftLauncher.Functions import showMessageBox
+from PyQt6.QtWebEngineWidgets import QWebEngineView
+from PyQt6.QtWebEngineCore import QWebEngineProfile
+from PyQt6.QtWidgets import QApplication, QMessageBox
+from PyQt6.QtCore import QUrl, QLocale
 import minecraft_launcher_lib
 import json
+import sys
 import os
 
-class LoginWindow(QWidget):
-    def __init__(self,env):
+
+class LoginWindow(QWebEngineView):
+    def __init__(self, env):
         super().__init__()
         self.env = env
-        self.usernameInput = QLineEdit()
-        self.passwordInput = QLineEdit()
-        self.saveLogin = QCheckBox(env.translate("loginwindow.checkbox.saveLogin"))
-        self.loginButton = QPushButton(env.translate("loginwindow.button.login"))
-
-        self.passwordInput.setEchoMode(QLineEdit.Password)
-        self.saveLogin.setChecked(True)
-
-        self.loginButton.clicked.connect(self.loginButtonClicked)
-
-        self.gridLayout = QGridLayout()
-        self.gridLayout.addWidget(QLabel(env.translate("loginwindow.label.username")),0,0)
-        self.gridLayout.addWidget(self.usernameInput,0,1)
-        self.gridLayout.addWidget(QLabel(env.translate("loginwindow.label.password")),1,0)
-        self.gridLayout.addWidget(self.passwordInput,1,1)
-
-        self.buttonLayout = QHBoxLayout()
-        self.buttonLayout.addStretch(1)
-        self.buttonLayout.addWidget(self.loginButton)
-
-        self.mainLayout = QVBoxLayout()
-        self.mainLayout.addWidget(QLabel(env.translate("loginwindow.label.message")))
-        self.mainLayout.addLayout(self.gridLayout)
-        self.mainLayout.addWidget(self.saveLogin)
-        self.mainLayout.addLayout(self.buttonLayout)
 
         self.setWindowTitle(env.translate("loginwindow.title"))
-        self.setLayout(self.mainLayout)
-        self.mainLayout.setSizeConstraint(QLayout.SetFixedSize)
 
-    def loginButtonClicked(self):
-        loginInformation = minecraft_launcher_lib.account.login_user(self.usernameInput.text(),self.passwordInput.text())
-        
-        if "errorMessage" in loginInformation:
-            if loginInformation["errorMessage"] == "Invalid credentials. Invalid username or password.":
-                showMessageBox("loginwindow.loginfailed.title","loginwindow.loginfailed.text",self.env)
-                return
-            else:
-                showMessageBox(loginInformation["error"],loginInformation["errorMessage"],self.env)
-                return
-        
-        self.env.accountData = loginInformation
-        self.env.accountString = str(loginInformation)
-        self.env.account = {}
-        self.env.account["name"] = loginInformation["selectedProfile"]["name"]
-        self.env.account["accessToken"] = loginInformation["accessToken"]
-        self.env.account["clientToken"] = loginInformation["clientToken"]
-        self.env.account["uuid"] = loginInformation["selectedProfile"]["id"]
+        # Set the path where the refresh token is saved
+        self.refresh_token_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "refresh_token.json")
+
+        # Login with refresh token, if it exists
+        if os.path.isfile(self.refresh_token_file):
+            with open(self.refresh_token_file, "r", encoding="utf-8") as f:
+                refresh_token = json.load(f)
+                # Do the login with refresh token
+                try:
+                    account_informaton = minecraft_launcher_lib.microsoft_account.complete_refresh(self.env.secrets.client_id, self.env.secrets.secret, self.env.secrets.redirect_url, refresh_token)
+                    self.show_account_information(account_informaton)
+                    return
+                # Show the window if the refresh token is invalid
+                except minecraft_launcher_lib.exceptions.InvalidRefreshToken:
+                    pass
+
+        # Open the login url
+        self.load(QUrl(minecraft_launcher_lib.microsoft_account.get_login_url(self.env.secrets.client_id, self.env.secrets.redirect_url)))
+
+        # Connects a function that is called when the url changed
+        self.urlChanged.connect(self.new_url)
+
+    def new_url(self, url: QUrl):
+        # Check if the url contains the code
+        if minecraft_launcher_lib.microsoft_account.url_contains_auth_code(url.toString()):
+            # Get the code from the url
+            auth_code = minecraft_launcher_lib.microsoft_account.get_auth_code_from_url(url.toString())
+            # Do the login
+            account_informaton = minecraft_launcher_lib.microsoft_account.complete_login(self.env.secrets.client_id, self.env.secrets.secret, self.env.secrets.redirect_url, auth_code)
+
+            # Show the login information
+            self.show_account_information(account_informaton)
+
+    def show_account_information(self, information_dict):
+        information_string = f'Username: {information_dict["name"]}<br>'
+        information_string += f'UUID: {information_dict["id"]}<br>'
+        information_string += f'Token: {information_dict["access_token"]}<br>'
+
         accountData = {
-            "name": loginInformation["selectedProfile"]["name"],
-            "accessToken": loginInformation["accessToken"],
-            "clientToken":  loginInformation["clientToken"],
-            "uuid": loginInformation["selectedProfile"]["id"],
-            "mail": self.usernameInput.text()
+            "name": information_dict["name"],
+            "accessToken": information_dict["access_token"],
+            "refreshToken": information_dict["refresh_token"],
+            "uuid": information_dict["id"]
         }
-        if not self.saveLogin.checkState():
-            self.env.disableAccountSave.append(accountData["name"])
-        if self.env.settings.enablePasswordSave:
-            self.env.saved_passwords[self.usernameInput.text()] = self.passwordInput.text()
-        self.close()
-        self.usernameInput.setText("")
-        self.passwordInput.setText("")
+
+        self.env.account = accountData
+
         self.env.mainWindow.show()
         self.env.mainWindow.setFocus()
         for count, i in enumerate(self.env.accountList):
-            if i["name"] == accountData["name"]:
+            if i["uuid"] == accountData["uuid"]:
                 self.env.accountList[count] = accountData
                 self.env.selectedAccount = count
                 self.env.mainWindow.updateAccountInformation()
@@ -81,11 +73,5 @@ class LoginWindow(QWidget):
         self.env.accountList.append(accountData)
         self.env.selectedAccount = len(self.env.accountList) - 1
         self.env.mainWindow.updateAccountInformation()
+        self.close()
 
-    def reset(self):
-        self.usernameInput.setText("")
-        self.passwordInput.setText("")
-        self.saveLogin.setChecked(True)
-
-    def setName(self,name):
-        self.usernameInput.setText(name)

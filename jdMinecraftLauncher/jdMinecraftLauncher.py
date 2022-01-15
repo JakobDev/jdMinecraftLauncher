@@ -1,29 +1,38 @@
-from jdMinecraftLauncher.Functions import hasInternetConnection, showMessageBox, login_with_saved_passwords
+from jdMinecraftLauncher.Functions import hasInternetConnection, showMessageBox, getAccountDict
+from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
 from jdMinecraftLauncher.gui.LoginWindow import LoginWindow
 from jdMinecraftLauncher.gui.MainWindow import MainWindow
 from jdMinecraftLauncher.Enviroment import Enviroment
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
+from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
 import json
+import copy
 import sys
 import os
 
 def main():
     app = QApplication(sys.argv)
     env = Enviroment()
+    app.setWindowIcon(QIcon(os.path.join(env.currentDir , "Icon.svg")))
     env.mainWindow = MainWindow(env)
     env.loginWindow = LoginWindow(env)
 
-    if hasattr(env,"account"):
+    try:
+        import setproctitle
+        setproctitle.setproctitle("jdMinecraftLauncher")
+    except ModuleNotFoundError:
+        pass
+
+    if hasattr(env, "account"):
         if hasInternetConnection():
-            response = minecraft_launcher_lib.account.validate_access_token(env.account["accessToken"])
-            if response:
+            try:
+                accountData = getAccountDict(minecraft_launcher_lib.microsoft_account.complete_refresh(env.secrets.client_id, env.secrets.secret, env.secrets.redirect_url, env.account["refreshToken"]))
+                env.accountList[env.selectedAccount] = copy.copy(accountData)
+                env.account = copy.copy(accountData)
                 env.mainWindow.updateAccountInformation()
                 env.mainWindow.show()
-            elif env.account.get("mail","") in env.saved_passwords:
-                login_with_saved_passwords(env,env.account)
-                env.mainWindow.show()
-            else:
+            except minecraft_launcher_lib.exceptions.InvalidRefreshToken:
                 env.loginWindow.show()
         else:
             env.offlineMode = True
@@ -38,8 +47,4 @@ def main():
             env.mainWindow.profileWindow.close()
             env.mainWindow.close()
             env.loginWindow.close()
-    #w = MainWindow()
-    #w.setup(env)
-    #w.show()
-    #w.setFocus()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

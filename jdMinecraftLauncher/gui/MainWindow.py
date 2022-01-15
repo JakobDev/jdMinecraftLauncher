@@ -1,13 +1,13 @@
-from PyQt5.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QAction, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QFileDialog, QMenu, QLineEdit, QInputDialog, QSizePolicy
-from PyQt5.QtCore import QUrl, QLocale, Qt, QDir, QProcess
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile
-from PyQt5.QtGui import QPixmap, QCursor
+from PyQt6.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QFileDialog, QMenu, QLineEdit, QInputDialog, QSizePolicy
+from PyQt6.QtCore import QUrl, QLocale, Qt, QDir, QProcess
+from PyQt6.QtWebEngineWidgets import QWebEngineView
+from PyQt6.QtWebEngineCore import QWebEngineProfile
+from PyQt6.QtGui import QPixmap, QCursor, QAction
 from jdMinecraftLauncher.gui.ProfileWindow import ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
-from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox, downloadFile, login_with_saved_passwords
+from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox, downloadFile
 from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import runMinecraft
-from jdMinecraftLauncher import Crypto
 import minecraft_launcher_lib
 import webbrowser
 import tempfile
@@ -23,11 +23,11 @@ class ProfileEditorTab(QTableWidget):
         super().__init__(0,2)
         self.env = env
         self.mainWindow = mainwindow
-        self.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.setHorizontalHeaderLabels((self.env.translate("profiletab.profileName"),self.env.translate("profiletab.minecraftVersion")))
-        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
-        self.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self.verticalHeader().hide()
         self.setShowGrid(False)
         self.updateProfiles()
@@ -38,12 +38,12 @@ class ProfileEditorTab(QTableWidget):
         count = 0
         for i in self.env.profiles:
             nameItem = QTableWidgetItem(i.name)
-            nameItem.setFlags(nameItem.flags() ^ Qt.ItemIsEditable)
+            nameItem.setFlags(nameItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
             if i.useLatestVersion:
                 versionItem = QTableWidgetItem(self.env.translate("profiletab.latestVersion"))
             else:
                 versionItem = QTableWidgetItem(i.version)
-            versionItem.setFlags(versionItem.flags() ^ Qt.ItemIsEditable)
+            versionItem.setFlags(versionItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
             self.insertRow(count)
             self.setItem(count, 0, nameItem) 
             self.setItem(count, 1, versionItem) 
@@ -105,11 +105,11 @@ class VersionEditorTab(QTableWidget):
         self.uninstallVersion = QAction(self.env.translate("versiontab.contextmenu.uninstallVersion"), self)
         self.uninstallVersion.triggered.connect(self.uninstallVersionClicked)
 
-        self.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.setHorizontalHeaderLabels((self.env.translate("versiontab.minecraftVersion"),self.env.translate("versiontab.versionType")))
-        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
-        self.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self.verticalHeader().hide()
         self.setShowGrid(False)
         self.updateVersions()
@@ -124,9 +124,9 @@ class VersionEditorTab(QTableWidget):
         count = 0
         for i in self.env.installedVersion:
             idItem = QTableWidgetItem(i["id"])
-            idItem.setFlags(idItem.flags() ^ Qt.ItemIsEditable)
+            idItem.setFlags(idItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
             typeItem = QTableWidgetItem(i["type"])
-            typeItem.setFlags(typeItem.flags() ^ Qt.ItemIsEditable)
+            typeItem.setFlags(typeItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
             self.insertRow(count)
             self.setItem(count, 0, idItem) 
             self.setItem(count, 1, typeItem) 
@@ -144,80 +144,6 @@ class VersionEditorTab(QTableWidget):
         del self.env.installedVersion[self.currentRow()]
         self.updateVersions()
 
-class SkinTab(QWidget):
-    def __init__(self,env):
-        super().__init__()
-        self.env = env
-
-        self.uploadButton = QPushButton(env.translate("skintab.button.uploadSkin"))
-        self.resetButton = QPushButton(env.translate("skintab.button.resetSkin"))
-        self.downloadButton = QPushButton(env.translate("skintab.button.downloadSkin"))
-
-        self.picture = QLabel()
-        self.picture.setPixmap(QPixmap(100,200))
-
-        self.uploadButton.clicked.connect(self.uploadButtonClicked)
-        self.resetButton.clicked.connect(self.resetButtonClicked)
-        self.downloadButton.clicked.connect(self.downloadButtonClicked)
-
-        self.skinLayout = QVBoxLayout()
-        self.skinLayout.addWidget(QLabel(env.translate("skintab.label.currentSkin")))
-        self.skinLayout.addWidget(self.picture)
-
-        self.buttonLayout = QVBoxLayout()
-        self.buttonLayout.addWidget(self.uploadButton)
-        self.buttonLayout.addWidget(self.resetButton)
-        self.buttonLayout.addWidget(self.downloadButton)
-
-        self.mainLayout = QGridLayout()
-        self.mainLayout.addLayout(self.skinLayout,0,0)
-        self.mainLayout.addLayout(self.buttonLayout,0,1)
-        
-        self.setLayout(self.mainLayout)
-
-    def updateSkin(self):
-        path = os.path.join(self.env.dataPath,"jdMinecraftLauncher","userskin_front.png")
-        if not self.env.offlineMode:
-            if os.path.isfile(path):
-                os.remove(path)
-            #urllib.request.urlretrieve('https://minotar.net/armor/body/%s/100.png' % self.env.account["uuid"],path)
-            downloadFile('https://minotar.net/armor/body/%s/100.png' % self.env.account["uuid"],path)
-        if os.path.isfile(path):
-            self.picture.setPixmap(QPixmap(path))
-
-    def uploadButtonClicked(self):
-        if self.env.offlineMode:
-            showMessageBox("messagebox.needinternet.title","messagebox.needinternet.text",self.env)
-            return
-
-        path = QFileDialog.getOpenFileName(self,self.env.translate("skintab.filepicker.upload.title"),self.env.translate("skintab.filepicker.filetype.png"))
-
-        if path[0]:
-            minecraft_launcher_lib.account.upload_skin(self.env.account["uuid"],self.env.account["accessToken"],path[0])
-            self.updateSkin()
-            showMessageBox("skintab.upload.title","skintab.upload.text",self.env)
-
-    def resetButtonClicked(self):
-        if self.env.offlineMode:
-            showMessageBox("messagebox.needinternet.title","messagebox.needinternet.text",self.env)
-            return
-
-        minecraft_launcher_lib.account.reset_skin(self.env.account["uuid"],self.env.account["accessToken"])
-        self.updateSkin()
-        showMessageBox("skintab.reset.title","skintab.reset.text",self.env)
-
-    def downloadButtonClicked(self):
-        if self.env.offlineMode:
-            showMessageBox("messagebox.needinternet.title","messagebox.needinternet.text",self.env)
-            return
-
-        path = QFileDialog.getSaveFileName(self,self.env.translate("skintab.filepicker.download.title"),os.path.join(QDir.homePath(),"Skin.png"),self.env.translate("skintab.filepicker.filetype.png"))
-        
-        if path[0]:
-            if os.path.isfile(path[0]):
-                os.remove(path[0])
-            urllib.request.urlretrieve("https://minotar.net/skin/" + self.env.account["uuid"],path[0])
-
 class OptionsTab(QWidget):
     def __init__(self,env):
         self.env = env
@@ -225,7 +151,6 @@ class OptionsTab(QWidget):
         self.languageComboBox = QComboBox()
         self.urlEdit = QLineEdit()
         self.allowMultiLaunchCheckBox = QCheckBox(env.translate("optionstab.checkBox.allowMultiLaunch"))
-        self.savePasswordsCheckBox = QCheckBox(env.translate("optionstab.checkBox.enablePasswordSave"))
         self.extractNativesCheckBox = QCheckBox(env.translate("optionstab.checkBox.extractNatives"))
 
         self.languageComboBox.addItem(env.translate("optionstab.combobox.systemLanguage"),"default")
@@ -238,11 +163,9 @@ class OptionsTab(QWidget):
 
         self.urlEdit.setText(env.settings.newsURL)
         self.allowMultiLaunchCheckBox.setChecked(self.env.settings.enableMultiLaunch)
-        self.savePasswordsCheckBox.setChecked(self.env.settings.enablePasswordSave)
         self.extractNativesCheckBox.setChecked(self.env.settings.extractNatives)
 
         self.allowMultiLaunchCheckBox.stateChanged.connect(self.multiLaunchCheckBoxChanged)
-        self.savePasswordsCheckBox.stateChanged.connect(self.savePasswordsCheckBoxChanged)
         self.extractNativesCheckBox.stateChanged.connect(self.extractNativesCheckBoxChanged)
 
         gridLayout = QGridLayout()
@@ -254,7 +177,6 @@ class OptionsTab(QWidget):
         mainLayout = QVBoxLayout()
         mainLayout.addLayout(gridLayout)
         mainLayout.addWidget(self.allowMultiLaunchCheckBox)
-        mainLayout.addWidget(self.savePasswordsCheckBox)
         mainLayout.addWidget(self.extractNativesCheckBox)
         mainLayout.addStretch(1)
         
@@ -262,18 +184,6 @@ class OptionsTab(QWidget):
 
     def multiLaunchCheckBoxChanged(self):
         self.env.settings.enableMultiLaunch = bool(self.allowMultiLaunchCheckBox.checkState())
-
-    def savePasswordsCheckBoxChanged(self):
-        if bool(self.savePasswordsCheckBox.checkState()):
-            password,ok = QInputDialog.getText(self,self.env.translate("inputdialog.setPassword.title"),self.env.translate("inputdialog.setPassword.text"))
-            if ok and password != "":
-                self.env.encrypt_password = password
-                self.env.settings.enablePasswordSave = True
-            else:
-                self.savePasswordsCheckBox.setChecked(False)
-                self.env.settings.enablePasswordSave = False
-        else:
-            self.env.settings.enablePasswordSave = False
 
     def extractNativesCheckBoxChanged(self):
         self.env.settings.extractNatives = bool(self.extractNativesCheckBox.checkState())
@@ -291,40 +201,36 @@ class SwitchAccountButton(QPushButton):
             self.env.account = self.env.accountList[self.pos]
             self.env.mainWindow.updateAccountInformation()
             self.env.selectedAccount = self.pos
-        elif (account.get("mail","") in self.env.saved_passwords) and self.env.settings.enablePasswordSave:
-            login_with_saved_passwords(self.env,account)
         else:
-            self.env.loginWindow.reset()
-            self.env.loginWindow.setName(account.get("mail",""))
+            # self.env.loginWindow.reset()
+            # self.env.loginWindow.setName(account.get("mail",""))
             self.env.loginWindow.show()
 
 class AccountTab(QTableWidget):
     def __init__(self,env):
         self.env = env
         super().__init__(0,2)
-        self.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.setHorizontalHeaderLabels((self.env.translate("accounttab.nameHeader"),self.env.translate("accounttab.switchHeader")))
-        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         self.verticalHeader().hide()
         self.updateAccountList()
 
     def updateAccountList(self):
-        while (self.rowCount() > 0):
-            self.removeRow(0)
+        self.setRowCount(0)
         count = 0
         for i in self.env.accountList:
             nameItem = QTableWidgetItem(i["name"])
-            nameItem.setFlags(nameItem.flags() ^ Qt.ItemIsEditable)
+            nameItem.setFlags(nameItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
             button = SwitchAccountButton(self.env.translate("accounttab.button.switch"),self.env,count)
             self.insertRow(count)
             self.setItem(count, 0, nameItem) 
             self.setCellWidget(count,1,button)
-            #self.setItem(count, 1, versionItem) 
+            # self.setItem(count, 1, versionItem) 
             count += 1
 
     def addAccount(self):
-        self.env.loginWindow.reset()
         self.env.loginWindow.show()
 
     def contextMenuEvent(self, event):
@@ -347,10 +253,10 @@ class AboutTab(QWidget):
 
         self.viewSourceButton.clicked.connect(lambda: webbrowser.open("https://gitlab.com/JakobDev/jdMinecraftLauncher"))
 
-        self.titleLabel.setAlignment(Qt.AlignCenter)
-        self.fanmadeLabel.setAlignment(Qt.AlignCenter)
-        self.dependencyLabel.setAlignment(Qt.AlignCenter)
-        self.licenseLabel.setAlignment(Qt.AlignCenter)
+        self.titleLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.fanmadeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.dependencyLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.licenseLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.mainLayout = QGridLayout()
         self.mainLayout.addWidget(QLabel(),0,0)
@@ -366,14 +272,14 @@ class GameOutputTab(QPlainTextEdit):
     def __init__(self,env):
         super().__init__()
         self.env = env
-        self.setLineWrapMode(QPlainTextEdit.NoWrap)
+        self.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
         self.setReadOnly(True)
 
     def dataReady(self):
         cursor = self.textCursor()
-        cursor.movePosition(cursor.End)
+        cursor.movePosition(cursor.MoveOperation.End)
         cursor.insertText(bytes(self.process.readAll()).decode(encoding=sys.stdout.encoding,errors="replace"))
-        self.moveCursor(cursor.End)
+        self.moveCursor(cursor.MoveOperation.End)
 
     def procStarted(self):
         if self.env.settings.enableMultiLaunch:
@@ -396,7 +302,7 @@ class GameOutputTab(QPlainTextEdit):
             except:
                 pass
 
-    def executeCommand(self,profile,args,natives_path):
+    def executeCommand(self,profile, command, natives_path):
         self.profile = profile
         self.natives_path = natives_path
         self.process = QProcess(self)
@@ -404,7 +310,13 @@ class GameOutputTab(QPlainTextEdit):
         self.process.readyRead.connect(self.dataReady)
         self.process.started.connect(self.procStarted)
         self.process.finished.connect(self.procFinish)
-        self.process.start(profile.getJavaPath(),args)
+        if profile.useGameMode:
+            self.process.start("gamemoderun", command)
+        else:
+            if profile.customExecutable:
+                self.process.start(profile.executable, command[1:])
+            else:
+                self.process.start(command[0], command[1:])
 
 class Tabs(QTabWidget):
     def __init__(self,env,parrent):
@@ -418,8 +330,6 @@ class Tabs(QTabWidget):
         self.addTab(self.profileEditor,env.translate("mainwindow.tab.profileEditor"))
         self.versionTab = VersionEditorTab(env)
         self.addTab(self.versionTab,env.translate("mainwindow.tab.versionEditor"))
-        self.skin = SkinTab(env)
-        self.addTab(self.skin,env.translate("mainwindow.tab.skin"))
         self.options = OptionsTab(env)
         self.addTab(self.options,env.translate("mainwindow.tab.options"))
         self.accountTab = AccountTab(env)
@@ -447,7 +357,7 @@ class MainWindow(QWidget):
 
         self.progressBar.setTextVisible(True)
         self.profileComboBox.setCurrentIndex(self.env.selectedProfile)
-        self.playButton.setSizePolicy(QSizePolicy(QSizePolicy.Preferred,QSizePolicy.Minimum))
+        self.playButton.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Preferred,QSizePolicy.Policy.Minimum))
 
         self.newProfileButton.clicked.connect(self.newProfileButtonClicked)
         self.editProfileButton.clicked.connect(self.editProfileButtonClicked)
@@ -531,7 +441,6 @@ class MainWindow(QWidget):
         if self.env.offlineMode:
             showMessageBox("messagebox.needinternet.title","messagebox.needinternet.text",self.env)
             return
-        minecraft_launcher_lib.account.invalidate_access_token(self.env.account["accessToken"],self.env.account["clientToken"])
         del self.env.accountList[self.env.selectedAccount]
         if len(self.env.accountList) == 0:
             self.hide()
@@ -566,7 +475,6 @@ class MainWindow(QWidget):
     def updateAccountInformation(self):
         self.accountLabel.setText(self.env.translate("mainwindow.label.account") % self.env.account["name"])
         self.tabWidget.accountTab.updateAccountList()
-        self.tabWidget.skin.updateSkin()
         if self.env.offlineMode:
             self.playButton.setText(self.env.translate("mainwindow.button.playOffline"))
         else:
@@ -577,7 +485,7 @@ class MainWindow(QWidget):
         self.env.settings.language = options.languageComboBox.currentData()
         self.env.settings.newsURL = options.urlEdit.text()
         self.env.settings.save(os.path.join(self.env.dataPath,"jdMinecraftLauncher","settings.json"))
-        with open(os.path.join(self.env.dataPath,"jdMinecraftLauncher","account.json"),"w") as f:
+        with open(os.path.join(self.env.dataPath,"jdMinecraftLauncher","microsoft_accounts.json"),"w") as f:
             data = {}
             data["selectedAccount"] = self.env.selectedAccount
             data["accountList"] = []
@@ -588,16 +496,6 @@ class MainWindow(QWidget):
                 else:
                     data["accountList"].append(i)
             json.dump(data, f, ensure_ascii=False, indent=4)
-        if self.env.settings.enablePasswordSave:
-            with open(os.path.join(self.env.dataPath,"jdMinecraftLauncher","saved_passwords.json"),"wb") as f:
-                password_str = json.dumps(self.env.saved_passwords)
-                key = Crypto.get_key(self.env.encrypt_password)
-                encryptet_str = Crypto.encrypt(password_str,key)
-                f.write(encryptet_str)
-        else:
-            try:
-                os.remove(os.path.join(self.env.dataPath,"jdMinecraftLauncher","saved_passwords.json"))
-            except:
-                pass
         saveProfiles(self.env)
         event.accept()
+        sys.exit(0)

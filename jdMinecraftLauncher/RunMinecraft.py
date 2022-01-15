@@ -11,6 +11,8 @@ def runMinecraft(profile,env,natives_path):
         "launcherVersion": env.launcherVersion,
         "gameDirectory": profile.getGameDirectoryPath(),
     }
+    if profile.customExecutable:
+        options["executablePath"] = profile.executable
     if profile.customArguments:
         options["jvmArguments"] = []
         for i in profile.arguments.split(" "):
@@ -29,5 +31,5 @@ def runMinecraft(profile,env,natives_path):
         options["nativesDirectory"] = natives_path
         minecraft_launcher_lib.natives.extract_natives(versionid,env.dataPath,natives_path)
     command = minecraft_launcher_lib.command.get_minecraft_command(versionid,env.dataPath,options)
-    command = command[1:]
+    #command = command[1:]
     return command

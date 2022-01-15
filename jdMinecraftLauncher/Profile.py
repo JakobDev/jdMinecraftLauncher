@@ -6,6 +6,7 @@ class Profile():
         self.name = name
         self.version = ""
         self.useLatestVersion = True
+        self.useLatestSnapshot = False
         self.customGameDirectory = False
         self.gameDirectoryPath = env.dataPath
         self.customResolution = False
@@ -24,10 +25,13 @@ class Profile():
         self.serverIP = ""
         self.serverPort = ""
         self.demoMode = False
+        self.useGameMode = False
 
     def getVersion(self):
         if self.useLatestVersion:
             return "release " + self.env.versions["latest"]["release"]
+        elif self.useLatestSnapshot:
+            return "snapshot " + self.env.versions["latest"]["snapshot"]
         else:
             return self.version
 
@@ -69,3 +73,4 @@ class Profile():
         self.serverIP = objects["serverIP"]
         self.serverPort = objects["serverPort"]
         self.demoMode = objects["demoMode"]
+        self.useGameMode = objects.get("useGameMode", False)

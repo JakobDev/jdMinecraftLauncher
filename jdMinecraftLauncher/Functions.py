@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtWidgets import QMessageBox
 import minecraft_launcher_lib
+from typing import Dict
 import subprocess
 import platform
 import requests
@@ -10,7 +11,7 @@ import copy
 import os
 
 
-def openFile(path):
+def openFile(path: str):
     if platform.system() == "Windows":
         os.startfile(path)
     elif platform.system() == "Darwin":
@@ -32,7 +33,7 @@ def saveProfiles(env):
         json.dump({"selectedProfile":env.selectedProfile,"profileList":profileList}, f, ensure_ascii=False, indent=4)
 
 
-def showMessageBox(title, text, env, callback=None):
+def showMessageBox(title: str, text: str, env, callback=None):
     messageBox = QMessageBox()
     messageBox.setWindowTitle(env.translate(title))
     messageBox.setText(env.translate(text))
@@ -42,7 +43,7 @@ def showMessageBox(title, text, env, callback=None):
     messageBox.exec_()
 
 
-def hasInternetConnection():
+def hasInternetConnection() -> bool:
     try:
         socket.create_connection(("api.mojang.com", 80))
         return True
@@ -50,7 +51,8 @@ def hasInternetConnection():
         return False
     return False
 
-def downloadFile(url,path):
+
+def downloadFile(url: str, path: str):
     if os.path.isfile(path):
         return
     try:
@@ -62,21 +64,11 @@ def downloadFile(url,path):
         r.raw.decode_content = True
         shutil.copyfileobj(r.raw, f)
 
-def login_with_saved_passwords(env,account):
-    loginInformation = minecraft_launcher_lib.account.login_user(account["mail"],env.saved_passwords[account["mail"]])
 
-    if "errorMessage" in loginInformation:
-        return
-
-    env.account["name"] = loginInformation["selectedProfile"]["name"]
-    env.account["accessToken"] = loginInformation["accessToken"]
-    env.account["clientToken"] = loginInformation["clientToken"]
-    env.account["uuid"] = loginInformation["selectedProfile"]["id"]
-    env.account["mail"] = account["mail"]
-
-    for count, i in enumerate(env.accountList):
-        if i["name"] == env.account["name"]:
-            env.accountList[count] = copy.copy(env.account)
-            env.selectedAccount = count
-            env.mainWindow.updateAccountInformation()
-            return
+def getAccountDict(information_dict: Dict) -> Dict:
+    return {
+        "name": information_dict["name"],
+        "accessToken": information_dict["access_token"],
+        "refreshToken": information_dict["refresh_token"],
+        "uuid": information_dict["id"]
+    }
