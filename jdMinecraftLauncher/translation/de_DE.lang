@@ -44,9 +44,14 @@ profilewindow.label.ip=Server IP:
 profilewindow.label.port=Server Port
 profilewindow.checkbox.demoMode=Im Demomodus starten
 profilewindow.checkbox.gameMode=Gamemode benutzen
+profilewindow.button.browse=Durchsuchen
 profilewindow.button.cancel=Abbrechen
 profilewindow.button.openGameDir=Öffne Spieleordner
 profilewindow.button.saveProfile=Profil speichern
+profilewindow.executableFlatpakInfo.title=Hinweis für Flatpak Benutzer
+profilewindow.executableFlatpakInfo.text=Bitte wähle im folgenden Dialog den Ordner aus, der bin/java enthält
+profilewindow.executableFlatpakWrongDir.title=Ungültiger Ordner
+profilewindow.executableFlatpakWrongDir.text=Dieser Ordner enthält nicht bin/java
 
 profiletab.profileName=Profil Name
 profiletab.minecraftVersion=Minecraft Version
@@ -89,7 +94,7 @@ accounttab.button.switch=Wechseln
 account.newAccount=Neuer Account
 
 abouttab.label.title=jdMinecraftLauncher Version %s von JakobDev
-abouttab.label.fanmade=Dieser Launcher ist Fanmade und nicht offiziell von Mojang.
+abouttab.label.fanmade=Dieser Launcher ist Fanmade und nicht offiziell von Mojang/Microsoft.
 abouttab.label.dependency=Dieses Programm benutzt minecraft-launcher-lib Version {version}
 abouttab.label.license=Dieses Programm steht unter der GPL 3.0 Lizenz
 abouttab.button.viewSource=Quelltext anzeigen

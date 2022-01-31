@@ -1,8 +1,8 @@
-from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QCheckBox, QComboBox, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
+from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QCheckBox, QComboBox, QPushButton, QFileDialog, QMessageBox, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIntValidator
 from jdMinecraftLauncher.Profile import Profile
-from jdMinecraftLauncher.Functions import saveProfiles, openFile
+from jdMinecraftLauncher.Functions import saveProfiles, openFile, findJavaRuntimes, isFlatpak
 import platform
 import shutil
 import os
@@ -15,6 +15,7 @@ class ProfileWindow(QWidget):
         self.mainwindow = parrent
         self.profileNameEdit = QLineEdit()
         self.gameDirectoryCheckbox = QCheckBox(self.env.translate("profilewindow,checkbox.gameDirectory"))
+        self.gameDirectoryBrowseButton = QPushButton(self.env.translate("profilewindow.button.browse"))
         self.gameDirectoryEdit = QLineEdit()
         self.resolutionCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.resolution"))
         self.resolutionEditX = QLineEdit()
@@ -27,7 +28,8 @@ class ProfileWindow(QWidget):
         self.enableAlpha = QCheckBox(self.env.translate("profilewindow.checkbox.enableAlpha"))
         self.versionSelectCombobox = QComboBox()
         self.executableCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.executable"))
-        self.executableEdit = QLineEdit()
+        self.executableEdit = QComboBox()
+        self.executableButton = QPushButton(self.env.translate("profilewindow.button.browse"))
         self.jvmArgumentsCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.jvmArguments"))
         self.jvmArgumentsEdit = QLineEdit()
         self.serverCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.serverConnect"))
@@ -48,7 +50,11 @@ class ProfileWindow(QWidget):
         self.launcherVisibilityCombobox.addItem(self.env.translate("profilewindow.launcherVisibility.close"))
         self.launcherVisibilityCombobox.addItem(self.env.translate("profilewindow.launcherVisibility.keep"))
 
-        self.gameDirectoryCheckbox.stateChanged.connect(lambda: self.gameDirectoryEdit.setEnabled(self.gameDirectoryCheckbox.isChecked()))
+        self.executableEdit.setEditable(True)
+        self.executableEdit.addItems(findJavaRuntimes())
+
+        self.gameDirectoryCheckbox.stateChanged.connect(lambda: self.gameDirectoryEdit.setEnabled(self.gameDirectoryCheckbox.isChecked()) or self.gameDirectoryBrowseButton.setEnabled(self.gameDirectoryCheckbox.isChecked()))
+        self.gameDirectoryBrowseButton.clicked.connect(self.browseGameDirectoryClicked)
         self.resolutionCheckbox.stateChanged.connect(self.changeCustomResolution)
         self.launcherVisibilityCheckbox.stateChanged.connect(lambda: self.launcherVisibilityCombobox.setEnabled(self.launcherVisibilityCheckbox.isChecked()))
         self.enableSnapshots.stateChanged.connect(self.updateVersionsList)
@@ -57,10 +63,16 @@ class ProfileWindow(QWidget):
         self.cancelButton.clicked.connect(self.close)
         self.openGameDirectoryButton.clicked.connect(lambda: openFile(self.profil.getGameDirectoryPath()))
         self.saveProfileButton.clicked.connect(self.saveProfile)
-        self.executableCheckbox.stateChanged.connect(lambda: self.executableEdit.setEnabled(self.executableCheckbox.isChecked()))
+        self.executableCheckbox.stateChanged.connect(lambda: self.executableEdit.setEnabled(self.executableCheckbox.isChecked()) or self.executableButton.setEnabled(self.executableCheckbox.isChecked()))
+        self.executableButton.clicked.connect(self.browseExecutableClicked)
         self.jvmArgumentsCheckbox.stateChanged.connect(lambda: self.jvmArgumentsEdit.setEnabled(self.jvmArgumentsCheckbox.isChecked()))
         self.serverCheckbox.stateChanged.connect(self.changeServerConnect)
-        
+
+        gameDirectoryLayout = QHBoxLayout()
+        gameDirectoryLayout.addWidget(self.gameDirectoryEdit)
+        gameDirectoryLayout.addWidget(self.gameDirectoryBrowseButton)
+        gameDirectoryLayout.setSpacing(1)
+
         self.resolutionLayout = QHBoxLayout()
         self.resolutionLayout.addWidget(self.resolutionEditX)
         self.resolutionLayout.addWidget(self.resolutionLabel)
@@ -71,7 +83,7 @@ class ProfileWindow(QWidget):
         self.profileInfoLayout.addWidget(QLabel(self.env.translate("profilewindow.label.profileName")),1,0)
         self.profileInfoLayout.addWidget(self.profileNameEdit,1,1)
         self.profileInfoLayout.addWidget(self.gameDirectoryCheckbox,2,0)
-        self.profileInfoLayout.addWidget(self.gameDirectoryEdit,2,1)
+        self.profileInfoLayout.addLayout(gameDirectoryLayout, 2, 1)
         self.profileInfoLayout.addWidget(self.resolutionCheckbox,3,0)
         self.profileInfoLayout.addLayout(self.resolutionLayout,3,1)
         self.profileInfoLayout.addWidget(self.launcherVisibilityCheckbox,4,0)
@@ -80,10 +92,15 @@ class ProfileWindow(QWidget):
         self.useVersionLayout = QHBoxLayout()
         self.useVersionLayout.addWidget(QLabel(self.env.translate("profilewindow.label.useVersion")))
         self.useVersionLayout.addWidget(self.versionSelectCombobox)
-        
+
+        javaExecutableLayout = QHBoxLayout()
+        javaExecutableLayout.addWidget(self.executableEdit, 2)
+        javaExecutableLayout.addWidget(self.executableButton)
+        javaExecutableLayout.setSpacing(1)
+
         self.javaSettingsLayout = QGridLayout()
         self.javaSettingsLayout.addWidget(self.executableCheckbox,0,0)
-        self.javaSettingsLayout.addWidget(self.executableEdit,0,1)
+        self.javaSettingsLayout.addLayout(javaExecutableLayout, 0, 1)
         self.javaSettingsLayout.addWidget(self.jvmArgumentsCheckbox,1,0)
         self.javaSettingsLayout.addWidget(self.jvmArgumentsEdit,1,1)
 
@@ -121,6 +138,10 @@ class ProfileWindow(QWidget):
         self.setLayout(self.mainLayout)
         self.selectLatestVersion = True
 
+        if isFlatpak():
+            self.gameDirectoryEdit.setReadOnly(True)
+            self.executableEdit.lineEdit().setReadOnly(True)
+
         if not shutil.which("gamemoderun"):
             self.gameModeCheckBox.setEnabled(False)
 
@@ -137,6 +158,27 @@ class ProfileWindow(QWidget):
         self.portLabel.setEnabled(state)
         self.portEdit.setEnabled(state)
 
+    def browseGameDirectoryClicked(self):
+        path = QFileDialog.getExistingDirectory(directory = self.executableEdit.currentText())
+        if path != "":
+            self.gameDirectoryEdit.setText(path)
+
+    def browseExecutableClicked(self):
+        if isFlatpak():
+            QMessageBox.information(self, self.env.translate("profilewindow.executableFlatpakInfo.title"), self.env.translate("profilewindow.executableFlatpakInfo.text"))
+            path = QFileDialog.getExistingDirectory()
+            if path == "":
+                return
+            javaPath = os.path.join(path, "bin", "java")
+            if os.path.isfile(javaPath):
+                self.executableEdit.lineEdit().setText(javaPath)
+            else:
+                QMessageBox.critical(self, self.env.translate("profilewindow.executableFlatpakWrongDir.title"), self.env.translate("profilewindow.executableFlatpakWrongDir.text"))
+        else:
+            path = QFileDialog.getOpenFileName(directory = self.executableEdit.currentText())
+            if path[0] != "":
+                self.executableEdit.lineEdit().setText(path[0])
+
     def loadProfile(self, profile, isNew, copyText=False):
         if isNew:
             if copyText:
@@ -147,6 +189,7 @@ class ProfileWindow(QWidget):
             self.profileNameEdit.setText(profile.name)
         self.gameDirectoryCheckbox.setChecked(profile.customGameDirectory)
         self.gameDirectoryEdit.setEnabled(profile.customGameDirectory)
+        self.gameDirectoryBrowseButton.setEnabled(profile.customGameDirectory)
         self.gameDirectoryEdit.setText(profile.gameDirectoryPath)
         self.resolutionCheckbox.setChecked(profile.customResolution)
         self.resolutionEditX.setText(profile.resolutionX)
@@ -162,7 +205,8 @@ class ProfileWindow(QWidget):
         self.selectedVersion = profile.version
         self.executableCheckbox.setChecked(profile.customExecutable)
         self.executableEdit.setEnabled(profile.customExecutable)
-        self.executableEdit.setText(profile.executable)
+        self.executableButton.setEnabled(profile.customExecutable)
+        self.executableEdit.lineEdit().setText(profile.executable)
         self.jvmArgumentsCheckbox.setChecked(profile.customArguments)
         self.jvmArgumentsEdit.setEnabled(profile.customArguments)
         self.jvmArgumentsEdit.setText(profile.arguments)
@@ -194,7 +238,7 @@ class ProfileWindow(QWidget):
         profile.enableBeta = self.toBoolean(self.enableBeta.isChecked())
         profile.enableAlpha = self.toBoolean(self.enableAlpha.isChecked())
         profile.customExecutable = self.toBoolean(self.executableCheckbox.isChecked())
-        profile.executable = self.executableEdit.text()
+        profile.executable = self.executableEdit.currentText()
         profile.customArguments = self.toBoolean(self.jvmArgumentsCheckbox.isChecked())
         profile.serverConnect = self.toBoolean(self.serverCheckbox.isChecked())
         profile.arguments = self.jvmArgumentsEdit.text()
@@ -206,7 +250,7 @@ class ProfileWindow(QWidget):
         if version == self.env.translate("profilewindow.useLatestVersion"):
             profile.useLatestVersion = True
             profile.useLatestSnapshot = False
-        elif version == self.env.translate("profilewindoe.useLatestSnapshot"):
+        elif version == self.env.translate("profilewindow.useLatestSnapshot"):
             profile.useLatestSnapshot = True
             profile.useLatestVersion = False
         else:

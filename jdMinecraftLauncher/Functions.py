@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QMessageBox
 import minecraft_launcher_lib
-from typing import Dict
+from typing import Dict, List
 import subprocess
 import platform
 import requests
@@ -72,3 +72,19 @@ def getAccountDict(information_dict: Dict) -> Dict:
         "refreshToken": information_dict["refresh_token"],
         "uuid": information_dict["id"]
     }
+
+
+def findJavaRuntimes() -> List[str]:
+    runtimeList = []
+    if os.path.isdir("/usr/lib/jvm"):
+        for i in os.listdir("/usr/lib/jvm"):
+            if not os.path.islink(os.path.join("/usr/lib/jvm", i)):
+                runtimeList.append(os.path.join("/usr/lib/jvm", i, "bin", "java"))
+    if os.path.isdir("/usr/lib/sdk"):
+        for i in os.listdir("/usr/lib/sdk"):
+            runtimeList.append(os.path.join("/usr/lib/sdk", i, "bin", "java"))
+    return runtimeList
+
+
+def isFlatpak() -> bool:
+    return os.path.isdir("/app")
