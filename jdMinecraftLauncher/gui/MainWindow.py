@@ -299,7 +299,7 @@ class GameOutputTab(QPlainTextEdit):
         if self.natives_path != "":
             try:
                 shutil.rmtree(self.natives_path)
-            except:
+            except Exception:
                 pass
 
     def executeCommand(self,profile, command, natives_path):

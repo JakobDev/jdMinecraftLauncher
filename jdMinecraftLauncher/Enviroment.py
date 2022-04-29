@@ -82,7 +82,7 @@ class Enviroment():
                 f.write(r.text)
                 f.close()
                 r.close()
-            except:
+            except Exception:
                 print("Failed to update versions list")
         with open(os.path.join(self.dataPath,"jdMinecraftLauncher","versions_cache.json")) as f:
             self.versions = json.load(f)

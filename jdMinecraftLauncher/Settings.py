@@ -15,7 +15,7 @@ class Settings():
         try:
             with open(path,"r",encoding="utf-8") as f:
                 data = json.load(f)
-        except:
+        except Exception:
             print("The settings can't be loaded. jdMinecraftLauncher will use the default settings.")
             return
         settings = vars(self)

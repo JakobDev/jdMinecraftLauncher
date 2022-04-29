@@ -57,7 +57,7 @@ def downloadFile(url: str, path: str):
         return
     try:
         os.makedirs(os.path.dirname(path))
-    except:
+    except Exception:
         pass
     r = requests.get(url, stream=True)
     with open(path, 'wb') as f:
