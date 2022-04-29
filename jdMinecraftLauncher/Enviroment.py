@@ -1,11 +1,8 @@
 from jdTranslationHelper import jdTranslationHelper
 from jdMinecraftLauncher.Profile import Profile
 from jdMinecraftLauncher.Settings import Settings
-from jdMinecraftLauncher.Functions import showMessageBox
 from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
-from PyQt6.QtWidgets import QInputDialog, QWidget
 from PyQt6.QtCore import QLocale
-from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
 import requests
 import json

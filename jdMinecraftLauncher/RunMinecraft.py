@@ -1,5 +1,5 @@
 import minecraft_launcher_lib
-import subprocess
+
 
 def runMinecraft(profile,env,natives_path):
     versiontype, versionid = profile.getVersion().split(" ")

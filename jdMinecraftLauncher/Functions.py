@@ -1,5 +1,4 @@
 from PyQt6.QtWidgets import QMessageBox
-import minecraft_launcher_lib
 from typing import Dict, List
 import subprocess
 import platform
@@ -7,7 +6,6 @@ import requests
 import shutil
 import socket
 import json
-import copy
 import os
 
 

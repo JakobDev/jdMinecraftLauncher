@@ -1,18 +1,17 @@
-from PyQt6.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QFileDialog, QMenu, QLineEdit, QInputDialog, QSizePolicy
-from PyQt6.QtCore import QUrl, QLocale, Qt, QDir, QProcess
+from PyQt6.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox QMenu, QLineEdit, QSizePolicy
+from PyQt6.QtCore import QUrl, QLocale, Qt, QProcess
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebEngineCore import QWebEngineProfile
-from PyQt6.QtGui import QPixmap, QCursor, QAction
+from PyQt6.QtGui import QCursor, QAction
 from jdMinecraftLauncher.gui.ProfileWindow import ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
-from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox, downloadFile
+from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox
 from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import runMinecraft
 import minecraft_launcher_lib
 import webbrowser
 import tempfile
 import random
-import urllib
 import shutil
 import json
 import sys

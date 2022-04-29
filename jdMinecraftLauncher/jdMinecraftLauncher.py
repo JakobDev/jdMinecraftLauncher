@@ -1,12 +1,10 @@
 from jdMinecraftLauncher.Functions import hasInternetConnection, showMessageBox, getAccountDict
-from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
 from jdMinecraftLauncher.gui.LoginWindow import LoginWindow
 from jdMinecraftLauncher.gui.MainWindow import MainWindow
 from jdMinecraftLauncher.Enviroment import Enviroment
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
-import json
 import copy
 import sys
 import os
