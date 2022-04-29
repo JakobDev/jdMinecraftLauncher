@@ -49,7 +49,6 @@ def hasInternetConnection() -> bool:
         return True
     except OSError:
         return False
-    return False
 
 
 def downloadFile(url: str, path: str):
