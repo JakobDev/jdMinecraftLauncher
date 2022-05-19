@@ -43,6 +43,7 @@
   </releases>
   <url type="homepage">https://gitlab.com/JakobDev/jdMinecraftLauncher</url>
   <url type="bugtracker">https://gitlab.com/JakobDev/jdMinecraftLauncher/-/issues</url>
+  <url type="vcs-browser">https://gitlab.com/JakobDev/jdMinecraftLauncher</url>
   <categories>
     <category>Game</category>
     <category>Qt</category>
