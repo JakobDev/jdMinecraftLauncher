@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <component type="desktop">
-  <!--Created with jdAppdataEdit 3.0-->
+  <!--Created with jdAppdataEdit 3.1-->
   <id>com.gitlab.JakobDev.jdMinecraftLauncher</id>
   <name>jdMinecraftLauncher</name>
   <summary>A classic styled Minecraft Launcher</summary>
@@ -17,7 +17,7 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <caption>The MainWIndow</caption>
+      <caption>The MainWindow</caption>
       <image type="source">https://gitlab.com/JakobDev/jdMinecraftLauncher/-/raw/3.0/Screenshots/MainWindow.png</image>
     </screenshot>
     <screenshot>
@@ -26,20 +26,99 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="3.1" date="2022-01-31" type="stable"/>
-    <release version="3.0" date="2022-01-15" type="stable"/>
-    <release version="2.5" date="2021-06-28" type="stable"/>
-    <release version="2.4" date="2020-05-23" type="stable"/>
-    <release version="2.3" date="2020-05-16" type="stable"/>
-    <release version="2.2" date="2020-05-14" type="stable"/>
-    <release version="2.1" date="2020-05-12" type="stable"/>
-    <release version="2.0" date="2020-04-27" type="stable"/>
-    <release version="1.5" date="2019-12-02" type="stable"/>
-    <release version="1.4" date="2019-11-26" type="stable"/>
-    <release version="1.3" date="2019-11-22" type="stable"/>
-    <release version="1.2" date="2019-11-20" type="stable"/>
-    <release version="1.1" date="2019-11-11" type="stable"/>
-    <release version="1.0" date="2019-11-11" type="stable"/>
+    <release version="3.1" date="2022-01-31" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/3.1</url><description>
+        <ul>
+          <li>Add Browse Buttons</li>
+          <li>Better Flatpak Integration</li>
+        </ul>
+      </description>
+    </release>
+    <release version="3.0" date="2022-01-15" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/3.0</url><description>
+        <ul>
+          <li>Switch to Microsoft Accounts</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.5" date="2021-06-28" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/2.5</url><description>
+        <ul>
+          <li>Fix using custom Java</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.4" date="2020-05-23" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/2.4</url><description>
+        <ul>
+          <li>Fix crash</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.3" date="2020-05-16" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/2.3</url><description>
+        <ul>
+          <li>Add option to extract natives separately</li>
+          <li>Make Play Button bigger</li>
+          <li>Drop mojang-api</li>
+          <li>Fix Bugs</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.2" date="2020-05-14" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/2.2</url><description>
+        <ul>
+          <li>New Profiles are now selected automatic</li>
+          <li>Fix Crash</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.1" date="2020-05-12" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/2.1</url><description>
+        <ul>
+          <li>Add Option to store passwords encryptet</li>
+          <li>Fix Bugs</li>
+        </ul>
+      </description>
+    </release>
+    <release version="2.0" date="2020-04-27" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/2.0</url><description>
+        <ul>
+          <li>Add support for multiple accounts</li>
+          <li>Add support for multiple Instances</li>
+          <li>Add option to run in demo mode</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.5" date="2019-12-02" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/1.5</url><description>
+        <ul>
+          <li>Use get_java_executable() from minecraft-launcher-lib</li>
+          <li>Fix Bugs</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.4" date="2019-11-26" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/1.4</url><description>
+        <ul>
+          <li>Bugfixes</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.3" date="2019-11-22" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/1.3</url><description>
+        <ul>
+          <li>Use jdTranslationHelper package</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.2" date="2019-11-20" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/1.2</url><description>
+        <ul>
+          <li>Use minecraft-launcher-lib</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.1" date="2019-11-11" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/1.1</url><description>
+        <ul>
+          <li>Add setup.py</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0" date="2019-11-11" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/1.0</url><description>
+        <ul>
+          <li>First Release</li>
+        </ul>
+      </description>
+    </release>
   </releases>
   <url type="homepage">https://gitlab.com/JakobDev/jdMinecraftLauncher</url>
   <url type="bugtracker">https://gitlab.com/JakobDev/jdMinecraftLauncher/-/issues</url>
