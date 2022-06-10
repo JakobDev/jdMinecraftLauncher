@@ -1,5 +1,11 @@
 # jdMinecraftLauncher
 
+![Flathub](https://img.shields.io/flathub/downloads/com.gitlab.JakobDev.jdMinecraftLauncher)
+![Flathub](https://img.shields.io/flathub/v/com.gitlab.JakobDev.jdMinecraftLauncher)
+![PyPI - License](https://img.shields.io/pypi/l/jdMinecraftLauncher)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jdMinecraftLauncher)
+![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/JakobDev/jdMinecraftLauncher.svg)
+
 jdMinecraftLauncher is a OpenSource Minecraft Launcher written in Python. You need Java and a Mojang Account to use this programm.
 
 This program uses [minecraft-launcher-lib](https://pypi.org/project/minecraft-launcher-lib) to install and start Minecraft.
