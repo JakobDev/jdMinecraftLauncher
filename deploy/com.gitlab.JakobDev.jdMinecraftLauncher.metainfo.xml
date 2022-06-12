@@ -13,19 +13,19 @@
     <p>jdMinecraftLauncher is a Minecraft launcher which Look and Feel is close to the the good old official Launcher</p>
     <p xml:lang="de">jdMinecraftLauncher ist ein Minecraft Launcher der sich am klassischem Launcher orientiert</p>
     <p>Features:</p>
-     <p  xml:lang="de">Features:</p>
-     <ul>
-       <li>All Minecraft versions are supported</li>
-       <li xml:lang="de">Alle Minecraft Versionen werden unterstützt</li>
-       <li>Offline mode is aviable after your first login</li>
-       <li xml:lang="de">Nach dem ersten Login ist ein Offlinemodus verfügbar</li>
-       <li>One click install of Forge and Fabric</li>
-       <li xml:lang="de">Forge und Fabric können mit einem Klick installiert werden</li>
-       <li>One click install of Forge and Fabric</li>
-       <li xml:lang="de">Forge und Fabric können mit einem Klick installiert werden</li>
-       <li>FeralInteractive GameMode is supported</li>
-       <li xml:lang="de">FeralInteractive GameMode wird unterstützt</li>
-     </ul>
+    <p xml:lang="de">Features:</p>
+    <ul>
+      <li>All Minecraft versions are supported</li>
+      <li xml:lang="de">Alle Minecraft Versionen werden unterstützt</li>
+      <li>Offline mode is aviable after your first login</li>
+      <li xml:lang="de">Nach dem ersten Login ist ein Offlinemodus verfügbar</li>
+      <li>One click install of Forge and Fabric</li>
+      <li xml:lang="de">Forge und Fabric können mit einem Klick installiert werden</li>
+      <li>One click install of Forge and Fabric</li>
+      <li xml:lang="de">Forge und Fabric können mit einem Klick installiert werden</li>
+      <li>FeralInteractive GameMode is supported</li>
+      <li xml:lang="de">FeralInteractive GameMode wird unterstützt</li>
+    </ul>
     <p>You need a Microsoft Account which owns Minecraft to use this Launcher</p>
     <p xml:lang="de">Zum Benutzen dieses Launchers wird ein Microsoft Account, der Minecraft besitzt, benötigt</p>
     <p>This Launcher is completly fanmade and not supported by Mojang/Microsoft</p>
@@ -42,7 +42,7 @@
     </screenshot>
   </screenshots>
   <releases>
-     <release version="3.2" date="2022-06-12" type="stable"><description>
+    <release version="3.2" date="2022-06-12" type="stable"><description>
         <ul>
           <li>Add one click install for Forge and Fabric</li>
           <li>Better Flatpak Integration</li>
@@ -150,11 +150,9 @@
     <category>Game</category>
     <category>Qt</category>
   </categories>
-  <requires>
+  <recommends>
     <control>pointing</control>
     <control>keyboard</control>
-  </requires>
-  <recommends>
     <display_length compare="ge">medium</display_length>
   </recommends>
   <content_rating type="oars-1.1">
