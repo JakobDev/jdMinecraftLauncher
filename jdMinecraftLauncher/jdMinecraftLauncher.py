@@ -12,7 +12,11 @@ import os
 def main():
     app = QApplication(sys.argv)
     env = Enviroment()
+
+    app.setApplicationName("jdMinecraftLauncher")
+    app.setDesktopFileName("com.gitlab.JakobDev.jdMinecraftLauncher")
     app.setWindowIcon(QIcon(os.path.join(env.currentDir , "Icon.svg")))
+
     env.mainWindow = MainWindow(env)
     env.loginWindow = LoginWindow(env)
 

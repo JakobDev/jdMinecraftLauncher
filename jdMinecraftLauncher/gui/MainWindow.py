@@ -205,6 +205,105 @@ class SwitchAccountButton(QPushButton):
             # self.env.loginWindow.setName(account.get("mail",""))
             self.env.loginWindow.show()
 
+class ForgeTab(QTableWidget):
+    def __init__(self, env, mainWindow):
+        self.env = env
+        self.mainWindow = mainWindow
+        super().__init__(0,2)
+
+        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.horizontalHeader().hide()
+        self.verticalHeader().hide()
+
+        count = 0
+        minecraft_version_check = {}
+        for i in minecraft_launcher_lib.forge.list_forge_versions():
+            minecraft_version, _ = i.split("-", 1)
+
+            if minecraft_version in minecraft_version_check or not minecraft_launcher_lib.forge.supports_automatic_install(i):
+                continue
+
+            minecraft_version_check[minecraft_version] = True
+
+            versionItem = QTableWidgetItem(i)
+            versionItem.setFlags(versionItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
+
+            installButton = QPushButton(env.translate("mainwindow.button.install"))
+
+            installButton.clicked.connect(self.installButtonClicked)
+
+            self.insertRow(count)
+            self.setItem(count, 0, versionItem)
+            self.setCellWidget(count, 1, installButton)
+
+            count += 1
+
+    def installForgeVersion(self, forgeVersion: str):
+        self.mainWindow.installThread.setupForgeInstallation(forgeVersion)
+        self.mainWindow.installThread.start()
+
+        self.mainWindow.setInstallButtonsEnabled(False)
+
+    def installButtonClicked(self):
+        for i in range(self.rowCount()):
+            if self.cellWidget(i, 1) == self.sender():
+                self.installForgeVersion(self.item(i, 0).text())
+                return
+
+    def setButtonsEnabled(self, enabled: bool):
+         for i in range(self.rowCount()):
+             self.cellWidget(i, 1).setEnabled(enabled)
+
+
+class FabricTab(QTableWidget):
+    def __init__(self, env, mainWindow):
+        self.env = env
+        self.mainWindow = mainWindow
+        super().__init__(0,2)
+
+        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.horizontalHeader().hide()
+        self.verticalHeader().hide()
+
+        count = 0
+        for i in minecraft_launcher_lib.fabric.get_all_minecraft_versions():
+            if not i["stable"]:
+                continue
+
+            versionItem = QTableWidgetItem(i["version"])
+            versionItem.setFlags(versionItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
+
+            installButton = QPushButton(env.translate("mainwindow.button.install"))
+
+            installButton.clicked.connect(self.installButtonClicked)
+
+            self.insertRow(count)
+            self.setItem(count, 0, versionItem)
+            self.setCellWidget(count, 1, installButton)
+
+            count += 1
+
+    def installFabricVersion(self, fabricVersion: str):
+        self.mainWindow.installThread.setupFabricInstallation(fabricVersion)
+        self.mainWindow.installThread.start()
+
+        self.mainWindow.setInstallButtonsEnabled(False)
+
+    def installButtonClicked(self):
+        for i in range(self.rowCount()):
+            if self.cellWidget(i, 1) == self.sender():
+                self.installFabricVersion(self.item(i, 0).text())
+                return
+
+    def setButtonsEnabled(self, enabled: bool):
+         for i in range(self.rowCount()):
+             self.cellWidget(i, 1).setEnabled(enabled)
+
+
 class AccountTab(QTableWidget):
     def __init__(self,env):
         self.env = env
@@ -224,7 +323,7 @@ class AccountTab(QTableWidget):
             nameItem.setFlags(nameItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
             button = SwitchAccountButton(self.env.translate("accounttab.button.switch"),self.env,count)
             self.insertRow(count)
-            self.setItem(count, 0, nameItem) 
+            self.setItem(count, 0, nameItem)
             self.setCellWidget(count,1,button)
             # self.setItem(count, 1, versionItem) 
             count += 1
@@ -331,6 +430,11 @@ class Tabs(QTabWidget):
         self.addTab(self.versionTab,env.translate("mainwindow.tab.versionEditor"))
         self.options = OptionsTab(env)
         self.addTab(self.options,env.translate("mainwindow.tab.options"))
+        if not env.offlineMode:
+            self.forgeTab = ForgeTab(env, parrent)
+            self.addTab(self.forgeTab, "Forge")
+            self.fabricTab = FabricTab(env, parrent)
+            self.addTab(self.fabricTab, "Fabric")
         self.accountTab = AccountTab(env)
         self.addTab(self.accountTab,"Account")
         about = AboutTab(env)
@@ -461,9 +565,14 @@ class MainWindow(QWidget):
         o.executeCommand(profile,args,natives_path)
 
     def installFinish(self):
-        self.env.updateInstalledVersions()
-        self.tabWidget.versionTab.updateVersions()
-        self.startMinecraft(self.env.current_running_profile)
+        if self.installThread.shouldStartMinecraft():
+            self.env.updateInstalledVersions()
+            self.tabWidget.versionTab.updateVersions()
+            self.startMinecraft(self.env.current_running_profile)
+        else:
+            self.env.loadVersions()
+            self.profileWindow.updateVersionsList
+            self.setInstallButtonsEnabled(True)
 
     def installVersion(self,profile):
         self.env.current_running_profile = profile
@@ -478,6 +587,11 @@ class MainWindow(QWidget):
             self.playButton.setText(self.env.translate("mainwindow.button.playOffline"))
         else:
             self.env.translate("mainwindow.button.play")
+
+    def setInstallButtonsEnabled(self, enabled: bool):
+        self.playButton.setEnabled(enabled)
+        self.tabWidget.forgeTab.setButtonsEnabled(enabled)
+        self.tabWidget.fabricTab.setButtonsEnabled(enabled)
 
     def closeEvent(self,event):
         options = self.tabWidget.options

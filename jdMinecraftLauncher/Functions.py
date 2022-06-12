@@ -71,17 +71,21 @@ def getAccountDict(information_dict: Dict) -> Dict:
     }
 
 
+def _addJavaRuntimeDir(path: str, runtimeList: List[str]):
+    if not os.path.isdir(path):
+        return
+    for i in os.listdir(path):
+        if not os.path.islink(os.path.join(path, i)):
+            runtimeList.append(os.path.join(path, i, "bin", "java"))
+
+
 def findJavaRuntimes() -> List[str]:
     runtimeList = []
-    if os.path.isdir("/usr/lib/jvm"):
-        for i in os.listdir("/usr/lib/jvm"):
-            if not os.path.islink(os.path.join("/usr/lib/jvm", i)):
-                runtimeList.append(os.path.join("/usr/lib/jvm", i, "bin", "java"))
-    if os.path.isdir("/usr/lib/sdk"):
-        for i in os.listdir("/usr/lib/sdk"):
-            runtimeList.append(os.path.join("/usr/lib/sdk", i, "bin", "java"))
+    _addJavaRuntimeDir("/usr/lib/jvm", runtimeList)
+    _addJavaRuntimeDir("/usr/lib/sdk", runtimeList)
+    _addJavaRuntimeDir("/app/jvm", runtimeList)
     return runtimeList
 
 
 def isFlatpak() -> bool:
-    return os.path.isdir("/app")
+    return os.path.isfile("/.flatpak-info")

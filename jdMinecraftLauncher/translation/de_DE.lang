@@ -10,6 +10,7 @@ mainwindow.tab.profileEditor=Profileditor
 mainwindow.tab.versionEditor=Versionseditor
 mainwindow.tab.skin=Skin
 mainwindow.tab.options=Optionen
+mainwindow.button.install=Installieren
 mainwindow.tab.about=Über
 mainwindow.tab.gameOutput=Spielausgabe
 
