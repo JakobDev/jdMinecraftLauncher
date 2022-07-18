@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
 from setuptools import find_packages, setup
+import os
+
+
+with open(os.path.join(os.path.dirname(__file__), "jdMinecraftLauncher", "version.txt"), "r", encoding="utf-8") as f:
+    version = f.read().strip()
+
+with open("README.md", "r", encoding="utf-8") as f:
+    readme = f.read()
+
 
 setup(name='jdMinecraftLauncher',
-    version='3.2',
+    version=version,
     description='A Minecraft Launcher writen in Python',
-    long_description=open("README.md").read(),
+    long_description=readme,
     long_description_content_type='text/markdown',
     author='JakobDev',
     author_email='jakobdev@gmx.de',
@@ -17,8 +26,7 @@ setup(name='jdMinecraftLauncher',
         'PyQt6-WebEngine',
         'requests',
         'minecraft-launcher-lib',
-        'jdTranslationHelper',
-        'cryptography'
+        'jdTranslationHelper'
     ],
     packages=find_packages(),
     entry_points={

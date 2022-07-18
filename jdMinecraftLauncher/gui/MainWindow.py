@@ -1,15 +1,17 @@
-from PyQt6.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QMenu, QLineEdit, QSizePolicy
+from PyQt6.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QMenu, QLineEdit, QSizePolicy, QMessageBox
 from PyQt6.QtCore import QUrl, QLocale, Qt, QProcess
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebEngineCore import QWebEngineProfile
-from PyQt6.QtGui import QCursor, QAction
+from PyQt6.QtGui import QCursor, QAction, QIcon
 from jdMinecraftLauncher.gui.ProfileWindow import ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
-from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox
+from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox, createDesktopFile
 from jdMinecraftLauncher.InstallThread import InstallThread
-from jdMinecraftLauncher.RunMinecraft import runMinecraft
+from jdMinecraftLauncher.RunMinecraft import getMinecraftCommand
 import minecraft_launcher_lib
 import webbrowser
+import subprocess
+import platform
 import tempfile
 import random
 import shutil
@@ -71,6 +73,11 @@ class ProfileEditorTab(QTableWidget):
         openGameFolder.triggered.connect(lambda: openFile(self.env.profiles[self.currentRow()].getGameDirectoryPath()))
         self.menu.addAction(openGameFolder)
 
+        if platform.system() == "Linux":
+            createShortcut = QAction(self.env.translate("profiletab.contextmenu.createShortcut"), self)
+            createShortcut.triggered.connect(self.createShortcut)
+            self.menu.addAction(createShortcut)
+
         self.menu.popup(QCursor.pos())
 
     def addProfile(self):
@@ -95,6 +102,35 @@ class ProfileEditorTab(QTableWidget):
             del self.env.profiles[self.currentRow()]
             self.env.selectedProfile = 0
             self.mainWindow.updateProfilList()
+
+    def createShortcut(self):
+        box = QMessageBox()
+        box.setText(self.env.translate("profiletab.createShortcut.text"))
+        box.setWindowTitle(self.env.translate("profiletab.createShortcut.title"))
+        box.setStandardButtons(QMessageBox.StandardButton.Save| QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel)
+
+        desktopButton = box.button(QMessageBox.StandardButton.Save)
+        desktopButton.setText(self.env.translate("profiletab.createShortcut.desktop"))
+        desktopButton.setIcon(QIcon())
+
+        menuButton = box.button(QMessageBox.StandardButton.Discard )
+        menuButton.setText(self.env.translate("profiletab.createShortcut.menu"))
+        menuButton.setIcon(QIcon())
+
+        bothButton = box.button(QMessageBox.StandardButton.Cancel)
+        bothButton.setText(self.env.translate("profiletab.createShortcut.both"))
+        bothButton.setIcon(QIcon())
+
+        name = self.env.profiles[self.currentRow()].name
+        box.exec()
+
+        if box.clickedButton() == desktopButton:
+            createDesktopFile(subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), name)
+        elif box.clickedButton() == menuButton:
+            createDesktopFile(os.path.expanduser("~/.local/share/applications"), name)
+        elif box.clickedButton() == bothButton:
+            createDesktopFile(subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), name)
+            createDesktopFile(os.path.expanduser("~/.local/share/applications"), name)
 
 class VersionEditorTab(QTableWidget):
     def __init__(self,env):
@@ -139,7 +175,7 @@ class VersionEditorTab(QTableWidget):
         self.menu.popup(QCursor.pos())
 
     def uninstallVersionClicked(self):
-        shutil.rmtree(os.path.join(self.env.dataPath,"versions",self.env.installedVersion[self.currentRow()]["id"]))
+        shutil.rmtree(os.path.join(self.env.minecraftDir,"versions",self.env.installedVersion[self.currentRow()]["id"]))
         del self.env.installedVersion[self.currentRow()]
         self.updateVersions()
 
@@ -404,17 +440,11 @@ class GameOutputTab(QPlainTextEdit):
         self.profile = profile
         self.natives_path = natives_path
         self.process = QProcess(self)
-        self.process.setWorkingDirectory(self.env.dataPath)
+        self.process.setWorkingDirectory(self.env.minecraftDir)
         self.process.readyRead.connect(self.dataReady)
         self.process.started.connect(self.procStarted)
         self.process.finished.connect(self.procFinish)
-        if profile.useGameMode:
-            self.process.start("gamemoderun", command)
-        else:
-            if profile.customExecutable:
-                self.process.start(profile.executable, command[1:])
-            else:
-                self.process.start(command[0], command[1:])
+        self.process.start(command[0], command[1:])
 
 class Tabs(QTabWidget):
     def __init__(self,env,parrent):
@@ -509,6 +539,25 @@ class MainWindow(QWidget):
         self.installThread.progress_max.connect(lambda progress_max: self.progressBar.setMaximum(progress_max))
         self.installThread.finished.connect(self.installFinish)
 
+        self._is_first_open = False
+
+    def openMainWindow(self):
+        if self._is_first_open:
+            self.show()
+            return
+
+        if platform.system() == "Linux":
+            from jdMinecraftLauncher.DBusService import DBusService
+            DBusService(self.env, self.env.app)
+
+        if self.env.args.launch_profile:
+            profile = self.env.getProfileByName(self.env.args.launch_profile)
+            if profile:
+                self.env.mainWindow.launchProfile(profile)
+
+        self._is_first_open = True
+        self.show()
+
     def updateProfilList(self):
         currentIndex = self.env.selectedProfile
         self.profileComboBox.clear()
@@ -529,17 +578,20 @@ class MainWindow(QWidget):
         self.profileWindow.loadProfile(self.env.profiles[self.profileComboBox.currentIndex()],False)
         self.profileWindow.show()
         self.profileWindow.setFocus()
-    
-    def playButtonClicked(self):
-        profile = self.env.profiles[self.profileComboBox.currentIndex()]
+
+    def launchProfile(self, profile: Profile) -> None:
         if self.env.offlineMode:
-            if os.path.isdir(os.path.join(self.env.dataPath,"versions",profile.getVersionID())):
+            if os.path.isdir(os.path.join(self.env.minecraftDir,"versions",profile.getVersionID())):
                 self.startMinecraft(profile)
             else:
                 showMessageBox("messagebox.installinternet.title","messagebox.installinternet.text",self.env)
         else:
             self.installVersion(profile)
-      
+
+    def playButtonClicked(self):
+        profile = self.env.profiles[self.profileComboBox.currentIndex()]
+        self.launchProfile(profile)
+
     def logoutButtonClicked(self):
         if self.env.offlineMode:
             showMessageBox("messagebox.needinternet.title","messagebox.needinternet.text",self.env)
@@ -558,7 +610,7 @@ class MainWindow(QWidget):
             natives_path = os.path.join(tempfile.gettempdir(),"minecraft_natives_" + str(random.randrange(0,10000000)))
         else:
             natives_path = ""
-        args = runMinecraft(self.env.profiles[self.profileComboBox.currentIndex()],self.env,natives_path)
+        args = getMinecraftCommand(self.env.profiles[self.profileComboBox.currentIndex()], self.env, natives_path)
         o = GameOutputTab(self.env)
         tabid = self.tabWidget.addTab(o,self.env.translate("mainwindow.tab.gameOutput"))
         self.tabWidget.setCurrentIndex(tabid)
@@ -599,8 +651,8 @@ class MainWindow(QWidget):
         self.env.settings.newsURL = options.urlEdit.text()
         self.env.settings.enableMultiLaunch = options.allowMultiLaunchCheckBox.isChecked()
         self.env.settings.extractNatives = options.extractNativesCheckBox.isChecked()
-        self.env.settings.save(os.path.join(self.env.dataPath,"jdMinecraftLauncher","settings.json"))
-        with open(os.path.join(self.env.dataPath,"jdMinecraftLauncher","microsoft_accounts.json"),"w") as f:
+        self.env.settings.save(os.path.join(self.env.dataDir, "settings.json"))
+        with open(os.path.join(self.env.dataDir, "microsoft_accounts.json"),"w") as f:
             data = {}
             data["selectedAccount"] = self.env.selectedAccount
             data["accountList"] = []

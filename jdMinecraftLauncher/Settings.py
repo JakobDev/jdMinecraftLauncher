@@ -8,8 +8,8 @@ class Settings():
         self.enableMultiLaunch = False
         self.extractNatives = False
 
-        if os.path.isfile(os.path.join(env.dataPath,"jdMinecraftLauncher","settings.json")):
-            self.load(os.path.join(env.dataPath,"jdMinecraftLauncher","settings.json"))
+        if os.path.isfile(os.path.join(env.dataDir, "settings.json")):
+            self.load(os.path.join(env.dataDir, "settings.json"))
 
     def load(self, path):
         try:

@@ -1,0 +1,17 @@
+<interface name="com.gitlab.JakobDev.jdMinecraftLauncher">
+    <method name="LaunchProfile">
+        <arg direction="in" type="s" name="name"/>
+        <arg direction="out" type="b" name="ok"/>
+    </method>
+    <method name="ListProfiles">
+        <arg direction="out" type="as" name="profiles"/>
+    </method>
+    <method name="GetMinecraftCommand">
+        <arg direction="in" type="s" name="name"/>
+        <arg direction="out" type="as" name="comman"/>
+    </method>
+    <method name="GetVersion">
+        <arg direction="out" type="s" name="version"/>
+    </method>
+    <property type="b" name="MainWindowVisible"/>
+</interface>

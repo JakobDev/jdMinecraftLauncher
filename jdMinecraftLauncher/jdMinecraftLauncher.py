@@ -2,8 +2,7 @@ from jdMinecraftLauncher.Functions import hasInternetConnection, showMessageBox,
 from jdMinecraftLauncher.gui.LoginWindow import LoginWindow
 from jdMinecraftLauncher.gui.MainWindow import MainWindow
 from jdMinecraftLauncher.Enviroment import Enviroment
-from PyQt6.QtWidgets import QApplication
-from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QApplication, QSplashScreen
 import minecraft_launcher_lib
 import copy
 import sys
@@ -11,11 +10,19 @@ import os
 
 def main():
     app = QApplication(sys.argv)
-    env = Enviroment()
+    env = Enviroment(app)
 
     app.setApplicationName("jdMinecraftLauncher")
     app.setDesktopFileName("com.gitlab.JakobDev.jdMinecraftLauncher")
-    app.setWindowIcon(QIcon(os.path.join(env.currentDir , "Icon.svg")))
+    app.setWindowIcon(env.icon)
+
+    if not minecraft_launcher_lib.utils.is_platform_supported() and not env.args.force_start:
+        showMessageBox("messagebox.unsupportedPlatform.title", "messagebox.unsupportedPlatform.text", env)
+        sys.exit(0)
+
+    splash_screen = QSplashScreen()
+    splash_screen.setPixmap(env.icon.pixmap(128, 128))
+    splash_screen.show()
 
     env.mainWindow = MainWindow(env)
     env.loginWindow = LoginWindow(env)
@@ -27,26 +34,30 @@ def main():
         pass
 
     if hasattr(env, "account"):
-        if hasInternetConnection():
+        if not env.args.offline_mode and hasInternetConnection():
             try:
                 accountData = getAccountDict(minecraft_launcher_lib.microsoft_account.complete_refresh(env.secrets.client_id, env.secrets.secret, env.secrets.redirect_url, env.account["refreshToken"]))
                 env.accountList[env.selectedAccount] = copy.copy(accountData)
                 env.account = copy.copy(accountData)
+                splash_screen.close()
                 env.mainWindow.updateAccountInformation()
-                env.mainWindow.show()
+                env.mainWindow.openMainWindow()
             except minecraft_launcher_lib.exceptions.InvalidRefreshToken:
+                splash_screen.close()
                 env.loginWindow.show()
         else:
             env.offlineMode = True
             env.loadVersions()
+            splash_screen.close()
             env.mainWindow.updateAccountInformation()
-            env.mainWindow.show()
+            env.mainWindow.openMainWindow()
     else:
-        if hasInternetConnection():
+        if not env.args.offline_mode and hasInternetConnection():
             env.loginWindow.show()
         else:
             showMessageBox("messagebox.nointernet.title","messagebox.nointernet.text",self.env,lambda: sys.exit(0))
             env.mainWindow.profileWindow.close()
             env.mainWindow.close()
             env.loginWindow.close()
+
     sys.exit(app.exec())

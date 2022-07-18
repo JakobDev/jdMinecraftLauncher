@@ -1,7 +1,9 @@
 import minecraft_launcher_lib
+from typing import List
+import shutil
 
 
-def runMinecraft(profile,env,natives_path):
+def getMinecraftCommand(profile, env, natives_path) -> List[str]:
     versiontype, versionid = profile.getVersion().split(" ")
     options = {
         "username": env.account["name"],
@@ -29,7 +31,8 @@ def runMinecraft(profile,env,natives_path):
         options["demo"] = True
     if natives_path != "":
         options["nativesDirectory"] = natives_path
-        minecraft_launcher_lib.natives.extract_natives(versionid,env.dataPath,natives_path)
-    command = minecraft_launcher_lib.command.get_minecraft_command(versionid,env.dataPath,options)
-    #command = command[1:]
+        minecraft_launcher_lib.natives.extract_natives(versionid,env.minecraftDir, natives_path)
+    command = minecraft_launcher_lib.command.get_minecraft_command(versionid, env.minecraftDir, options)
+    if profile.useGameMode and shutil.which("gamemoderun"):
+        command.insert(0, "gamemoderun")
     return command

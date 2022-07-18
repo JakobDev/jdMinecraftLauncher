@@ -62,9 +62,15 @@ profiletab.contextmenu.editProfile=Profil bearbeiten
 profiletab.contextmenu.copyProfile=Profil kopieren
 profiletab.contextmenu.removeProfile=Profil löschen
 profiletab.contextmenu.openGameFolder=Öffne Spieleordner
+profiletab.contextmenu.createShortcut=Verknüpfung erstellen
 profiletab.newProfile=Neues Profil
 profiletab.removeError.title=Kann Profil nicht löschen
 profiletab.removeError.text=Du kannst nicht alle Profile löschen. Es muss mindestens eins übrigbleiben.
+profiletab.createShortcut.title=Verknüpfung erstellen
+profiletab.createShortcut.text=Wo soll die Verknüpfung erstellt werden?
+profiletab.createShortcut.desktop=Schreibtisch
+profiletab.createShortcut.menu=Menü
+profiletab.createShortcut.both=Beides
 
 versiontab.minecraftVersion=Minecraft Version
 versiontab.versionType=Versions Typ
@@ -108,6 +114,8 @@ messagebox.installinternet.title=Keine Internetverbindung
 messagebox.installinternet.text=Du benötigst eine Internetverbindung um neue Versionen zu installieren. Das Spielen bereits installierter Version ist allerdings auch ohne Internetverbindung möglich.
 messagebox.wrongEncryptPassword.title=Falsches Passwort
 messagebox.wrongEncryptPassword.text=Du hast ein falsches Passwort eingegeben. Bitte starte das Programm neu, um es erneut zu versuchen. Wenn du dich nicht mehr an dein Passwort erinnerts, klicke bei der Eingabe auf "Abbrechen".
+messagebox.unsupportedPlatform.title=Nicht unterstütze Platform
+messagebox.unsupportedPlatform.text=Deine aktuelle Platform wird von jdMinecraftLauncher nicht unterstützt
 
 inputdialog.enterPassword.title=Passwort eingeben
 inputdialog.enterPassword.text=Bitte gib dein Passwort ein, um die Anmeldedaten zu entschlüsseln

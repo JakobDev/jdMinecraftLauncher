@@ -1,9 +1,12 @@
 #!/usr/bin/env python
+from typing import Optional
 import argparse
 import json
 
 
-def encrypt(text: str)-> str:
+def encrypt(text: Optional[str])-> str:
+    if text is None:
+        return None
     text = text[::-1]
     output = ""
     for c in text:
@@ -14,7 +17,7 @@ def encrypt(text: str)-> str:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--clientID", required=True, help="Your clientID")
-    parser.add_argument("--secret", required=True, help="Your clientSecret")
+    parser.add_argument("--secret", help="Your clientSecret")
     parser.add_argument("--redirectURL", required=True, help="Your redirectURL")
     parser.add_argument("--output", required=True, help="The output file")
     args = parser.parse_args().__dict__

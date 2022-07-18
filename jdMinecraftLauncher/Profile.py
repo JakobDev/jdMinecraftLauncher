@@ -8,7 +8,7 @@ class Profile():
         self.useLatestVersion = True
         self.useLatestSnapshot = False
         self.customGameDirectory = False
-        self.gameDirectoryPath = env.dataPath
+        self.gameDirectoryPath = env.minecraftDir
         self.customResolution = False
         self.resolutionX = "854"
         self.resolutionY = "480"
@@ -43,7 +43,7 @@ class Profile():
         if self.customGameDirectory:
             return self.gameDirectoryPath
         else:
-            return self.env.dataPath
+            return self.env.minecraftDir
 
     def getJavaPath(self):
         if self.customExecutable:

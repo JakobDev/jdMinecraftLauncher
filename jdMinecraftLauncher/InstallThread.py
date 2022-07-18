@@ -36,11 +36,11 @@ class InstallThread(QThread):
 
     def run(self):
         if self.forgeVersion:
-            minecraft_launcher_lib.forge.install_forge_version(self.forgeVersion, self.env.dataPath, callback=self.callback)
+            minecraft_launcher_lib.forge.install_forge_version(self.forgeVersion, self.env.minecraftDir, callback=self.callback)
             self.forgeVersion = None
         elif self.fabricVersion:
-            minecraft_launcher_lib.fabric.install_fabric(self.fabricVersion, self.env.dataPath, callback=self.callback)
+            minecraft_launcher_lib.fabric.install_fabric(self.fabricVersion, self.env.minecraftDir, callback=self.callback)
             self.fabricVersion = None
         else:
-            minecraft_launcher_lib.install.install_minecraft_version(self.profile.getVersionID(),self.env.dataPath,callback=self.callback)
+            minecraft_launcher_lib.install.install_minecraft_version(self.profile.getVersionID(),self.env.minecraftDir,callback=self.callback)
 

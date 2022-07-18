@@ -62,9 +62,15 @@ profiletab.contextmenu.editProfile=Edit Profile
 profiletab.contextmenu.copyProfile=Copy Profile
 profiletab.contextmenu.removeProfile=Remove Profile
 profiletab.contextmenu.openGameFolder=Open Game Folder
+profiletab.contextmenu.createShortcut=Create Shortcut
 profiletab.newProfile=New Profile
 profiletab.removeError.title=Can't delete Profile
-profiletab.removeError.text=You can't delete all profil. At least one profil must stay
+profiletab.removeError.text=You can't delete all profil. At least one profil must stay.
+profiletab.createShortcut.title=Create Shortcut
+profiletab.createShortcut.text=Select where you want to create the Shortcut
+profiletab.createShortcut.desktop=Desktop
+profiletab.createShortcut.menu=Menu
+profiletab.createShortcut.both=Both
 
 versiontab.minecraftVersion=Minecraft Version
 versiontab.versionType=Version Type
@@ -108,6 +114,8 @@ messagebox.installinternet.title=No Internet Connection
 messagebox.installinternet.text=You need a internet connection to install a new version, but you are still able to play already installed versions.
 messagebox.wrongEncryptPassword.title=Wrong Password
 messagebox.wrongEncryptPassword.text=You entered a wrong password. Please restart the program to try again. If you do not remember your password, click "Cancel" when you enter it.
+messagebox.unsupportedPlatform.title=Unsupported Platform
+messagebox.unsupportedPlatform.text=Your current Platform is not supported by jdMinecraftLauncher
 
 inputdialog.enterPassword.title=Enter Password
 inputdialog.enterPassword.text=Please enter your password to decrypt your account passwords

@@ -12,22 +12,6 @@ class LoginWindow(QWebEngineView):
 
         self.setWindowTitle(env.translate("loginwindow.title"))
 
-        # Set the path where the refresh token is saved
-        self.refresh_token_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "refresh_token.json")
-
-        # Login with refresh token, if it exists
-        if os.path.isfile(self.refresh_token_file):
-            with open(self.refresh_token_file, "r", encoding="utf-8") as f:
-                refresh_token = json.load(f)
-                # Do the login with refresh token
-                try:
-                    account_informaton = minecraft_launcher_lib.microsoft_account.complete_refresh(self.env.secrets.client_id, self.env.secrets.secret, self.env.secrets.redirect_url, refresh_token)
-                    self.show_account_information(account_informaton)
-                    return
-                # Show the window if the refresh token is invalid
-                except minecraft_launcher_lib.exceptions.InvalidRefreshToken:
-                    pass
-
         # Open the login url
         self.load(QUrl(minecraft_launcher_lib.microsoft_account.get_login_url(self.env.secrets.client_id, self.env.secrets.redirect_url)))
 
@@ -59,7 +43,7 @@ class LoginWindow(QWebEngineView):
 
         self.env.account = accountData
 
-        self.env.mainWindow.show()
+        self.env.mainWindow.openMainWindow()
         self.env.mainWindow.setFocus()
         for count, i in enumerate(self.env.accountList):
             if i["uuid"] == accountData["uuid"]:
