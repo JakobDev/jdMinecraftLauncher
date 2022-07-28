@@ -12,8 +12,8 @@ import platform
 import requests
 import json
 import copy
-import sys
 import os
+
 
 class Enviroment():
     def __init__(self, app):

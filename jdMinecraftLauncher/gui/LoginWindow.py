@@ -1,8 +1,6 @@
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtCore import QUrl
 import minecraft_launcher_lib
-import json
-import os
 
 
 class LoginWindow(QWebEngineView):

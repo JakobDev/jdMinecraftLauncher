@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QApplication, QSplashScreen
 import minecraft_launcher_lib
 import copy
 import sys
-import os
+
 
 def main():
     app = QApplication(sys.argv)

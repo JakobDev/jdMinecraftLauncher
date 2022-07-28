@@ -1,6 +1,6 @@
-from PyQt6.QtCore import QCoreApplication, QObject, pyqtClassInfo, pyqtSlot, pyqtProperty
-from PyQt6.QtDBus import QDBusConnection, QDBusAbstractAdaptor
 from jdMinecraftLauncher.RunMinecraft import getMinecraftCommand
+from PyQt6.QtCore import pyqtClassInfo, pyqtSlot, pyqtProperty
+from PyQt6.QtDBus import QDBusConnection, QDBusAbstractAdaptor
 import sys
 import os
 
