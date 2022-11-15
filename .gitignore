@@ -4,3 +4,7 @@ __pycache__/
 build/
 dist/
 jdMinecraftLauncher.egg-info/
+
+#Windows
+WindowsBuild/
+output/

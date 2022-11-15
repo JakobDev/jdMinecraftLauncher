@@ -7,15 +7,21 @@ stages:
 build_exe:
     stage: build
     script:
-        - Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.10.1/python-3.10.1-amd64.exe -OutFile python-installer.exe
+        - Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.10.0/python-3.10.0-amd64.exe -OutFile python-installer.exe
         - .\python-installer.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0 | Out-Null
+        - Invoke-WebRequest -Uri https://jztkft.dl.sourceforge.net/project/nsis/NSIS%203/3.08/nsis-3.08-setup.exe -OutFile nsis-installer.exe
+        - .\nsis-installer.exe /S /D=C:\NSIS
         - $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
         - pip install -r requirements.txt
         - pip install cx-Freeze
-        - python build_exe.py build
+        - python build_exe.py build --build-exe  WindowsBuild\Portable
+        - C:\NSIS\Bin\makensis.exe .\deploy\Installer.nsi
+        - cp .\deploy\*.exe .\WindowsBuild\
+
     artifacts:
         paths:
-            - build
+            - WindowsBuild
+        expire_in: 1 month
     only:
         - tags
     tags:
@@ -33,8 +39,7 @@ pip_deploy:
 sourceforge_deploy:
     stage: deploy
     script:
-        - pip install pysftp
+        - pip install pysftp requests
         - python deploy/sourceforge.py
     only:
         - tags
-
