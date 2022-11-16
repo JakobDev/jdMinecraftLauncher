@@ -1,5 +1,5 @@
+from typing import Dict, List, TYPE_CHECKING
 from PyQt6.QtWidgets import QMessageBox
-from typing import Dict, List
 import subprocess
 import platform
 import requests
@@ -7,6 +7,10 @@ import shutil
 import socket
 import json
 import os
+
+
+if TYPE_CHECKING:
+    from jdMinecraftLauncher.Environment import Environment
 
 
 def openFile(path: str):
@@ -18,7 +22,7 @@ def openFile(path: str):
         subprocess.Popen(["xdg-open", path])
 
 
-def saveProfiles(env):
+def saveProfiles(env: "Environment"):
     profileList = []
     for a in env.profiles:
         b = vars(a)
@@ -31,7 +35,7 @@ def saveProfiles(env):
         json.dump({"selectedProfile":env.selectedProfile,"profileList":profileList}, f, ensure_ascii=False, indent=4)
 
 
-def showMessageBox(title: str, text: str, env, callback=None):
+def showMessageBox(title: str, text: str, env: "Environment", callback=None):
     messageBox = QMessageBox()
     messageBox.setWindowTitle(env.translate(title))
     messageBox.setText(env.translate(text))
@@ -62,7 +66,7 @@ def downloadFile(url: str, path: str):
         shutil.copyfileobj(r.raw, f)
 
 
-def getAccountDict(information_dict: Dict) -> Dict:
+def getAccountDict(information_dict: Dict) -> Dict[str, str]:
     return {
         "name": information_dict["name"],
         "accessToken": information_dict["access_token"],

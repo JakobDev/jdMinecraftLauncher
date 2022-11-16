@@ -1,8 +1,14 @@
 from jdMinecraftLauncher.RunMinecraft import getMinecraftCommand
 from PyQt6.QtCore import pyqtClassInfo, pyqtSlot, pyqtProperty
 from PyQt6.QtDBus import QDBusConnection, QDBusAbstractAdaptor
+from PyQt6.QtWidgets import QApplication
+from typing import TYPE_CHECKING
 import sys
 import os
+
+
+if TYPE_CHECKING:
+    from jdMinecraftLauncher.Environment import Environment
 
 
 with open(os.path.join(os.path.dirname(__file__), "DBusInterface.xml"), "r", encoding="utf-8") as f:
@@ -11,7 +17,7 @@ with open(os.path.join(os.path.dirname(__file__), "DBusInterface.xml"), "r", enc
 @pyqtClassInfo("D-Bus Interface", "com.gitlab.JakobDev.jdMinecraftLauncher")
 @pyqtClassInfo("D-Bus Introspection", interface)
 class DBusService(QDBusAbstractAdaptor):
-    def __init__(self, env, parent):
+    def __init__(self, env: "Environment", parent: QApplication):
         super().__init__(parent)
         QDBusConnection.sessionBus().registerObject("/", parent)
 
@@ -21,7 +27,7 @@ class DBusService(QDBusAbstractAdaptor):
         self._env = env
 
     @pyqtSlot(str, result=bool)
-    def LaunchProfile(self, name):
+    def LaunchProfile(self, name: str) -> bool:
         profile = self._env.getProfileByName(name)
         if profile:
             self._env.mainWindow.launchProfile(profile)
@@ -37,7 +43,7 @@ class DBusService(QDBusAbstractAdaptor):
         return profileList
 
     @pyqtSlot(str, result=list)
-    def GetMinecraftCommand(self, name):
+    def GetMinecraftCommand(self, name: str):
         profile = self._env.getProfileByName(name)
         if profile:
             return getMinecraftCommand(profile, self._env, "")

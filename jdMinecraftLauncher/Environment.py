@@ -3,6 +3,7 @@ from jdMinecraftLauncher.Profile import Profile
 from jdMinecraftLauncher.Settings import Settings
 from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
 from PyQt6.QtCore import QLocale, QTranslator, QLibraryInfo
+from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
 from typing import Optional
@@ -15,13 +16,13 @@ import copy
 import os
 
 
-class Enviroment():
-    def __init__(self, app):
+class Environment:
+    def __init__(self, app: QApplication):
         self.offlineMode = False
         self.currentDir = os.path.dirname(os.path.realpath(__file__))
 
         with open(os.path.join(self.currentDir, "version.txt"), "r", encoding="utf-8") as f:
-           self.launcherVersion = f.read().strip()
+            self.launcherVersion = f.read().strip()
 
         self.icon = QIcon(os.path.join(self.currentDir , "Icon.svg"))
         self.app = app
@@ -85,7 +86,7 @@ class Enviroment():
 
         self.loadVersions()
 
-        self.profiles = []
+        self.profiles: list[Profile] = []
         self.selectedProfile = 0
         if os.path.isfile(os.path.join(self.dataDir, "profiles.json")):
             with open(os.path.join(self.dataDir, "profiles.json")) as f:
@@ -102,9 +103,9 @@ class Enviroment():
         else:
             self.profiles.append(Profile("Default",self))
 
-    def translate(self, string, default=None):
+    def translate(self, string: str, default: Optional[str] = None) -> str:
         #Just a litle shortcut
-        return self.translations.translate(string,default=default)
+        return self.translations.translate(string, default=default)
 
     def getDataPath(self) -> str:
         if os.path.isdir(os.path.join(self.minecraftDir, "jdMinecraftLauncher")):
@@ -124,7 +125,7 @@ class Enviroment():
     def loadVersions(self):
         if not self.offlineMode:
             try:
-                r = requests.get("https://launchermeta.mojang.com/mc/game/version_manifest.json")
+                r = requests.get("https://launchermeta.mojang.com/mc/game/version_manifest_v2.json")
                 f = open(os.path.join(self.dataDir, "versions_cache.json"), "w")
                 f.write(r.text)
                 f.close()

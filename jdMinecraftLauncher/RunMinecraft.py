@@ -1,9 +1,14 @@
+from typing import List, TYPE_CHECKING
 import minecraft_launcher_lib
-from typing import List
 import shutil
 
 
-def getMinecraftCommand(profile, env, natives_path) -> List[str]:
+if TYPE_CHECKING:
+    from jdMinecraftLauncher.Environment import Environment
+    from jdMinecraftLauncher.Profile import Profile
+
+
+def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: str) -> List[str]:
     versiontype, versionid = profile.getVersion().split(" ")
     options = {
         "username": env.account["name"],

@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jdMinecraftLauncher"
+description = "A classic styled Minecraft Launcher"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["JakobDev", "Minecraft", "Mojang", "launcher", "PyQt"]
+license = { text = "GPL v3" }
+authors = [
+    { name = "JakobDev", email = "jakobdev@gmx.de" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "Environment :: Other Environment",
+    "Environment :: X11 Applications :: Qt",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Natural Language :: English",
+    "Natural Language :: German",
+    "Topic :: Games/Entertainment",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython"
+]
+dependencies = [
+    "PyQt6",
+    "PyQt6-WebEngine",
+    "minecraft-launcher-lib",
+    "jdTranslationHelper",
+    "requests"
+]
+dynamic = ["version"]
+
+[project.urls]
+Issues = "https://gitlab.com/JakobDev/jdMinecraftLauncher/-/issues"
+Source = "https://gitlab.com/JakobDev/jdMinecraftLauncher"
+Donation = "https://ko-fi.com/jakobdev"
+
+[project.scripts]
+jdMinecraftLauncher = "jdMinecraftLauncher.jdMinecraftLauncher:main"
+
+[tool.setuptools]
+packages = ["jdMinecraftLauncher"]
+
+[tool.setuptools.dynamic]
+version = { file = "jdMinecraftLauncher/version.txt" }

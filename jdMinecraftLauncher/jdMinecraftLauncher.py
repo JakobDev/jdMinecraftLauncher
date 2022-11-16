@@ -1,7 +1,7 @@
 from jdMinecraftLauncher.Functions import hasInternetConnection, showMessageBox, getAccountDict
 from jdMinecraftLauncher.gui.LoginWindow import LoginWindow
 from jdMinecraftLauncher.gui.MainWindow import MainWindow
-from jdMinecraftLauncher.Enviroment import Enviroment
+from jdMinecraftLauncher.Environment import Environment
 from PyQt6.QtWidgets import QApplication, QSplashScreen
 import minecraft_launcher_lib
 import copy
@@ -10,7 +10,7 @@ import sys
 
 def main():
     app = QApplication(sys.argv)
-    env = Enviroment(app)
+    env = Environment(app)
 
     app.setApplicationName("jdMinecraftLauncher")
     app.setDesktopFileName("com.gitlab.JakobDev.jdMinecraftLauncher")
@@ -53,9 +53,10 @@ def main():
             env.mainWindow.openMainWindow()
     else:
         if not env.args.offline_mode and hasInternetConnection():
+            splash_screen.close()
             env.loginWindow.show()
         else:
-            showMessageBox("messagebox.nointernet.title","messagebox.nointernet.text",self.env,lambda: sys.exit(0))
+            showMessageBox("messagebox.nointernet.title","messagebox.nointernet.text", env, lambda: sys.exit(0))
             env.mainWindow.profileWindow.close()
             env.mainWindow.close()
             env.loginWindow.close()

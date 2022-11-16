@@ -1,10 +1,15 @@
 from PyQt6.QtWebEngineWidgets import QWebEngineView
+from typing import TYPE_CHECKING
 from PyQt6.QtCore import QUrl
 import minecraft_launcher_lib
 
 
+if TYPE_CHECKING:
+    from jdMinecraftLauncher.Environment import Environment
+
+
 class LoginWindow(QWebEngineView):
-    def __init__(self, env):
+    def __init__(self, env: "Environment"):
         super().__init__()
         self.env = env
 
@@ -22,16 +27,12 @@ class LoginWindow(QWebEngineView):
             # Get the code from the url
             auth_code = minecraft_launcher_lib.microsoft_account.get_auth_code_from_url(url.toString())
             # Do the login
-            account_informaton = minecraft_launcher_lib.microsoft_account.complete_login(self.env.secrets.client_id, self.env.secrets.secret, self.env.secrets.redirect_url, auth_code)
+            account_information = minecraft_launcher_lib.microsoft_account.complete_login(self.env.secrets.client_id, self.env.secrets.secret, self.env.secrets.redirect_url, auth_code)
 
             # Show the login information
-            self.show_account_information(account_informaton)
+            self.login_done(account_information)
 
-    def show_account_information(self, information_dict):
-        information_string = f'Username: {information_dict["name"]}<br>'
-        information_string += f'UUID: {information_dict["id"]}<br>'
-        information_string += f'Token: {information_dict["access_token"]}<br>'
-
+    def login_done(self, information_dict: minecraft_launcher_lib.microsoft_types.CompleteLoginResponse):
         accountData = {
             "name": information_dict["name"],
             "accessToken": information_dict["access_token"],

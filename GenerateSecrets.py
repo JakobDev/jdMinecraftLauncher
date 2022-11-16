@@ -4,7 +4,7 @@ import argparse
 import json
 
 
-def encrypt(text: Optional[str])-> str:
+def encrypt(text: Optional[str]) -> Optional[str]:
     if text is None:
         return None
     text = text[::-1]

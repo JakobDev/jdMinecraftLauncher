@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <component type="desktop">
-  <!--Created with jdAppdataEdit 4.0-->
+  <!--Created with jdAppdataEdit 5.1-->
   <id>com.gitlab.JakobDev.jdMinecraftLauncher</id>
   <name>jdMinecraftLauncher</name>
   <summary>A classic styled Minecraft Launcher</summary>
@@ -44,8 +44,14 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="4.0" date="2022-07-18" type="stable">
+    <release version="4.1" date="2022-11-16" type="stable">
       <description>
+        <ul>
+          <li>Make splash screen disappear on login screen</li>
+        </ul>
+      </description>
+    </release>
+    <release version="4.0" date="2022-07-18" type="stable"><description>
         <ul>
           <li>Allow creating a Shortcut</li>
           <li>Add commandline options</li>
@@ -86,7 +92,7 @@
         </ul>
       </description>
     </release>
-    <release version="2.3" date="2020-05-15" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/2.3</url><description>
+    <release version="2.3" date="2020-05-16" type="stable"><url>https://gitlab.com/JakobDev/jdMinecraftLauncher/-/releases/2.3</url><description>
         <ul>
           <li>Add option to extract natives separately</li>
           <li>Make Play Button bigger</li>

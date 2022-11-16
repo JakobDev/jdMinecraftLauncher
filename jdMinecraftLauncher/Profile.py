@@ -1,7 +1,13 @@
+from typing import TYPE_CHECKING
 import minecraft_launcher_lib
 
-class Profile():
-    def __init__(self, name, env):
+
+if TYPE_CHECKING:
+    from jdMinecraftLauncher.Environment import Environment
+
+
+class Profile:
+    def __init__(self, name: str, env: "Environment"):
         self.env = env
         self.name = name
         self.version = ""
@@ -27,7 +33,7 @@ class Profile():
         self.demoMode = False
         self.useGameMode = False
 
-    def getVersion(self):
+    def getVersion(self) -> str:
         if self.useLatestVersion:
             return "release " + self.env.versions["latest"]["release"]
         elif self.useLatestSnapshot:
@@ -35,17 +41,17 @@ class Profile():
         else:
             return self.version
 
-    def getVersionID(self):
+    def getVersionID(self) -> str:
         versiontype, versionid = self.getVersion().split(" ")
         return versionid
 
-    def getGameDirectoryPath(self):
+    def getGameDirectoryPath(self) -> str:
         if self.customGameDirectory:
             return self.gameDirectoryPath
         else:
             return self.env.minecraftDir
 
-    def getJavaPath(self):
+    def getJavaPath(self) -> str:
         if self.customExecutable:
             return self.executable
         else:

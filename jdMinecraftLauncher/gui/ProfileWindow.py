@@ -1,18 +1,24 @@
 from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QCheckBox, QComboBox, QPushButton, QFileDialog, QMessageBox, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
-from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIntValidator
 from jdMinecraftLauncher.Profile import Profile
 from jdMinecraftLauncher.Functions import saveProfiles, openFile, findJavaRuntimes, isFlatpak
+from typing import TYPE_CHECKING
 import platform
 import shutil
 import os
 
 
+if TYPE_CHECKING:
+    from jdMinecraftLauncher.gui.MainWindow import MainWindow
+    from jdMinecraftLauncher.Environment import Environment
+    from jdMinecraftLauncher.Profile import Profile
+
+
 class ProfileWindow(QWidget):
-    def __init__(self, enviroment, parrent):
+    def __init__(self, env: "Environment", parent: "MainWindow"):
         super().__init__()
-        self.env = enviroment
-        self.mainwindow = parrent
+        self.env = env
+        self.mainwindow = parent
         self.profileNameEdit = QLineEdit()
         self.gameDirectoryCheckbox = QCheckBox(self.env.translate("profilewindow,checkbox.gameDirectory"))
         self.gameDirectoryBrowseButton = QPushButton(self.env.translate("profilewindow.button.browse"))
@@ -179,7 +185,7 @@ class ProfileWindow(QWidget):
             if path[0] != "":
                 self.executableEdit.lineEdit().setText(path[0])
 
-    def loadProfile(self, profile, isNew, copyText=False):
+    def loadProfile(self, profile: "Profile", isNew: bool, copyText: bool = False):
         if isNew:
             if copyText:
                 self.profileNameEdit.setText(self.env.translate("profilewindow.copyOf") % profile.name)
@@ -227,24 +233,24 @@ class ProfileWindow(QWidget):
             profile = Profile(self.profileNameEdit.text(),self.env)
         else:
             profile.name = self.profileNameEdit.text()
-        profile.customGameDirectory = self.toBoolean(self.gameDirectoryCheckbox.isChecked())
+        profile.customGameDirectory = self.gameDirectoryCheckbox.isChecked()
         profile.gameDirectoryPath = self.gameDirectoryEdit.text()
-        profile.customResolution = self.toBoolean(self.resolutionCheckbox.isChecked())
+        profile.customResolution = self.resolutionCheckbox.isChecked()
         profile.resolutionX = self.resolutionEditX.text()
         profile.resolutionY = self.resolutionEditY.text()
-        profile.customLauncherVisibility = self.toBoolean(self.launcherVisibilityCheckbox.isChecked())
+        profile.customLauncherVisibility = self.launcherVisibilityCheckbox.isChecked()
         profile.launcherVisibility = self.launcherVisibilityCombobox.currentIndex()
-        profile.enableSnapshots = self.toBoolean(self.enableSnapshots.isChecked())
-        profile.enableBeta = self.toBoolean(self.enableBeta.isChecked())
-        profile.enableAlpha = self.toBoolean(self.enableAlpha.isChecked())
-        profile.customExecutable = self.toBoolean(self.executableCheckbox.isChecked())
+        profile.enableSnapshots = self.enableSnapshots.isChecked()
+        profile.enableBeta = self.enableBeta.isChecked()
+        profile.enableAlpha = self.enableAlpha.isChecked()
+        profile.customExecutable = self.executableCheckbox.isChecked()
         profile.executable = self.executableEdit.currentText()
-        profile.customArguments = self.toBoolean(self.jvmArgumentsCheckbox.isChecked())
-        profile.serverConnect = self.toBoolean(self.serverCheckbox.isChecked())
+        profile.customArguments = self.jvmArgumentsCheckbox.isChecked()
+        profile.serverConnect = self.serverCheckbox.isChecked()
         profile.arguments = self.jvmArgumentsEdit.text()
         profile.serverIP = self.serverEdit.text()
         profile.serverPort = self.portEdit.text()
-        profile.demoMode = bool(self.demoModeCheckbox.isChecked())
+        profile.demoMode = self.demoModeCheckbox.isChecked()
         profile.useGameMode = self.gameModeCheckBox.isChecked()
         version = self.versionSelectCombobox.currentText()
         if version == self.env.translate("profilewindow.useLatestVersion"):
@@ -260,7 +266,7 @@ class ProfileWindow(QWidget):
         if self.isNew:
             self.env.profiles.append(profile)
             self.env.selectedProfile = len(self.env.profiles) - 1
-        self.mainwindow.updateProfilList()
+        self.mainwindow.updateProfileList()
         saveProfiles(self.env)
         self.close()
 
@@ -286,11 +292,3 @@ class ProfileWindow(QWidget):
             for i in range(self.versionSelectCombobox.count()):
                 if self.versionSelectCombobox.itemText(i) == self.selectedVersion:
                     self.versionSelectCombobox.setCurrentIndex(i)
-
-    def toBoolean(self, value):
-        if value == Qt.CheckState.Checked:
-            return True
-        elif value == Qt.CheckState.Unchecked:
-            return False
-        else:
-            return value

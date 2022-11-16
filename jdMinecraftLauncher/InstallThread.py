@@ -1,10 +1,12 @@
 from PyQt6.QtCore import QThread, pyqtSignal
 import minecraft_launcher_lib
 
+
 class InstallThread(QThread):
     progress_max = pyqtSignal("int")
     progress = pyqtSignal("int")
     text = pyqtSignal("QString")
+
     def __init__(self, env):
         QThread.__init__(self)
         self.callback = {

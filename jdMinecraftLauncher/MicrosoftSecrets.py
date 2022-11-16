@@ -1,10 +1,14 @@
+from typing import TYPE_CHECKING
 import json
 import os
 
 
-class MicrosoftSecrets():
-    def __init__(self, env):
-        # In my opionion, it is not possible to hide the credentials from a person who really want it
+if TYPE_CHECKING:
+    from jdMinecraftLauncher.Environment import Environment
+
+class MicrosoftSecrets:
+    def __init__(self, env: "Environment"):
+        # In my opinion, it is not possible to hide the credentials from a person who really want it
         # This little "encryption" ist just to hide it from Bots
 
         if os.path.isfile(os.path.join(env.dataDir, "secrets.json")):
@@ -22,8 +26,8 @@ class MicrosoftSecrets():
 
     def _decrypt(self, json_key: str, obj_key: str):
         if self._json_data[json_key] is None:
-             setattr(self, obj_key, None)
-             return
+            setattr(self, obj_key, None)
+            return
         if not self._json_data["encrypted"]:
             setattr(self, obj_key, self._json_data[json_key])
             return

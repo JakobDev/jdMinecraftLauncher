@@ -2,13 +2,15 @@ from PyQt6.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout
 from PyQt6.QtCore import QUrl, QLocale, Qt, QProcess
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebEngineCore import QWebEngineProfile
-from PyQt6.QtGui import QCursor, QAction, QIcon
+from PyQt6.QtGui import QCursor, QAction, QIcon, QContextMenuEvent, QCloseEvent
 from jdMinecraftLauncher.gui.ProfileWindow import ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
 from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox, createDesktopFile
 from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import getMinecraftCommand
+from jdMinecraftLauncher.Environment import Environment
 import minecraft_launcher_lib
+from typing import List
 import webbrowser
 import subprocess
 import platform
@@ -19,8 +21,9 @@ import json
 import sys
 import os
 
+
 class ProfileEditorTab(QTableWidget):
-    def __init__(self,env,mainwindow):
+    def __init__(self, env: Environment, mainwindow: "MainWindow"):
         super().__init__(0,2)
         self.env = env
         self.mainWindow = mainwindow
@@ -34,7 +37,7 @@ class ProfileEditorTab(QTableWidget):
         self.updateProfiles()
 
     def updateProfiles(self):
-        while (self.rowCount() > 0):
+        while self.rowCount() > 0:
             self.removeRow(0)
         count = 0
         for i in self.env.profiles:
@@ -50,7 +53,7 @@ class ProfileEditorTab(QTableWidget):
             self.setItem(count, 1, versionItem) 
             count += 1
 
-    def contextMenuEvent(self, event):
+    def contextMenuEvent(self, event: QContextMenuEvent):
         self.menu = QMenu(self)
 
         addProfile = QAction(self.env.translate("profiletab.contextmenu.addProfile"), self)
@@ -101,7 +104,7 @@ class ProfileEditorTab(QTableWidget):
         else:
             del self.env.profiles[self.currentRow()]
             self.env.selectedProfile = 0
-            self.mainWindow.updateProfilList()
+            self.mainWindow.updateProfileList()
 
     def createShortcut(self):
         box = QMessageBox()
@@ -133,8 +136,8 @@ class ProfileEditorTab(QTableWidget):
             createDesktopFile(os.path.expanduser("~/.local/share/applications"), name)
 
 class VersionEditorTab(QTableWidget):
-    def __init__(self,env):
-        super().__init__(0,2)
+    def __init__(self, env: Environment):
+        super().__init__(0, 2)
         self.env = env
 
         self.uninstallVersion = QAction(self.env.translate("versiontab.contextmenu.uninstallVersion"), self)
@@ -154,8 +157,8 @@ class VersionEditorTab(QTableWidget):
             self.uninstallVersion.setEnabled(False)
         else:
             self.uninstallVersion.setEnabled(True)
-        while (self.rowCount() > 0):
-                self.removeRow(0)
+        while self.rowCount() > 0:
+            self.removeRow(0)
         count = 0
         for i in self.env.installedVersion:
             idItem = QTableWidgetItem(i["id"])
@@ -167,7 +170,7 @@ class VersionEditorTab(QTableWidget):
             self.setItem(count, 1, typeItem) 
             count += 1
 
-    def contextMenuEvent(self, event):
+    def contextMenuEvent(self, event: QContextMenuEvent):
         self.menu = QMenu(self)
 
         self.menu.addAction(self.uninstallVersion)
@@ -180,7 +183,7 @@ class VersionEditorTab(QTableWidget):
         self.updateVersions()
 
 class OptionsTab(QWidget):
-    def __init__(self,env):
+    def __init__(self, env: Environment):
         self.env = env
         super().__init__()
         self.languageComboBox = QComboBox()
@@ -224,7 +227,7 @@ class OptionsTab(QWidget):
         self.env.settings.extractNatives = bool(self.extractNativesCheckBox.checkState())
 
 class SwitchAccountButton(QPushButton):
-    def __init__(self,text,env,pos):
+    def __init__(self, text: str, env: Environment, pos: int):
         self.env = env
         self.pos = pos
         super().__init__(text)
@@ -242,7 +245,7 @@ class SwitchAccountButton(QPushButton):
             self.env.loginWindow.show()
 
 class ForgeTab(QTableWidget):
-    def __init__(self, env, mainWindow):
+    def __init__(self, env: Environment, mainWindow: "MainWindow"):
         self.env = env
         self.mainWindow = mainWindow
         super().__init__(0,2)
@@ -289,12 +292,12 @@ class ForgeTab(QTableWidget):
                 return
 
     def setButtonsEnabled(self, enabled: bool):
-         for i in range(self.rowCount()):
-             self.cellWidget(i, 1).setEnabled(enabled)
+        for i in range(self.rowCount()):
+            self.cellWidget(i, 1).setEnabled(enabled)
 
 
 class FabricTab(QTableWidget):
-    def __init__(self, env, mainWindow):
+    def __init__(self, env: Environment, mainWindow: "MainWindow"):
         self.env = env
         self.mainWindow = mainWindow
         super().__init__(0,2)
@@ -341,7 +344,7 @@ class FabricTab(QTableWidget):
 
 
 class AccountTab(QTableWidget):
-    def __init__(self,env):
+    def __init__(self, env: Environment):
         self.env = env
         super().__init__(0,2)
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -403,7 +406,7 @@ class AboutTab(QWidget):
         self.setLayout(self.mainLayout)
 
 class GameOutputTab(QPlainTextEdit):
-    def __init__(self,env):
+    def __init__(self, env: Environment):
         super().__init__()
         self.env = env
         self.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
@@ -436,7 +439,7 @@ class GameOutputTab(QPlainTextEdit):
             except Exception:
                 pass
 
-    def executeCommand(self,profile, command, natives_path):
+    def executeCommand(self,profile: Profile, command: List[str], natives_path: str):
         self.profile = profile
         self.natives_path = natives_path
         self.process = QProcess(self)
@@ -447,23 +450,23 @@ class GameOutputTab(QPlainTextEdit):
         self.process.start(command[0], command[1:])
 
 class Tabs(QTabWidget):
-    def __init__(self,env,parrent):
+    def __init__(self, env: Environment, parent: "MainWindow"):
         super().__init__()
         QWebEngineProfile.defaultProfile().setHttpAcceptLanguage(QLocale.system().name())
         QWebEngineProfile.defaultProfile().setHttpUserAgent("jdMinecraftLauncher/" + env.launcherVersion)
         webView = QWebEngineView()
         webView.load(QUrl(env.settings.newsURL))
         self.addTab(webView,env.translate("mainwindow.tab.news"))
-        self.profileEditor = ProfileEditorTab(env,parrent)
+        self.profileEditor = ProfileEditorTab(env, parent)
         self.addTab(self.profileEditor,env.translate("mainwindow.tab.profileEditor"))
         self.versionTab = VersionEditorTab(env)
         self.addTab(self.versionTab,env.translate("mainwindow.tab.versionEditor"))
         self.options = OptionsTab(env)
         self.addTab(self.options,env.translate("mainwindow.tab.options"))
         if not env.offlineMode:
-            self.forgeTab = ForgeTab(env, parrent)
+            self.forgeTab = ForgeTab(env, parent)
             self.addTab(self.forgeTab, "Forge")
-            self.fabricTab = FabricTab(env, parrent)
+            self.fabricTab = FabricTab(env, parent)
             self.addTab(self.fabricTab, "Fabric")
         self.accountTab = AccountTab(env)
         self.addTab(self.accountTab,"Account")
@@ -474,10 +477,10 @@ class Tabs(QTabWidget):
         self.profileEditor.updateProfiles()
 
 class MainWindow(QWidget):
-    def __init__(self, enviroment):
+    def __init__(self, env: Environment):
         super().__init__()
-        self.env = enviroment
-        self.tabWidget = Tabs(enviroment,self)
+        self.env = env
+        self.tabWidget = Tabs(env, self)
         self.profileWindow = ProfileWindow(self.env,self)
         self.progressBar = QProgressBar()
         self.profileComboBox = QComboBox()
@@ -528,12 +531,12 @@ class MainWindow(QWidget):
         self.mainLayout.addWidget(self.progressBar)
         self.mainLayout.addLayout(self.barLayout)
 
-        self.updateProfilList()
+        self.updateProfileList()
     
         self.setWindowTitle("jdMinecraftLauncher")
         self.setLayout(self.mainLayout)
 
-        self.installThread = InstallThread(enviroment)
+        self.installThread = InstallThread(env)
         self.installThread.text.connect(lambda text: self.progressBar.setFormat(text))
         self.installThread.progress.connect(lambda progress: self.progressBar.setValue(progress))
         self.installThread.progress_max.connect(lambda progress_max: self.progressBar.setMaximum(progress_max))
@@ -558,7 +561,7 @@ class MainWindow(QWidget):
         self._is_first_open = True
         self.show()
 
-    def updateProfilList(self):
+    def updateProfileList(self):
         currentIndex = self.env.selectedProfile
         self.profileComboBox.clear()
         for i in self.env.profiles:
@@ -566,7 +569,7 @@ class MainWindow(QWidget):
         self.tabWidget.updateProfiles()
         self.profileComboBox.setCurrentIndex(currentIndex)
 
-    def profileComboBoxIndexChanged(self, index):
+    def profileComboBoxIndexChanged(self, index: int):
         self.env.selectedProfile = index
         
     def newProfileButtonClicked(self):
@@ -605,7 +608,7 @@ class MainWindow(QWidget):
             self.env.account = self.env.accountList[0]
             self.updateAccountInformation()
 
-    def startMinecraft(self,profile):
+    def startMinecraft(self, profile: Profile):
         if self.env.settings.extractNatives:
             natives_path = os.path.join(tempfile.gettempdir(),"minecraft_natives_" + str(random.randrange(0,10000000)))
         else:
@@ -626,7 +629,7 @@ class MainWindow(QWidget):
             self.profileWindow.updateVersionsList
             self.setInstallButtonsEnabled(True)
 
-    def installVersion(self,profile):
+    def installVersion(self, profile: Profile):
         self.env.current_running_profile = profile
         self.playButton.setEnabled(False)
         self.installThread.setup(profile)

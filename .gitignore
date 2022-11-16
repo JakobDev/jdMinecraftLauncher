@@ -8,3 +8,6 @@ jdMinecraftLauncher.egg-info/
 #Windows
 WindowsBuild/
 output/
+
+#Idea
+.idea/
