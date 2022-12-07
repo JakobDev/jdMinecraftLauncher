@@ -7,9 +7,9 @@ stages:
 build_exe:
     stage: build
     script:
-        - Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.10.0/python-3.10.0-amd64.exe -OutFile python-installer.exe
+        - Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.10.9/python-3.10.9-amd64.exe -OutFile python-installer.exe
         - .\python-installer.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0 | Out-Null
-        - Invoke-WebRequest -Uri https://jztkft.dl.sourceforge.net/project/nsis/NSIS%203/3.08/nsis-3.08-setup.exe -OutFile nsis-installer.exe
+        - Invoke-WebRequest -Uri https://prdownloads.sourceforge.net/nsis/nsis-3.08-setup.exe?download -OutFile nsis-installer.exe -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox
         - .\nsis-installer.exe /S /D=C:\NSIS
         - $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
         - pip install -r requirements.txt
