@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 import minecraft_launcher_lib
+import uuid
 
 
 if TYPE_CHECKING:
@@ -8,7 +9,8 @@ if TYPE_CHECKING:
 
 class Profile:
     def __init__(self, name: str, env: "Environment"):
-        self.env = env
+        self.env: "Environment" = env
+        self.id = self._generateProfileID()
         self.name = name
         self.version = ""
         self.useLatestVersion = True
@@ -32,6 +34,15 @@ class Profile:
         self.serverPort = ""
         self.demoMode = False
         self.useGameMode = False
+
+    def _generateProfileID(self) -> str:
+        while True:
+            current_id = str(uuid.uuid4())
+            for i in self.env.profiles:
+                if i.id == current_id:
+                    break
+            else:
+                return current_id
 
     def getVersion(self) -> str:
         if self.useLatestVersion:
@@ -58,6 +69,8 @@ class Profile:
             return "java"
 
     def load(self, objects):
+        if "id" in objects:
+            self.id = objects["id"]
         self.name = objects["name"]
         self.version = objects["version"]
         self.useLatestVersion = objects["useLatestVersion"]

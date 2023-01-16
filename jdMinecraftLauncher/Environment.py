@@ -166,4 +166,8 @@ class Environment:
                 return i
         return None
 
-
+    def getProfileByID(self, profile_id: str) -> Optional[Profile]:
+        for i in self.profiles:
+            if i.id == profile_id:
+                return i
+        return None
