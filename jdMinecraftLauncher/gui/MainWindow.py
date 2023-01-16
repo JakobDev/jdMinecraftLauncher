@@ -569,7 +569,10 @@ class MainWindow(QWidget):
         self.show()
 
      def _handleCustomURL(self, args: str) -> None:
-        method, param = args.split("/", 1)
+        try:
+            method, param = args.split("/", 1)
+        except ValueError:
+            return
 
         if method == "LaunchProfileByID":
             profile = self.env.getProfileByID(param)
