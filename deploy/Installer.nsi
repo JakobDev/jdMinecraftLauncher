@@ -100,6 +100,10 @@ Section
     IntFmt $0 "0x%08X" $0
     WriteRegDWORD SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "EstimatedSize" "$0"
 
+    ; Register custom URL Schema
+    WriteRegStr SHCTX "Software\Classes\jdMinecraftLauncher" "URL Protocol" ""
+    WriteRegStr SHCTX "Software\Classes\jdMinecraftLauncher\shell\open\command" "" "$\"${APPBIN}$\" $\"%1$\""
+
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 SectionEnd
 
@@ -110,5 +114,6 @@ Section "Uninstall"
 
     DeleteRegKey SHCTX "Software\JakobDev\${APPNAME}"
     DeleteRegKey /ifempty SHCTX "Software\JakobDev"
+    DeleteRegKey SHCTX "Software\Classes\jdMinecraftLauncher"
     DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 SectionEnd
