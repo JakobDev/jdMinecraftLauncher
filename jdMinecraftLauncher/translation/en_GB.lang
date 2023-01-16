@@ -116,6 +116,8 @@ messagebox.wrongEncryptPassword.title=Wrong Password
 messagebox.wrongEncryptPassword.text=You entered a wrong password. Please restart the program to try again. If you do not remember your password, click "Cancel" when you enter it.
 messagebox.unsupportedPlatform.title=Unsupported Platform
 messagebox.unsupportedPlatform.text=Your current Platform is not supported by jdMinecraftLauncher
+messagebox.profileNotFound.title=Profile not found
+messagebox.profileNotFound.text=The given Profile was not found
 
 inputdialog.enterPassword.title=Enter Password
 inputdialog.enterPassword.text=Please enter your password to decrypt your account passwords

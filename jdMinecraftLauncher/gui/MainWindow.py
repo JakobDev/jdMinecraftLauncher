@@ -11,6 +11,7 @@ from jdMinecraftLauncher.RunMinecraft import getMinecraftCommand
 from jdMinecraftLauncher.Environment import Environment
 import minecraft_launcher_lib
 from typing import List
+import urllib.parse
 import webbrowser
 import subprocess
 import platform
@@ -124,16 +125,16 @@ class ProfileEditorTab(QTableWidget):
         bothButton.setText(self.env.translate("profiletab.createShortcut.both"))
         bothButton.setIcon(QIcon())
 
-        name = self.env.profiles[self.currentRow()].name
+        profile = self.env.profiles[self.currentRow()]
         box.exec()
 
         if box.clickedButton() == desktopButton:
-            createDesktopFile(subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), name)
+            createDesktopFile(subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), profile)
         elif box.clickedButton() == menuButton:
-            createDesktopFile(os.path.expanduser("~/.local/share/applications"), name)
+            createDesktopFile(os.path.expanduser("~/.local/share/applications"), profile)
         elif box.clickedButton() == bothButton:
-            createDesktopFile(subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), name)
-            createDesktopFile(os.path.expanduser("~/.local/share/applications"), name)
+            createDesktopFile(subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), profile)
+            createDesktopFile(os.path.expanduser("~/.local/share/applications"), profile)
 
 class VersionEditorTab(QTableWidget):
     def __init__(self, env: Environment):
@@ -557,9 +558,31 @@ class MainWindow(QWidget):
             profile = self.env.getProfileByName(self.env.args.launch_profile)
             if profile:
                 self.env.mainWindow.launchProfile(profile)
+            else:
+                showMessageBox("messagebox.profileNotFound.title", "messagebox.profileNotFound.text", self.env)
+        elif self.env.args.url:
+            parse_results = urllib.parse.urlparse(self.env.args.url)
+            if parse_results.scheme == "jdminecraftlauncher":
+                self._handleCustomURL(parse_results.path)
 
         self._is_first_open = True
         self.show()
+
+     def _handleCustomURL(self, args: str) -> None:
+        method, param = args.split("/", 1)
+
+        if method == "LaunchProfileByID":
+            profile = self.env.getProfileByID(param)
+            if profile:
+                self.env.mainWindow.launchProfile(profile)
+            else:
+                showMessageBox("messagebox.profileNotFound.title", "messagebox.profileNotFound.text", self.env)
+        elif method == "LaunchProfileByName":
+            profile = self.env.getProfileByName(param)
+            if profile:
+                self.env.mainWindow.launchProfile(profile)
+            else:
+                showMessageBox("messagebox.profileNotFound.title", "messagebox.profileNotFound.text", self.env)
 
     def updateProfileList(self):
         currentIndex = self.env.selectedProfile

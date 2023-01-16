@@ -11,6 +11,7 @@ import os
 
 if TYPE_CHECKING:
     from jdMinecraftLauncher.Environment import Environment
+    from jdMinecraftLauncher.Profile import Profile
 
 
 def openFile(path: str):
@@ -95,21 +96,18 @@ def isFlatpak() -> bool:
     return os.path.isfile("/.flatpak-info")
 
 
-def createDesktopFile(path: str, profile_name: str):
+def createDesktopFile(path: str, profile: "Profile") -> None:
     try:
         os.makedirs(path)
     except Exception:
         pass
 
-    with open(os.path.join(path, f"com.gitlab.JakobDev.Profile.{profile_name}.desktop"), "w", encoding="utf-8") as f:
+    with open(os.path.join(path, f"com.gitlab.JakobDev.Profile.{profile.name}.desktop"), "w", encoding="utf-8") as f:
         f.write("[Desktop Entry]\n")
         f.write("Type=Application\n")
-        f.write(f"Name={profile_name}\n")
+        f.write(f"Name={profile.name}\n")
         f.write("Icon=com.gitlab.JakobDev.jdMinecraftLauncher\n")
         f.write("Categories=Game;\n")
-        if isFlatpak():
-            f.write("Exec=" + subprocess.list2cmdline(["flatpak", "run", "com.gitlab.JakobDev.jdMinecraftLauncher", "--launch-profile", profile_name]) + "\n")
-        else:
-            f.write("Exec=" + subprocess.list2cmdline(["jdMinecraftLauncher", "--launch-profile", profile_name]) + "\n")
+        f.write("Exec=" + subprocess.list2cmdline(["xdg-open", "jdMinecraftLauncher:LaunchProfileByID/" + profile.id]) + "\n")
 
-    subprocess.run(["chmod", "+x", os.path.join(path, f"com.gitlab.JakobDev.Profile.{profile_name}.desktop")])
+    subprocess.run(["chmod", "+x", os.path.join(path, f"com.gitlab.JakobDev.Profile.{profile.name}.desktop")])

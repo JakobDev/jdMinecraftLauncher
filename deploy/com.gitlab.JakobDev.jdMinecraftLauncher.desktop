@@ -8,3 +8,4 @@ Comment=A classic styled Minecraft Launcher
 Comment[de]=Ein Minecraft-Launcher im klassischen Stil
 Categories=Game;
 Keywords=Minecraft;NBT 
+MimeType=x-scheme-handler/jdMinecraftLauncher;
