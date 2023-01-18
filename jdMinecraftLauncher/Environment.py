@@ -28,6 +28,7 @@ class Environment:
         self.app = app
 
         parser = argparse.ArgumentParser()
+        parser.add_argument("url", nargs="?")
         parser.add_argument("--minecraft-dir", help="Set the Minecraft Directory")
         parser.add_argument("--data-dir", help="Set the Minecraft Directory")
         parser.add_argument("--launch-profile", help="Launch a Profile")
