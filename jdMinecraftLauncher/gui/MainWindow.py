@@ -568,7 +568,7 @@ class MainWindow(QWidget):
         self._is_first_open = True
         self.show()
 
-     def _handleCustomURL(self, args: str) -> None:
+    def _handleCustomURL(self, args: str) -> None:
         try:
             method, param = args.split("/", 1)
         except ValueError:
