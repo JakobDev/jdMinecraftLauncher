@@ -118,6 +118,8 @@ messagebox.unsupportedPlatform.title=Nicht unterstütze Platform
 messagebox.unsupportedPlatform.text=Deine aktuelle Platform wird von jdMinecraftLauncher nicht unterstützt
 messagebox.profileNotFound.title=Profil nicht gefunden
 messagebox.profileNotFound.text=Das angegebene Profil wurde nicht gefunden
+createWindowsUrlSchema.title=URL Schema hinzufügen
+createWindowsUrlSchema.text=Damit Verknüpfungen funktionieren, muss das jdMinecraftLauncher URL Schema zu Windows hinzugefügt werden. Möchtest du es jetzt hinzufügen?
 
 inputdialog.enterPassword.title=Passwort eingeben
 inputdialog.enterPassword.text=Bitte gib dein Passwort ein, um die Anmeldedaten zu entschlüsseln

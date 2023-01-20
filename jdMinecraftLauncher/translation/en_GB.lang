@@ -118,6 +118,8 @@ messagebox.unsupportedPlatform.title=Unsupported Platform
 messagebox.unsupportedPlatform.text=Your current Platform is not supported by jdMinecraftLauncher
 messagebox.profileNotFound.title=Profile not found
 messagebox.profileNotFound.text=The given Profile was not found
+createWindowsUrlSchema.title=Add URL Schema
+createWindowsUrlSchema.text=To make Shortcuts work, you need to add the jdMinecraftLauncher URL Schema to Windows. Should it be added?
 
 inputdialog.enterPassword.title=Enter Password
 inputdialog.enterPassword.text=Please enter your password to decrypt your account passwords

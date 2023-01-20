@@ -5,7 +5,8 @@ from PyQt6.QtWebEngineCore import QWebEngineProfile
 from PyQt6.QtGui import QCursor, QAction, QIcon, QContextMenuEvent, QCloseEvent
 from jdMinecraftLauncher.gui.ProfileWindow import ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
-from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox, createDesktopFile
+from jdMinecraftLauncher.Shortcut import ShortcutLocation, canCreateShortcuts, createShortcut
+from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox
 from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import getMinecraftCommand
 from jdMinecraftLauncher.Environment import Environment
@@ -13,7 +14,6 @@ import minecraft_launcher_lib
 from typing import List
 import urllib.parse
 import webbrowser
-import subprocess
 import platform
 import tempfile
 import random
@@ -77,7 +77,7 @@ class ProfileEditorTab(QTableWidget):
         openGameFolder.triggered.connect(lambda: openFile(self.env.profiles[self.currentRow()].getGameDirectoryPath()))
         self.menu.addAction(openGameFolder)
 
-        if platform.system() == "Linux":
+        if canCreateShortcuts():
             createShortcut = QAction(self.env.translate("profiletab.contextmenu.createShortcut"), self)
             createShortcut.triggered.connect(self.createShortcut)
             self.menu.addAction(createShortcut)
@@ -129,12 +129,12 @@ class ProfileEditorTab(QTableWidget):
         box.exec()
 
         if box.clickedButton() == desktopButton:
-            createDesktopFile(subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), profile)
+            createShortcut(self.env, profile, ShortcutLocation.DESKTOP)
         elif box.clickedButton() == menuButton:
-            createDesktopFile(os.path.expanduser("~/.local/share/applications"), profile)
+            createShortcut(self.env, profile, ShortcutLocation.MENU)
         elif box.clickedButton() == bothButton:
-            createDesktopFile(subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), profile)
-            createDesktopFile(os.path.expanduser("~/.local/share/applications"), profile)
+            createShortcut(self.env, profile, ShortcutLocation.DESKTOP)
+            createShortcut(self.env, profile, ShortcutLocation.MENU)
 
 class VersionEditorTab(QTableWidget):
     def __init__(self, env: Environment):

@@ -6,12 +6,12 @@ import requests
 import shutil
 import socket
 import json
+import sys
 import os
 
 
 if TYPE_CHECKING:
     from jdMinecraftLauncher.Environment import Environment
-    from jdMinecraftLauncher.Profile import Profile
 
 
 def openFile(path: str):
@@ -96,18 +96,6 @@ def isFlatpak() -> bool:
     return os.path.isfile("/.flatpak-info")
 
 
-def createDesktopFile(path: str, profile: "Profile") -> None:
-    try:
-        os.makedirs(path)
-    except Exception:
-        pass
-
-    with open(os.path.join(path, f"com.gitlab.JakobDev.Profile.{profile.name}.desktop"), "w", encoding="utf-8") as f:
-        f.write("[Desktop Entry]\n")
-        f.write("Type=Application\n")
-        f.write(f"Name={profile.name}\n")
-        f.write("Icon=com.gitlab.JakobDev.jdMinecraftLauncher\n")
-        f.write("Categories=Game;\n")
-        f.write("Exec=" + subprocess.list2cmdline(["xdg-open", "jdMinecraftLauncher:LaunchProfileByID/" + profile.id]) + "\n")
-
-    subprocess.run(["chmod", "+x", os.path.join(path, f"com.gitlab.JakobDev.Profile.{profile.name}.desktop")])
+def isFrozen() -> bool:
+    """Check if the App is fozen with PyInstaller"""
+    return hasattr(sys, "frozen")
