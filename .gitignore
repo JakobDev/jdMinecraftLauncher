@@ -11,3 +11,6 @@ output/
 
 #Idea
 .idea/
+
+#AppImage
+*.AppImage

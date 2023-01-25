@@ -51,8 +51,15 @@ Donation = "https://ko-fi.com/jakobdev"
 [project.scripts]
 jdMinecraftLauncher = "jdMinecraftLauncher.jdMinecraftLauncher:main"
 
-[tool.setuptools]
-packages = ["jdMinecraftLauncher"]
+[tool.setuptools.packages]
+find = {namespaces = false}
 
 [tool.setuptools.dynamic]
 version = { file = "jdMinecraftLauncher/version.txt" }
+
+[tool.pyproject-appimage]
+script = "jdMinecraftLauncher"
+output = "jdMinecraftLauncher.AppImage"
+icon = "jdMinecraftLauncher/Icon.svg"
+rename-icon = "com.gitlab.JakobDev.jdMinecraftLauncher"
+desktop-entry = "deploy/com.gitlab.JakobDev.jdMinecraftLauncher.desktop"
