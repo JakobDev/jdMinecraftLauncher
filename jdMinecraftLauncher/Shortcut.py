@@ -1,6 +1,8 @@
 from jdMinecraftLauncher.Functions import isFrozen
+from PyQt6.QtCore import QCoreApplication
 from PyQt6.QtWidgets import QMessageBox
 from typing import TYPE_CHECKING
+from PyQt6.QtGui import QIcon
 from enum import Enum
 import subprocess
 import platform
@@ -46,7 +48,7 @@ def _ensureWindowsUrlSchema(env: "Environment") -> None:
     except FileNotFoundError:
         pass
 
-    if QMessageBox.question(env.mainWindow, env.translate("createWindowsUrlSchema.title"), env.translate("createWindowsUrlSchema.text"), QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
+    if QMessageBox.question(env.mainWindow, QCoreApplication.translate("Shortcut", "Add URL Schema"), QCoreApplication.translate("Shortcut", "To make Shortcuts work, you need to add the jdMinecraftLauncher URL Schema to Windows. Should it be added?"), QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
         return
 
     with winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER, r"SOFTWARE\Classes\jdMinecraftLauncher", 0, winreg.KEY_WRITE) as protocolKey:
@@ -86,3 +88,32 @@ def createShortcut(env: "Environment", profile: "Profile", location: ShortcutLoc
             _createWindowsShortcut(str(pathlib.Path.home() / "Desktop"), profile)
         elif location == ShortcutLocation.MENU:
             _createWindowsShortcut(os.path.join(os.getenv("APPDATA"), "Microsoft", "Windows", "Start Menu", "Programs"), profile)
+
+
+def askCreateShortcut(env: "Environment", profile: "Profile") -> None:
+    box = QMessageBox()
+    box.setText(QCoreApplication.translate("Shortcut", "Select where you want to create the Shortcut"))
+    box.setWindowTitle(QCoreApplication.translate("Shortcut", "Create Shortcut"))
+    box.setStandardButtons(QMessageBox.StandardButton.Save | QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel)
+
+    desktopButton = box.button(QMessageBox.StandardButton.Save)
+    desktopButton.setText(QCoreApplication.translate("Shortcut", "Desktop"))
+    desktopButton.setIcon(QIcon())
+
+    menuButton = box.button(QMessageBox.StandardButton.Discard)
+    menuButton.setText(QCoreApplication.translate("Shortcut", "Menu"))
+    menuButton.setIcon(QIcon())
+
+    bothButton = box.button(QMessageBox.StandardButton.Cancel)
+    bothButton.setText(QCoreApplication.translate("Shortcut", "Both"))
+    bothButton.setIcon(QIcon())
+
+    box.exec()
+
+    if box.clickedButton() == desktopButton:
+        createShortcut(env, profile, ShortcutLocation.DESKTOP)
+    elif box.clickedButton() == menuButton:
+        createShortcut(env, profile, ShortcutLocation.MENU)
+    elif box.clickedButton() == bothButton:
+        createShortcut(env, profile, ShortcutLocation.DESKTOP)
+        createShortcut(env, profile, ShortcutLocation.MENU)

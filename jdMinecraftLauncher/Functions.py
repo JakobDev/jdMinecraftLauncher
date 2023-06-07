@@ -24,6 +24,9 @@ def openFile(path: str):
 
 
 def saveProfiles(env: "Environment"):
+    if env.args.dont_save_data:
+        return
+
     profileList = []
     for a in env.profiles:
         b = vars(a)
@@ -34,16 +37,6 @@ def saveProfiles(env: "Environment"):
         profileList.append(c)
     with open(os.path.join(env.dataDir, "profiles.json"), 'w', encoding='utf-8') as f:
         json.dump({"selectedProfile":env.selectedProfile,"profileList":profileList}, f, ensure_ascii=False, indent=4)
-
-
-def showMessageBox(title: str, text: str, env: "Environment", callback=None):
-    messageBox = QMessageBox()
-    messageBox.setWindowTitle(env.translate(title))
-    messageBox.setText(env.translate(text))
-    messageBox.setStandardButtons(QMessageBox.StandardButton.Ok)
-    if callback != None:
-        messageBox.buttonClicked.connect(callback)
-    messageBox.exec()
 
 
 def hasInternetConnection() -> bool:
@@ -97,5 +90,5 @@ def isFlatpak() -> bool:
 
 
 def isFrozen() -> bool:
-    """Check if the App is fozen with PyInstaller"""
+    """Check if the App is frozen with PyInstaller"""
     return hasattr(sys, "frozen")

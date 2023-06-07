@@ -1,7 +1,9 @@
-from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QCheckBox, QComboBox, QPushButton, QFileDialog, QMessageBox, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
-from PyQt6.QtGui import QIntValidator
-from jdMinecraftLauncher.Profile import Profile
+from PyQt6.QtWidgets import QDialog, QLabel, QLineEdit, QCheckBox, QComboBox, QPushButton, QFileDialog, QMessageBox, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
 from jdMinecraftLauncher.Functions import saveProfiles, openFile, findJavaRuntimes, isFlatpak
+from jdMinecraftLauncher.Shortcut import canCreateShortcuts, askCreateShortcut
+from jdMinecraftLauncher.Profile import Profile
+from PyQt6.QtCore import QCoreApplication
+from PyQt6.QtGui import QIntValidator
 from typing import TYPE_CHECKING
 import platform
 import shutil
@@ -14,47 +16,51 @@ if TYPE_CHECKING:
     from jdMinecraftLauncher.Profile import Profile
 
 
-class ProfileWindow(QWidget):
+class ProfileWindow(QDialog):
     def __init__(self, env: "Environment", parent: "MainWindow"):
         super().__init__()
         self.env = env
         self.mainwindow = parent
-        self.profileNameEdit = QLineEdit()
-        self.gameDirectoryCheckbox = QCheckBox(self.env.translate("profilewindow,checkbox.gameDirectory"))
-        self.gameDirectoryBrowseButton = QPushButton(self.env.translate("profilewindow.button.browse"))
+        self.profileeNameEdit = QLineEdit()
+        self.gameDirectoryCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Game Directory:"))
+        self.gameDirectoryBrowseButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Browse"))
         self.gameDirectoryEdit = QLineEdit()
-        self.resolutionCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.resolution"))
+        self.resolutionCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Resolution:"))
         self.resolutionEditX = QLineEdit()
         self.resolutionLabel = QLabel("x")
         self.resolutionEditY = QLineEdit()
-        self.launcherVisibilityCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.launcherVisibility"))
+        self.launcherVisibilityCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Launcher Visibility:"))
         self.launcherVisibilityCombobox = QComboBox()
-        self.enableSnapshots = QCheckBox(self.env.translate("profilewindow.checkbox.enableSnapshots"))
-        self.enableBeta = QCheckBox(self.env.translate("profilewindow.checkbox.enableBeta"))
-        self.enableAlpha = QCheckBox(self.env.translate("profilewindow.checkbox.enableAlpha"))
+        self.enableSnapshots = QCheckBox(QCoreApplication.translate("ProfileWindow", 'Enable experimental development Versions ("snapshots")'))
+        self.enableBeta = QCheckBox(QCoreApplication.translate("ProfileWindow", 'Allow use of old "Beta" Minecraft Versions (From 2010-2011)'))
+        self.enableAlpha = QCheckBox(QCoreApplication.translate("ProfileWindow", 'Allow use of old "Alpha" Minecraft Versions (From 2010)'))
         self.versionSelectCombobox = QComboBox()
-        self.executableCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.executable"))
+        self.executableCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Executable:"))
         self.executableEdit = QComboBox()
-        self.executableButton = QPushButton(self.env.translate("profilewindow.button.browse"))
-        self.jvmArgumentsCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.jvmArguments"))
+        self.executableButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Browse"))
+        self.jvmArgumentsCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "JVM Arguments:"))
         self.jvmArgumentsEdit = QLineEdit()
-        self.serverCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.serverConnect"))
-        self.serverLabel = QLabel(self.env.translate("profilewindow.label.ip"))
+        self.serverCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Connect to Server"))
+        self.serverLabel = QLabel(QCoreApplication.translate("ProfileWindow", "Server IP:"))
         self.serverEdit = QLineEdit()
-        self.portLabel = QLabel(self.env.translate("profilewindow.label.port"))
+        self.portLabel = QLabel(QCoreApplication.translate("ProfileWindow", "Server Port:"))
         self.portEdit = QLineEdit()
-        self.demoModeCheckbox = QCheckBox(self.env.translate("profilewindow.checkbox.demoMode"))
-        self.gameModeCheckBox = QCheckBox(self.env.translate("profilewindow.checkbox.gameMode"))
-        self.cancelButton = QPushButton(self.env.translate("profilewindow.button.cancel"))
-        self.openGameDirectoryButton = QPushButton(self.env.translate("profilewindow.button.openGameDir"))
-        self.saveProfileButton = QPushButton(self.env.translate("profilewindow.button.saveProfile"))
+        self.demoModeCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Start in demo mode"))
+        self.disableMultiplayerCheckBox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Disable Multiplayer"))
+        self.disableChatCheckBox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Disable Chat"))
+        self.gameModeCheckBox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Use Gamemode"))
+        self.cancelButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Cancel"))
+        self.minecraftOptionsEdit = QLineEdit()
+        self.createShortcutButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Create Shortcut"))
+        self.openGameDirectoryButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Open Game Dir"))
+        self.saveProfileButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Save Profile"))
 
         self.resolutionEditX.setValidator(QIntValidator(self.resolutionEditX))
         self.resolutionEditY.setValidator(QIntValidator(self.resolutionEditY))
 
-        self.launcherVisibilityCombobox.addItem(self.env.translate("profilewindow.launcherVisibility.hide"))
-        self.launcherVisibilityCombobox.addItem(self.env.translate("profilewindow.launcherVisibility.close"))
-        self.launcherVisibilityCombobox.addItem(self.env.translate("profilewindow.launcherVisibility.keep"))
+        self.launcherVisibilityCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Hide Launcher and re-open when game closes"))
+        self.launcherVisibilityCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Close Launcher when Game starts"))
+        self.launcherVisibilityCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Keep the Launcher open"))
 
         self.executableEdit.setEditable(True)
         self.executableEdit.addItems(findJavaRuntimes())
@@ -67,7 +73,8 @@ class ProfileWindow(QWidget):
         self.enableBeta.stateChanged.connect(self.updateVersionsList)
         self.enableAlpha.stateChanged.connect(self.updateVersionsList)
         self.cancelButton.clicked.connect(self.close)
-        self.openGameDirectoryButton.clicked.connect(lambda: openFile(self.profil.getGameDirectoryPath()))
+        self.createShortcutButton.clicked.connect(lambda: askCreateShortcut(self.env, self.profile))
+        self.openGameDirectoryButton.clicked.connect(lambda: openFile(self.profile.getGameDirectoryPath()))
         self.saveProfileButton.clicked.connect(self.saveProfile)
         self.executableCheckbox.stateChanged.connect(lambda: self.executableEdit.setEnabled(self.executableCheckbox.isChecked()) or self.executableButton.setEnabled(self.executableCheckbox.isChecked()))
         self.executableButton.clicked.connect(self.browseExecutableClicked)
@@ -85,18 +92,18 @@ class ProfileWindow(QWidget):
         self.resolutionLayout.addWidget(self.resolutionEditY)
         
         self.profileInfoLayout = QGridLayout()
-        self.profileInfoLayout.addWidget(QLabel(self.env.translate("profilewindow.label.profileInfo")),0,0)
-        self.profileInfoLayout.addWidget(QLabel(self.env.translate("profilewindow.label.profileName")),1,0)
-        self.profileInfoLayout.addWidget(self.profileNameEdit,1,1)
-        self.profileInfoLayout.addWidget(self.gameDirectoryCheckbox,2,0)
+        self.profileInfoLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Profile Info")), 0, 0)
+        self.profileInfoLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Profile Name:")), 1, 0)
+        self.profileInfoLayout.addWidget(self.profileeNameEdit, 1, 1)
+        self.profileInfoLayout.addWidget(self.gameDirectoryCheckbox, 2, 0)
         self.profileInfoLayout.addLayout(gameDirectoryLayout, 2, 1)
-        self.profileInfoLayout.addWidget(self.resolutionCheckbox,3,0)
-        self.profileInfoLayout.addLayout(self.resolutionLayout,3,1)
-        self.profileInfoLayout.addWidget(self.launcherVisibilityCheckbox,4,0)
-        self.profileInfoLayout.addWidget(self.launcherVisibilityCombobox,4,1)
+        self.profileInfoLayout.addWidget(self.resolutionCheckbox, 3, 0)
+        self.profileInfoLayout.addLayout(self.resolutionLayout, 3, 1)
+        self.profileInfoLayout.addWidget(self.launcherVisibilityCheckbox, 4, 0)
+        self.profileInfoLayout.addWidget(self.launcherVisibilityCombobox, 4, 1)
 
         self.useVersionLayout = QHBoxLayout()
-        self.useVersionLayout.addWidget(QLabel(self.env.translate("profilewindow.label.useVersion")))
+        self.useVersionLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Use Version:")))
         self.useVersionLayout.addWidget(self.versionSelectCombobox)
 
         javaExecutableLayout = QHBoxLayout()
@@ -105,10 +112,10 @@ class ProfileWindow(QWidget):
         javaExecutableLayout.setSpacing(1)
 
         self.javaSettingsLayout = QGridLayout()
-        self.javaSettingsLayout.addWidget(self.executableCheckbox,0,0)
+        self.javaSettingsLayout.addWidget(self.executableCheckbox, 0, 0)
         self.javaSettingsLayout.addLayout(javaExecutableLayout, 0, 1)
-        self.javaSettingsLayout.addWidget(self.jvmArgumentsCheckbox,1,0)
-        self.javaSettingsLayout.addWidget(self.jvmArgumentsEdit,1,1)
+        self.javaSettingsLayout.addWidget(self.jvmArgumentsCheckbox, 1, 0)
+        self.javaSettingsLayout.addWidget(self.jvmArgumentsEdit, 1, 1)
 
         self.serverLayout = QGridLayout()
         self.serverLayout.addWidget(self.serverLabel,0,0)
@@ -116,31 +123,39 @@ class ProfileWindow(QWidget):
         self.serverLayout.addWidget(self.portLabel,1,0)
         self.serverLayout.addWidget(self.portEdit,1,1)
 
-        self.buttonLayout = QHBoxLayout()
-        self.buttonLayout.addWidget(self.cancelButton)
-        self.buttonLayout.addStretch(1)
-        self.buttonLayout.addWidget(self.openGameDirectoryButton)
-        self.buttonLayout.addWidget(self.saveProfileButton)
+        minecraftOptionsLayout = QHBoxLayout()
+        minecraftOptionsLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Additional Options:")))
+        minecraftOptionsLayout.addWidget(self.minecraftOptionsEdit)
+
+        buttonLayout = QHBoxLayout()
+        buttonLayout.addWidget(self.cancelButton)
+        buttonLayout.addWidget(self.createShortcutButton)
+        buttonLayout.addStretch(1)
+        buttonLayout.addWidget(self.openGameDirectoryButton)
+        buttonLayout.addWidget(self.saveProfileButton)
         
         self.mainLayout = QVBoxLayout()
         self.mainLayout.addLayout(self.profileInfoLayout)
-        self.mainLayout.addWidget(QLabel(self.env.translate("profilewindow.label.versionSelect")))
+        self.mainLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Version Select")))
         self.mainLayout.addWidget(self.enableSnapshots)
         self.mainLayout.addWidget(self.enableBeta)
         self.mainLayout.addWidget(self.enableAlpha)
         self.mainLayout.addLayout(self.useVersionLayout)
-        self.mainLayout.addWidget(QLabel(self.env.translate("profilewindow.javaSettings")))
+        self.mainLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Java Settings (Advanced)")))
         self.mainLayout.addLayout(self.javaSettingsLayout)
-        self.mainLayout.addWidget(QLabel(self.env.translate("profilewindow.checkbox.other")))
+        self.mainLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Other")))
         self.mainLayout.addWidget(self.serverCheckbox)
         self.mainLayout.addLayout(self.serverLayout)
         self.mainLayout.addWidget(self.demoModeCheckbox)
+        self.mainLayout.addWidget(self.disableMultiplayerCheckBox)
+        self.mainLayout.addWidget(self.disableChatCheckBox)
+        self.mainLayout.addLayout(minecraftOptionsLayout)
         if platform.system() == "Linux":
             self.mainLayout.addWidget(self.gameModeCheckBox)
-        self.mainLayout.addLayout(self.buttonLayout)
+        self.mainLayout.addLayout(buttonLayout)
 
         self.mainLayout.setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
-        self.setWindowTitle(self.env.translate("profilewindow.title"))
+        self.setWindowTitle(QCoreApplication.translate("ProfileWindow", "Profile Editor"))
         self.setLayout(self.mainLayout)
         self.selectLatestVersion = True
 
@@ -171,7 +186,7 @@ class ProfileWindow(QWidget):
 
     def browseExecutableClicked(self):
         if isFlatpak():
-            QMessageBox.information(self, self.env.translate("profilewindow.executableFlatpakInfo.title"), self.env.translate("profilewindow.executableFlatpakInfo.text"))
+            QMessageBox.information(self, QCoreApplication.translate("ProfileWindow", "Note for Flatpak users"),  QCoreApplication.translate("ProfileWindow", "Please select in the following dialog the directory which contains bin/java"))
             path = QFileDialog.getExistingDirectory()
             if path == "":
                 return
@@ -179,7 +194,7 @@ class ProfileWindow(QWidget):
             if os.path.isfile(javaPath):
                 self.executableEdit.lineEdit().setText(javaPath)
             else:
-                QMessageBox.critical(self, self.env.translate("profilewindow.executableFlatpakWrongDir.title"), self.env.translate("profilewindow.executableFlatpakWrongDir.text"))
+                QMessageBox.critical(self, QCoreApplication.translate("ProfileWindow", "Invalid directory"), QCoreApplication.translate("ProfileWindow", "This directory does not contain bin/java"))
         else:
             path = QFileDialog.getOpenFileName(directory = self.executableEdit.currentText())
             if path[0] != "":
@@ -188,11 +203,11 @@ class ProfileWindow(QWidget):
     def loadProfile(self, profile: "Profile", isNew: bool, copyText: bool = False):
         if isNew:
             if copyText:
-                self.profileNameEdit.setText(self.env.translate("profilewindow.copyOf") % profile.name)
+                self.profileeNameEdit.setText(QCoreApplication.translate("ProfileWindow", "Copy of {{name}}").replace("{{name}}", profile.name))
             else:
-                self.profileNameEdit.setText(profile.name)
+                self.profileeNameEdit.setText(profile.name)
         else:
-            self.profileNameEdit.setText(profile.name)
+            self.profileeNameEdit.setText(profile.name)
         self.gameDirectoryCheckbox.setChecked(profile.customGameDirectory)
         self.gameDirectoryEdit.setEnabled(profile.customGameDirectory)
         self.gameDirectoryBrowseButton.setEnabled(profile.customGameDirectory)
@@ -220,19 +235,25 @@ class ProfileWindow(QWidget):
         self.serverEdit.setText(profile.serverIP)
         self.portEdit.setText(profile.serverPort)
         self.demoModeCheckbox.setChecked(profile.demoMode)
+        self.disableMultiplayerCheckBox.setChecked(profile.disableMultiplayer)
+        self.disableChatCheckBox.setChecked(profile.disableChat)
+        self.minecraftOptionsEdit.setText(profile.minecraftOptions)
         self.gameModeCheckBox.setChecked(profile.useGameMode)
         self.changeCustomResolution()
         self.changeServerConnect()
         self.updateVersionsList()
-        self.profil = profile
+
+        self.createShortcutButton.setVisible(not isNew and canCreateShortcuts())
+
+        self.profile = profile
         self.isNew = isNew
 
     def saveProfile(self):
-        profile = self.profil
+        profile = self.profile
         if self.isNew:
-            profile = Profile(self.profileNameEdit.text(),self.env)
+            profile = Profile(self.profileeNameEdit.text(), self.env)
         else:
-            profile.name = self.profileNameEdit.text()
+            profile.name = self.profileeNameEdit.text()
         profile.customGameDirectory = self.gameDirectoryCheckbox.isChecked()
         profile.gameDirectoryPath = self.gameDirectoryEdit.text()
         profile.customResolution = self.resolutionCheckbox.isChecked()
@@ -251,12 +272,15 @@ class ProfileWindow(QWidget):
         profile.serverIP = self.serverEdit.text()
         profile.serverPort = self.portEdit.text()
         profile.demoMode = self.demoModeCheckbox.isChecked()
+        profile.disableMultiplayer = self.disableMultiplayerCheckBox.isChecked()
+        profile.disableChat = self.disableChatCheckBox.isChecked()
+        profile.minecraftOptions = self.minecraftOptionsEdit.text().strip()
         profile.useGameMode = self.gameModeCheckBox.isChecked()
-        version = self.versionSelectCombobox.currentText()
-        if version == self.env.translate("profilewindow.useLatestVersion"):
+        version = self.versionSelectCombobox.currentData()
+        if version == "latestRelease":
             profile.useLatestVersion = True
             profile.useLatestSnapshot = False
-        elif version == self.env.translate("profilewindow.useLatestSnapshot"):
+        elif version == "latestSnapshot":
             profile.useLatestSnapshot = True
             profile.useLatestVersion = False
         else:
@@ -264,31 +288,31 @@ class ProfileWindow(QWidget):
             profile.useLatestSnapshot = False
             profile.version = version
         if self.isNew:
-            self.env.profiles.append(profile)
-            self.env.selectedProfile = len(self.env.profiles) - 1
+            self.env.profileCollection.profileList.append(profile)
+            self.env.profileCollection.selectedProfile = profile.id
         self.mainwindow.updateProfileList()
-        saveProfiles(self.env)
+        self.env.profileCollection.save()
         self.close()
 
     def updateVersionsList(self):
         self.versionSelectCombobox.clear()
-        self.versionSelectCombobox.addItem(self.env.translate("profilewindow.useLatestVersion"))
+        self.versionSelectCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Use latest Version"), "latestRelease")
         if self.enableSnapshots.isChecked():
-            self.versionSelectCombobox.addItem(self.env.translate("profilewindoe.useLatestSnapshot"))
+            self.versionSelectCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Use latest Snapshot"), "latestSnapshot")
         for i in self.env.versions["versions"]:
             if i["type"] == "release":
-                self.versionSelectCombobox.addItem("release " + i["id"])
+                self.versionSelectCombobox.addItem("release " + i["id"], i["id"])
             elif i["type"] == "snapshot" and self.enableSnapshots.isChecked():
-                self.versionSelectCombobox.addItem("snapshot " + i["id"])
+                self.versionSelectCombobox.addItem("snapshot " + i["id"], i["id"])
             elif i["type"] == "old_beta" and self.enableBeta.isChecked():
-                self.versionSelectCombobox.addItem("old_beta " + i["id"])
+                self.versionSelectCombobox.addItem("old_beta " + i["id"], i["id"])
             elif i["type"] == "old_alpha" and self.enableAlpha.isChecked():
-                self.versionSelectCombobox.addItem("old_alpha " + i["id"])
+                self.versionSelectCombobox.addItem("old_alpha " + i["id"], i["id"])
         if self.selectLatestVersion:
             self.versionSelectCombobox.setCurrentIndex(0)
         elif self.selectLatestSnapshot and self.enableSnapshots.isChecked():
             self.versionSelectCombobox.setCurrentIndex(1)
         else:
             for i in range(self.versionSelectCombobox.count()):
-                if self.versionSelectCombobox.itemText(i) == self.selectedVersion:
+                if self.versionSelectCombobox.itemText(i).split(" ", 1)[1] == self.selectedVersion:
                     self.versionSelectCombobox.setCurrentIndex(i)

@@ -3,6 +3,7 @@ from PyQt6.QtCore import pyqtClassInfo, pyqtSlot, pyqtProperty
 from PyQt6.QtDBus import QDBusConnection, QDBusAbstractAdaptor
 from PyQt6.QtWidgets import QApplication
 from typing import TYPE_CHECKING
+import json
 import sys
 import os
 
@@ -42,9 +43,13 @@ class DBusService(QDBusAbstractAdaptor):
             profileList.append(i.name)
         return profileList
 
+    @pyqtSlot(result=str)
+    def GetProfile(self):
+        return json.dumps(self._env.profileCollection.getSelectedProfile().toDict())
+
     @pyqtSlot(str, result=list)
-    def GetMinecraftCommand(self, name: str):
-        profile = self._env.getProfileByName(name)
+    def GetMinecraftCommand(self, profile_id: str):
+        profile = self._env.profileCollection.getProfileByID(profile_id)
         if profile:
             return getMinecraftCommand(profile, self._env, "")
 

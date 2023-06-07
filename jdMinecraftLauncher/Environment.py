@@ -1,8 +1,7 @@
-from jdTranslationHelper import jdTranslationHelper
 from jdMinecraftLauncher.Profile import Profile
 from jdMinecraftLauncher.Settings import Settings
 from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
-from PyQt6.QtCore import QLocale, QTranslator, QLibraryInfo
+from jdMinecraftLauncher.ProfileCollection import ProfileCollection
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
@@ -33,7 +32,8 @@ class Environment:
         parser.add_argument("--data-dir", help="Set the Minecraft Directory")
         parser.add_argument("--launch-profile", help="Launch a Profile")
         parser.add_argument("--offline-mode", help="Force offline Mode", action="store_true")
-        parser.add_argument("--force-start", help="Forces the start on unsupported Platfoms", action="store_true")
+        parser.add_argument("--force-start", help="Forces the start on unsupported Platforms", action="store_true")
+        parser.add_argument("--dont-save-data", help="Dont save data to the disk", action="store_true")
         self.args = parser.parse_known_args()[0]
 
         if self.args.minecraft_dir:
@@ -42,7 +42,7 @@ class Environment:
             self.minecraftDir = minecraft_launcher_lib.utils.get_minecraft_directory()
 
         if self.args.data_dir:
-            self.data_dir = self.args.data_dir
+            self.dataDir = self.args.data_dir
         else:
             self.dataDir = self.getDataPath()
 
@@ -54,22 +54,8 @@ class Environment:
 
         self.secrets = MicrosoftSecrets(self)
 
-        self.settings = Settings(self)
-
-        self.qt_translator = QTranslator()
-        self.webengine_translator = QTranslator()
-        qt_trans_dir = QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)
-        if self.settings.language == "default":
-            system_language = QLocale.system().name()
-            self.translations = jdTranslationHelper(lang=system_language)
-            self.qt_translator.load(os.path.join(qt_trans_dir, "qt_" + system_language.split("_")[0] + ".qm"))
-            self.qt_translator.load(os.path.join(qt_trans_dir, "qt_" + system_language + ".qm"))
-        else:
-            self.translations = jdTranslationHelper(lang=self.settings.language)
-            self.qt_translator.load(os.path.join(qt_trans_dir, "qt_" + self.settings.language.split("_")[0] + ".qm"))
-            self.qt_translator.load(os.path.join(qt_trans_dir, "qt_" + self.settings.language + ".qm"))
-        self.translations.loadDirectory(os.path.join(self.currentDir,"translation"))
-        self.app.installTranslator(self.qt_translator)
+        self.settings = Settings()
+        self.settings.load(os.path.join(self.dataDir, "settings.json"))
 
         self.accountList = []
         self.selectedAccount = 0
@@ -87,42 +73,29 @@ class Environment:
 
         self.loadVersions()
 
+        self.profileCollection = ProfileCollection(self)
+        self.profileCollection.loadProfiles()
+
         self.profiles: list[Profile] = []
         self.selectedProfile = 0
-        if os.path.isfile(os.path.join(self.dataDir, "profiles.json")):
-            with open(os.path.join(self.dataDir, "profiles.json")) as f:
-                data = json.load(f)
-                if isinstance(data,list):
-                    profileList = data
-                else:
-                    profileList = data["profileList"]
-                    self.selectedProfile = data["selectedProfile"]
-            for i in profileList:
-                p = Profile(i["name"],self)
-                p.load(i)
-                self.profiles.append(p)
-        else:
-            self.profiles.append(Profile("Default",self))
 
-    def translate(self, string: str, default: Optional[str] = None) -> str:
-        #Just a litle shortcut
-        return self.translations.translate(string, default=default)
+        if os.path.isdir(self.dataDir):
+            self.firstLaunch = False
+        else:
+            self.firstLaunch = True
 
     def getDataPath(self) -> str:
-        if os.path.isdir(os.path.join(self.minecraftDir, "jdMinecraftLauncher")):
-            return os.path.join(self.minecraftDir, "jdMinecraftLauncher")
-        elif platform.system() == "Windows":
-            return os.path.join(os.getenv("appdata"),"jdMinecraftLauncher")
+        if platform.system() == "Windows":
+            return os.path.join(os.getenv("APPDATA"), "JakobDev", "jdMinecraftLauncher")
         elif platform.system() == "Darwin":
-            return os.path.join(str(Path.home()),"Library","Application Support","jdMinecraftLauncher")
+            return os.path.join(str(Path.home()), "Library", "Application Support", "JakobDev", "jdMinecraftLauncher")
         elif platform.system() == "Haiku":
-            return os.path.join(str(Path.home()),"config","settings","jdMinecraftLauncher")
+            return os.path.join(str(Path.home()), "config", "settings", "JakobDev", "jdMinecraftLauncher")
         else:
             if os.getenv("XDG_DATA_HOME"):
-                return os.path.join(os.getenv("XDG_DATA_HOME"),"jdMinecraftLauncher")
+                return os.path.join(os.getenv("XDG_DATA_HOME"), "JakobDev", "jdMinecraftLauncher")
             else:
-                return os.path.join(str(Path.home()),".local","share","jdMinecraftLauncher")
-
+                return os.path.join(str(Path.home()), ".local", "share", "JakobDev", "jdMinecraftLauncher")
     def loadVersions(self):
         if not self.offlineMode:
             try:
@@ -153,9 +126,8 @@ class Environment:
                         except json.decoder.JSONDecodeError as e:
                             print("Error while parsing " + json_path + ": " + e.args[0])
                             continue
-                    tmp = {}
-                    tmp["id"] = vinfo["id"]
-                    tmp["type"] = vinfo["type"]
+
+                    tmp = {"id": vinfo["id"], "type": vinfo["type"]}
                     self.installedVersion.append(tmp)
 
                     if vinfo["id"] not in versioncheck:

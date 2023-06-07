@@ -1,6 +1,6 @@
 from PyQt6.QtWebEngineWidgets import QWebEngineView
+from PyQt6.QtCore import QUrl, QCoreApplication
 from typing import TYPE_CHECKING
-from PyQt6.QtCore import QUrl
 import minecraft_launcher_lib
 
 
@@ -13,7 +13,7 @@ class LoginWindow(QWebEngineView):
         super().__init__()
         self.env = env
 
-        self.setWindowTitle(env.translate("loginwindow.title"))
+        self.setWindowTitle(QCoreApplication.translate("LoginWindow", "Login"))
 
         # Open the login url
         self.load(QUrl(minecraft_launcher_lib.microsoft_account.get_login_url(self.env.secrets.client_id, self.env.secrets.redirect_url)))

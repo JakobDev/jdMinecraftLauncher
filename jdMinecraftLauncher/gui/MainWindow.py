@@ -1,15 +1,16 @@
 from PyQt6.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QMenu, QLineEdit, QSizePolicy, QMessageBox
-from PyQt6.QtCore import QUrl, QLocale, Qt, QProcess
+from PyQt6.QtCore import QUrl, QLocale, Qt, QProcess, QCoreApplication
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebEngineCore import QWebEngineProfile
 from PyQt6.QtGui import QCursor, QAction, QIcon, QContextMenuEvent, QCloseEvent
 from jdMinecraftLauncher.gui.ProfileWindow import ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
-from jdMinecraftLauncher.Shortcut import ShortcutLocation, canCreateShortcuts, createShortcut
-from jdMinecraftLauncher.Functions import openFile, saveProfiles, showMessageBox
+from jdMinecraftLauncher.Shortcut import canCreateShortcuts, askCreateShortcut
+from jdMinecraftLauncher.Functions import openFile
 from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import getMinecraftCommand
 from jdMinecraftLauncher.Environment import Environment
+from jdMinecraftLauncher.Languages import getLanguageNames
 import minecraft_launcher_lib
 from typing import List
 import urllib.parse
@@ -29,7 +30,7 @@ class ProfileEditorTab(QTableWidget):
         self.env = env
         self.mainWindow = mainwindow
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.setHorizontalHeaderLabels((self.env.translate("profiletab.profileName"),self.env.translate("profiletab.minecraftVersion")))
+        self.setHorizontalHeaderLabels((QCoreApplication.translate("MainWindow", "Profile Name"), QCoreApplication.translate("MainWindow", "Minecraft Version")))
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         self.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
@@ -41,11 +42,13 @@ class ProfileEditorTab(QTableWidget):
         while self.rowCount() > 0:
             self.removeRow(0)
         count = 0
-        for i in self.env.profiles:
+        for i in self.env.profileCollection.profileList:
             nameItem = QTableWidgetItem(i.name)
             nameItem.setFlags(nameItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
             if i.useLatestVersion:
-                versionItem = QTableWidgetItem(self.env.translate("profiletab.latestVersion"))
+                versionItem = QTableWidgetItem(QCoreApplication.translate("MainWindow", "(Latest version)"))
+            elif i.useLatestSnapshot:
+                versionItem = QTableWidgetItem(QCoreApplication.translate("MainWindow", "(Latest snapshot)"))
             else:
                 versionItem = QTableWidgetItem(i.version)
             versionItem.setFlags(versionItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
@@ -57,95 +60,63 @@ class ProfileEditorTab(QTableWidget):
     def contextMenuEvent(self, event: QContextMenuEvent):
         self.menu = QMenu(self)
 
-        addProfile = QAction(self.env.translate("profiletab.contextmenu.addProfile"), self)
+        addProfile = QAction(QCoreApplication.translate("MainWindow", "Add Profile"), self)
         addProfile.triggered.connect(self.addProfile)
         self.menu.addAction(addProfile)
     
-        editProfile = QAction(self.env.translate("profiletab.contextmenu.editProfile"), self)
+        editProfile = QAction(QCoreApplication.translate("MainWindow", "Edit Profile"), self)
         editProfile.triggered.connect(self.editProfile)
         self.menu.addAction(editProfile)
 
-        copyProfile = QAction(self.env.translate("profiletab.contextmenu.copyProfile"), self)
+        copyProfile = QAction(QCoreApplication.translate("MainWindow", "Copy Profile"), self)
         copyProfile.triggered.connect(self.copyProfile)
         self.menu.addAction(copyProfile)
 
-        removeProfile = QAction(self.env.translate("profiletab.contextmenu.removeProfile"), self)
+        removeProfile = QAction(QCoreApplication.translate("MainWindow", "Remove Profile"), self)
         removeProfile.triggered.connect(self.removeProfile)
         self.menu.addAction(removeProfile)
 
-        openGameFolder = QAction(self.env.translate("profiletab.contextmenu.openGameFolder"), self)
-        openGameFolder.triggered.connect(lambda: openFile(self.env.profiles[self.currentRow()].getGameDirectoryPath()))
+        openGameFolder = QAction(QCoreApplication.translate("MainWindow", "Open Game Folder"), self)
+        openGameFolder.triggered.connect(lambda: openFile(self.env.profileCollection.profileList[self.currentRow()].getGameDirectoryPath()))
         self.menu.addAction(openGameFolder)
 
         if canCreateShortcuts():
-            createShortcut = QAction(self.env.translate("profiletab.contextmenu.createShortcut"), self)
-            createShortcut.triggered.connect(self.createShortcut)
+            createShortcut = QAction(QCoreApplication.translate("MainWindow", "Create Shortcut"), self)
+            createShortcut.triggered.connect(lambda: askCreateShortcut(self.env, self.env.profileCollection.profileList[self.currentRow()]))
             self.menu.addAction(createShortcut)
 
         self.menu.popup(QCursor.pos())
 
     def addProfile(self):
-        self.mainWindow.profileWindow.loadProfile(Profile(self.env.translate("profiletab.newProfile"),self.env),True)
-        self.mainWindow.profileWindow.show()
-        self.mainWindow.profileWindow.setFocus()
+        self.mainWindow.profileWindow.loadProfile(Profile(QCoreApplication.translate("MainWindow", "New Profile"), self.env), True)
+        self.mainWindow.profileWindow.exec()
 
     def editProfile(self):
-        self.mainWindow.profileWindow.loadProfile(self.env.profiles[self.currentRow()],False)
-        self.mainWindow.profileWindow.show()
-        self.mainWindow.profileWindow.setFocus()
+        self.mainWindow.profileWindow.loadProfile(self.env.profileCollection.profileList[self.currentRow()],False)
+        self.mainWindow.profileWindow.exec()
 
     def copyProfile(self):
-        self.mainWindow.profileWindow.loadProfile(self.env.profiles[self.currentRow()],True,True)
-        self.mainWindow.profileWindow.show()
-        self.mainWindow.profileWindow.setFocus()
+        self.mainWindow.profileWindow.loadProfile(self.env.profileCollection.profileList[self.currentRow()], True, True)
+        self.mainWindow.profileWindow.exec()
 
     def removeProfile(self):
-        if len(self.env.profiles) == 1:
-            showMessageBox("profiletab.removeError.title","profiletab.removeError.text",self.env)
+        if len(self.env.profileCollection.profileList) == 1:
+            QMessageBox.critical(self.mainWindow, QCoreApplication.translate("MainWindow", "Can't delete Profile"), QCoreApplication.translate("MainWindow", "You can't delete all Profiles. At least one Profile must stay."))
         else:
-            del self.env.profiles[self.currentRow()]
-            self.env.selectedProfile = 0
+            del self.env.profileCollection.profileList[self.currentRow()]
+            self.env.selectedProfile = self.env.profileCollection.profileList[0].id
             self.mainWindow.updateProfileList()
-
-    def createShortcut(self):
-        box = QMessageBox()
-        box.setText(self.env.translate("profiletab.createShortcut.text"))
-        box.setWindowTitle(self.env.translate("profiletab.createShortcut.title"))
-        box.setStandardButtons(QMessageBox.StandardButton.Save| QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel)
-
-        desktopButton = box.button(QMessageBox.StandardButton.Save)
-        desktopButton.setText(self.env.translate("profiletab.createShortcut.desktop"))
-        desktopButton.setIcon(QIcon())
-
-        menuButton = box.button(QMessageBox.StandardButton.Discard )
-        menuButton.setText(self.env.translate("profiletab.createShortcut.menu"))
-        menuButton.setIcon(QIcon())
-
-        bothButton = box.button(QMessageBox.StandardButton.Cancel)
-        bothButton.setText(self.env.translate("profiletab.createShortcut.both"))
-        bothButton.setIcon(QIcon())
-
-        profile = self.env.profiles[self.currentRow()]
-        box.exec()
-
-        if box.clickedButton() == desktopButton:
-            createShortcut(self.env, profile, ShortcutLocation.DESKTOP)
-        elif box.clickedButton() == menuButton:
-            createShortcut(self.env, profile, ShortcutLocation.MENU)
-        elif box.clickedButton() == bothButton:
-            createShortcut(self.env, profile, ShortcutLocation.DESKTOP)
-            createShortcut(self.env, profile, ShortcutLocation.MENU)
 
 class VersionEditorTab(QTableWidget):
     def __init__(self, env: Environment):
         super().__init__(0, 2)
         self.env = env
 
-        self.uninstallVersion = QAction(self.env.translate("versiontab.contextmenu.uninstallVersion"), self)
+        self.uninstallVersion = QAction(QCoreApplication.translate("MainWindow", "Uninstall Version"), self)
         self.uninstallVersion.triggered.connect(self.uninstallVersionClicked)
 
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.setHorizontalHeaderLabels((self.env.translate("versiontab.minecraftVersion"),self.env.translate("versiontab.versionType")))
+        self.setHorizontalHeaderLabels((QCoreApplication.translate("MainWindow", "Minecraft Version"), QCoreApplication.translate("MainWindow", "Version Type")))
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         self.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
@@ -179,38 +150,45 @@ class VersionEditorTab(QTableWidget):
         self.menu.popup(QCursor.pos())
 
     def uninstallVersionClicked(self):
-        shutil.rmtree(os.path.join(self.env.minecraftDir,"versions",self.env.installedVersion[self.currentRow()]["id"]))
+        shutil.rmtree(os.path.join(self.env.minecraftDir, "versions", self.env.installedVersion[self.currentRow()]["id"]))
         del self.env.installedVersion[self.currentRow()]
         self.updateVersions()
 
 class OptionsTab(QWidget):
     def __init__(self, env: Environment):
-        self.env = env
         super().__init__()
+        self.env = env
+
         self.languageComboBox = QComboBox()
         self.urlEdit = QLineEdit()
-        self.allowMultiLaunchCheckBox = QCheckBox(env.translate("optionstab.checkBox.allowMultiLaunch"))
-        self.extractNativesCheckBox = QCheckBox(env.translate("optionstab.checkBox.extractNatives"))
+        self.allowMultiLaunchCheckBox = QCheckBox(QCoreApplication.translate("MainWindow", "Allow starting multiple instances (not recommended)"))
+        self.extractNativesCheckBox = QCheckBox(QCoreApplication.translate("MainWindow", "Unpack natives separately for each instance"))
 
-        self.languageComboBox.addItem(env.translate("optionstab.combobox.systemLanguage"),"default")
-        for i in os.listdir(os.path.join(env.currentDir,"translation")):
-            self.languageComboBox.addItem(env.translate("language." + i[:-5],default=i[:-5]),i[:-5])
+        languageNames = getLanguageNames()
+        self.languageComboBox.addItem(QCoreApplication.translate("MainWindow", "Use System Language"), "default")
+        self.languageComboBox.addItem(languageNames.get("en", "en"), "en")
+        for i in os.listdir(os.path.join(env.currentDir,"translations")):
+            if not i.endswith(".qm"):
+                continue
+
+            lang = i.removeprefix("jdMinecraftLauncher_").removesuffix(".qm")
+            self.languageComboBox.addItem(languageNames.get(lang, lang), lang)
 
         for i in range(self.languageComboBox.count()):
-            if self.languageComboBox.itemData(i) == env.settings.language:
+            if self.languageComboBox.itemData(i) == env.settings.get("language"):
                 self.languageComboBox.setCurrentIndex(i)
 
-        self.urlEdit.setText(env.settings.newsURL)
-        self.allowMultiLaunchCheckBox.setChecked(self.env.settings.enableMultiLaunch)
-        self.extractNativesCheckBox.setChecked(self.env.settings.extractNatives)
+        self.urlEdit.setText(env.settings.get("newsURL"))
+        self.allowMultiLaunchCheckBox.setChecked(self.env.settings.get("enableMultiLaunch"))
+        self.extractNativesCheckBox.setChecked(self.env.settings.get("extractNatives"))
 
         self.allowMultiLaunchCheckBox.stateChanged.connect(self.multiLaunchCheckBoxChanged)
         self.extractNativesCheckBox.stateChanged.connect(self.extractNativesCheckBoxChanged)
 
         gridLayout = QGridLayout()
-        gridLayout.addWidget(QLabel(env.translate("optionstab.label.language")),0,0)
+        gridLayout.addWidget(QLabel(QCoreApplication.translate("MainWindow", "Language:")), 0, 0)
         gridLayout.addWidget(self.languageComboBox,0,1)
-        gridLayout.addWidget(QLabel(env.translate("optionstab.label.newsURL")),1,0)
+        gridLayout.addWidget(QLabel(QCoreApplication.translate("MainWindow", "News URL:")),1,0)
         gridLayout.addWidget(self.urlEdit,1,1)
 
         mainLayout = QVBoxLayout()
@@ -222,10 +200,10 @@ class OptionsTab(QWidget):
         self.setLayout(mainLayout)
 
     def multiLaunchCheckBoxChanged(self):
-        self.env.settings.enableMultiLaunch = bool(self.allowMultiLaunchCheckBox.checkState())
+        self.env.settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
 
     def extractNativesCheckBoxChanged(self):
-        self.env.settings.extractNatives = bool(self.extractNativesCheckBox.checkState())
+        self.env.settings.set("extractNatives", self.extractNativesCheckBox.isChecked())
 
 class SwitchAccountButton(QPushButton):
     def __init__(self, text: str, env: Environment, pos: int):
@@ -259,7 +237,14 @@ class ForgeTab(QTableWidget):
 
         count = 0
         minecraft_version_check = {}
-        for i in minecraft_launcher_lib.forge.list_forge_versions():
+
+        try:
+            forgeVersionList = minecraft_launcher_lib.forge.list_forge_versions()
+        except Exception:
+            print("Could not get Forge Versions", file=sys.stderr)
+            return
+
+        for i in forgeVersionList:
             minecraft_version, _ = i.split("-", 1)
 
             if minecraft_version in minecraft_version_check or not minecraft_launcher_lib.forge.supports_automatic_install(i):
@@ -270,7 +255,7 @@ class ForgeTab(QTableWidget):
             versionItem = QTableWidgetItem(i)
             versionItem.setFlags(versionItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
 
-            installButton = QPushButton(env.translate("mainwindow.button.install"))
+            installButton = QPushButton(QCoreApplication.translate("MainWindow", "Install"))
 
             installButton.clicked.connect(self.installButtonClicked)
 
@@ -309,15 +294,21 @@ class FabricTab(QTableWidget):
         self.horizontalHeader().hide()
         self.verticalHeader().hide()
 
+        try:
+            fabricVersionList = minecraft_launcher_lib.fabric.get_all_minecraft_versions()
+        except Exception:
+            print("Could not get Fabric Versions", file=sys.stderr)
+            return
+
         count = 0
-        for i in minecraft_launcher_lib.fabric.get_all_minecraft_versions():
+        for i in fabricVersionList:
             if not i["stable"]:
                 continue
 
             versionItem = QTableWidgetItem(i["version"])
             versionItem.setFlags(versionItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
 
-            installButton = QPushButton(env.translate("mainwindow.button.install"))
+            installButton = QPushButton(QCoreApplication.translate("MainWindow", "Install"))
 
             installButton.clicked.connect(self.installButtonClicked)
 
@@ -340,16 +331,17 @@ class FabricTab(QTableWidget):
                 return
 
     def setButtonsEnabled(self, enabled: bool):
-         for i in range(self.rowCount()):
-             self.cellWidget(i, 1).setEnabled(enabled)
+        for i in range(self.rowCount()):
+            self.cellWidget(i, 1).setEnabled(enabled)
 
 
 class AccountTab(QTableWidget):
     def __init__(self, env: Environment):
+        super().__init__(0, 2)
         self.env = env
-        super().__init__(0,2)
+
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.setHorizontalHeaderLabels((self.env.translate("accounttab.nameHeader"),self.env.translate("accounttab.switchHeader")))
+        self.setHorizontalHeaderLabels((QCoreApplication.translate("MainWindow", "Name"), QCoreApplication.translate("MainWindow", "Switch")))
         self.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         self.verticalHeader().hide()
@@ -361,11 +353,10 @@ class AccountTab(QTableWidget):
         for i in self.env.accountList:
             nameItem = QTableWidgetItem(i["name"])
             nameItem.setFlags(nameItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
-            button = SwitchAccountButton(self.env.translate("accounttab.button.switch"),self.env,count)
+            button = SwitchAccountButton(QCoreApplication.translate("MainWindow", "Switch"), self.env,count)
             self.insertRow(count)
             self.setItem(count, 0, nameItem)
-            self.setCellWidget(count,1,button)
-            # self.setItem(count, 1, versionItem) 
+            self.setCellWidget(count, 1, button)
             count += 1
 
     def addAccount(self):
@@ -374,20 +365,22 @@ class AccountTab(QTableWidget):
     def contextMenuEvent(self, event):
         menu = QMenu(self)
 
-        addAccountAction = QAction(self.env.translate("account.newAccount"), self)
+        addAccountAction = QAction(QCoreApplication.translate("MainWindow", "New Account"), self)
         addAccountAction.triggered.connect(self.addAccount)
         menu.addAction(addAccountAction)
 
         menu.popup(QCursor.pos())
 
 class AboutTab(QWidget):
-    def __init__(self,env):
+    def __init__(self, env: Environment):
         super().__init__()
-        self.titleLabel = QLabel(env.translate("abouttab.label.title") % env.launcherVersion)
-        self.fanmadeLabel = QLabel(env.translate("abouttab.label.fanmade"))
-        self.dependencyLabel = QLabel(env.translate("abouttab.label.dependency").format(version=minecraft_launcher_lib.utils.get_library_version()))
-        self.licenseLabel = QLabel(env.translate("abouttab.label.license"))
-        self.viewSourceButton = QPushButton(env.translate("abouttab.button.viewSource"))
+
+        self.titleLabel = QLabel("jdMinecraftLauncher " + env.launcherVersion)
+        self.fanmadeLabel = QLabel(QCoreApplication.translate("MainWindow", "This Launcher is fanmade and not from Mojang/Microsoft"))
+        self.dependencyLabel = QLabel(QCoreApplication.translate("MainWindow", "This Program uses minecraft-launcher-lib {{version}}").replace("{{version}}", minecraft_launcher_lib.utils.get_library_version()))
+        self.licenseLabel = QLabel(QCoreApplication.translate("MainWindow", "This Program is licensed under GPL 3.0"))
+        self.viewSourceButton = QPushButton(QCoreApplication.translate("MainWindow", "View Source"))
+        copyrightLabel = QLabel("Copyright © 2019-2023 JakobDev")
 
         self.viewSourceButton.clicked.connect(lambda: webbrowser.open("https://gitlab.com/JakobDev/jdMinecraftLauncher"))
 
@@ -395,6 +388,7 @@ class AboutTab(QWidget):
         self.fanmadeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.dependencyLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.licenseLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        copyrightLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.mainLayout = QGridLayout()
         self.mainLayout.addWidget(QLabel(),0,0)
@@ -403,7 +397,8 @@ class AboutTab(QWidget):
         self.mainLayout.addWidget(self.fanmadeLabel,1,1)
         self.mainLayout.addWidget(self.dependencyLabel,2,1)
         self.mainLayout.addWidget(self.licenseLabel,3,1)
-        self.mainLayout.addWidget(self.viewSourceButton,4,1)
+        self.mainLayout.addWidget(copyrightLabel, 4, 1)
+        self.mainLayout.addWidget(self.viewSourceButton, 5, 1)
         self.setLayout(self.mainLayout)
 
 class GameOutputTab(QPlainTextEdit):
@@ -420,7 +415,7 @@ class GameOutputTab(QPlainTextEdit):
         self.moveCursor(cursor.MoveOperation.End)
 
     def procStarted(self):
-        if self.env.settings.enableMultiLaunch:
+        if self.env.settings.get("enableMultiLaunch"):
             self.env.mainWindow.playButton.setEnabled(True)
             return
         if self.profile.launcherVisibility != 2:
@@ -456,23 +451,23 @@ class Tabs(QTabWidget):
         QWebEngineProfile.defaultProfile().setHttpAcceptLanguage(QLocale.system().name())
         QWebEngineProfile.defaultProfile().setHttpUserAgent("jdMinecraftLauncher/" + env.launcherVersion)
         webView = QWebEngineView()
-        webView.load(QUrl(env.settings.newsURL))
-        self.addTab(webView,env.translate("mainwindow.tab.news"))
+        webView.load(QUrl(env.settings.get("newsURL")))
+        self.addTab(webView, QCoreApplication.translate("MainWindow", "News"))
         self.profileEditor = ProfileEditorTab(env, parent)
-        self.addTab(self.profileEditor,env.translate("mainwindow.tab.profileEditor"))
+        self.addTab(self.profileEditor, QCoreApplication.translate("MainWindow", "Profile Editor"))
         self.versionTab = VersionEditorTab(env)
-        self.addTab(self.versionTab,env.translate("mainwindow.tab.versionEditor"))
+        self.addTab(self.versionTab, QCoreApplication.translate("MainWindow", "Version Editor"))
         self.options = OptionsTab(env)
-        self.addTab(self.options,env.translate("mainwindow.tab.options"))
+        self.addTab(self.options, QCoreApplication.translate("MainWindow", "Options"))
         if not env.offlineMode:
             self.forgeTab = ForgeTab(env, parent)
             self.addTab(self.forgeTab, "Forge")
             self.fabricTab = FabricTab(env, parent)
             self.addTab(self.fabricTab, "Fabric")
         self.accountTab = AccountTab(env)
-        self.addTab(self.accountTab,"Account")
+        self.addTab(self.accountTab, QCoreApplication.translate("MainWindow", "Account"))
         about = AboutTab(env)
-        self.addTab(about,env.translate("mainwindow.tab.about"))
+        self.addTab(about, QCoreApplication.translate("MainWindow", "About"))
 
     def updateProfiles(self):
         self.profileEditor.updateProfiles()
@@ -485,12 +480,12 @@ class MainWindow(QWidget):
         self.profileWindow = ProfileWindow(self.env,self)
         self.progressBar = QProgressBar()
         self.profileComboBox = QComboBox()
-        self.profilLabel = QLabel(self.env.translate("mainwindow.label.profile"))
-        self.newProfileButton = QPushButton(self.env.translate("mainwindow.button.newProfile"))
-        self.editProfileButton = QPushButton(self.env.translate("mainwindow.button.editProfile"))
-        self.playButton = QPushButton(self.env.translate("mainwindow.button.play"))
+        self.profilLabel = QLabel(QCoreApplication.translate("MainWindow", "Profile:"))
+        self.newProfileButton = QPushButton(QCoreApplication.translate("MainWindow", "New Profile"))
+        self.editProfileButton = QPushButton(QCoreApplication.translate("MainWindow", "Edit Profile"))
+        self.playButton = QPushButton(QCoreApplication.translate("MainWindow", "Play"))
         self.accountLabel = QLabel()
-        self.accountButton = QPushButton(self.env.translate("mainwindow.button.logout"))
+        self.accountButton = QPushButton(QCoreApplication.translate("MainWindow", "Logout"))
 
         self.progressBar.setTextVisible(True)
         self.profileComboBox.setCurrentIndex(self.env.selectedProfile)
@@ -513,10 +508,6 @@ class MainWindow(QWidget):
         self.profileLayout = QVBoxLayout()
         self.profileLayout.addLayout(self.profileSelectLayout)
         self.profileLayout.addLayout(self.profileButtonsLayout)
-        #self.profileLayout.addWidget(self.profilLabel,0,0)
-        #self.profileLayout.addWidget(self.profileComboBox,0,1)
-        #self.profileLayout.addWidget(self.newProfileButton,1,0)
-        #self.profileLayout.addWidget(self.editProfileButton,1,1)
 
         self.accountLayout = QVBoxLayout()
         self.accountLayout.addWidget(self.accountLabel)
@@ -559,7 +550,7 @@ class MainWindow(QWidget):
             if profile:
                 self.env.mainWindow.launchProfile(profile)
             else:
-                showMessageBox("messagebox.profileNotFound.title", "messagebox.profileNotFound.text", self.env)
+                QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
         elif self.env.args.url:
             parse_results = urllib.parse.urlparse(self.env.args.url)
             if parse_results.scheme == "jdminecraftlauncher":
@@ -579,51 +570,50 @@ class MainWindow(QWidget):
             if profile:
                 self.env.mainWindow.launchProfile(profile)
             else:
-                showMessageBox("messagebox.profileNotFound.title", "messagebox.profileNotFound.text", self.env)
+                QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
         elif method == "LaunchProfileByName":
             profile = self.env.getProfileByName(param)
             if profile:
                 self.env.mainWindow.launchProfile(profile)
             else:
-                showMessageBox("messagebox.profileNotFound.title", "messagebox.profileNotFound.text", self.env)
+                QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
 
     def updateProfileList(self):
-        currentIndex = self.env.selectedProfile
+        currentIndex = 0
         self.profileComboBox.clear()
-        for i in self.env.profiles:
+        for count, i in enumerate(self.env.profileCollection.profileList):
             self.profileComboBox.addItem(i.name)
+            if i.id == self.env.profileCollection.selectedProfile:
+                currentIndex = count
         self.tabWidget.updateProfiles()
         self.profileComboBox.setCurrentIndex(currentIndex)
 
     def profileComboBoxIndexChanged(self, index: int):
-        self.env.selectedProfile = index
+        self.env.profileCollection.selectedProfile = self.env.profileCollection.profileList[index].id
         
     def newProfileButtonClicked(self):
-        self.profileWindow.loadProfile(self.env.profiles[self.profileComboBox.currentIndex()],True,True)
-        self.profileWindow.show()
-        self.profileWindow.setFocus()
+        self.profileWindow.loadProfile(self.env.profileCollection.getSelectedProfile(), True, True)
+        self.profileWindow.exec()
 
     def editProfileButtonClicked(self):
-        self.profileWindow.loadProfile(self.env.profiles[self.profileComboBox.currentIndex()],False)
-        self.profileWindow.show()
-        self.profileWindow.setFocus()
+        self.profileWindow.loadProfile(self.env.profileCollection.getSelectedProfile(), False)
+        self.profileWindow.exec()
 
     def launchProfile(self, profile: Profile) -> None:
         if self.env.offlineMode:
             if os.path.isdir(os.path.join(self.env.minecraftDir,"versions",profile.getVersionID())):
                 self.startMinecraft(profile)
             else:
-                showMessageBox("messagebox.installinternet.title","messagebox.installinternet.text",self.env)
+                QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "No Internet Connection"), QCoreApplication.translate("MainWindow", "You need a internet connection to install a new version, but you are still able to play already installed versions."))
         else:
             self.installVersion(profile)
 
     def playButtonClicked(self):
-        profile = self.env.profiles[self.profileComboBox.currentIndex()]
-        self.launchProfile(profile)
+        self.launchProfile(self.env.profileCollection.getSelectedProfile())
 
     def logoutButtonClicked(self):
         if self.env.offlineMode:
-            showMessageBox("messagebox.needinternet.title","messagebox.needinternet.text",self.env)
+            QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "No Internet Connection"), QCoreApplication.translate("MainWindow", "This Feature needs a internet connection"))
             return
         del self.env.accountList[self.env.selectedAccount]
         if len(self.env.accountList) == 0:
@@ -635,13 +625,13 @@ class MainWindow(QWidget):
             self.updateAccountInformation()
 
     def startMinecraft(self, profile: Profile):
-        if self.env.settings.extractNatives:
-            natives_path = os.path.join(tempfile.gettempdir(),"minecraft_natives_" + str(random.randrange(0,10000000)))
+        if self.env.settings.get("extractNatives"):
+            natives_path = os.path.join(tempfile.gettempdir(), "minecraft_natives_" + str(random.randrange(0, 10000000)))
         else:
             natives_path = ""
-        args = getMinecraftCommand(self.env.profiles[self.profileComboBox.currentIndex()], self.env, natives_path)
+        args = getMinecraftCommand(self.env.profileCollection.getSelectedProfile(), self.env, natives_path)
         o = GameOutputTab(self.env)
-        tabid = self.tabWidget.addTab(o,self.env.translate("mainwindow.tab.gameOutput"))
+        tabid = self.tabWidget.addTab(o, QCoreApplication.translate("MainWindow", "Game Output"))
         self.tabWidget.setCurrentIndex(tabid)
         o.executeCommand(profile,args,natives_path)
 
@@ -652,7 +642,7 @@ class MainWindow(QWidget):
             self.startMinecraft(self.env.current_running_profile)
         else:
             self.env.loadVersions()
-            self.profileWindow.updateVersionsList
+            self.profileWindow.updateVersionsList()
             self.setInstallButtonsEnabled(True)
 
     def installVersion(self, profile: Profile):
@@ -662,12 +652,12 @@ class MainWindow(QWidget):
         self.installThread.start()
 
     def updateAccountInformation(self):
-        self.accountLabel.setText(self.env.translate("mainwindow.label.account") % self.env.account["name"])
+        self.accountLabel.setText(QCoreApplication.translate("MainWindow", "Welcome, {{name}}").replace("{{name}}", self.env.account["name"]))
         self.tabWidget.accountTab.updateAccountList()
         if self.env.offlineMode:
-            self.playButton.setText(self.env.translate("mainwindow.button.playOffline"))
+            self.playButton.setText(QCoreApplication.translate("MainWindow", "Play Offline"))
         else:
-            self.env.translate("mainwindow.button.play")
+            self.playButton.setText(QCoreApplication.translate("MainWindow", "Play"))
 
     def setInstallButtonsEnabled(self, enabled: bool):
         self.playButton.setEnabled(enabled)
@@ -675,11 +665,15 @@ class MainWindow(QWidget):
         self.tabWidget.fabricTab.setButtonsEnabled(enabled)
 
     def closeEvent(self,event):
+        if self.env.args.dont_save_data:
+            event.accept()
+            sys.exit(0)
+
         options = self.tabWidget.options
-        self.env.settings.language = options.languageComboBox.currentData()
-        self.env.settings.newsURL = options.urlEdit.text()
-        self.env.settings.enableMultiLaunch = options.allowMultiLaunchCheckBox.isChecked()
-        self.env.settings.extractNatives = options.extractNativesCheckBox.isChecked()
+        self.env.settings.set("language", options.languageComboBox.currentData())
+        self.env.settings.set("newsURL", options.urlEdit.text())
+        self.env.settings.set("enableMultiLaunch", options.allowMultiLaunchCheckBox.isChecked())
+        self.env.settings.set("extractNatives", options.extractNativesCheckBox.isChecked())
         self.env.settings.save(os.path.join(self.env.dataDir, "settings.json"))
         with open(os.path.join(self.env.dataDir, "microsoft_accounts.json"),"w") as f:
             data = {}
@@ -692,6 +686,5 @@ class MainWindow(QWidget):
                 else:
                     data["accountList"].append(i)
             json.dump(data, f, ensure_ascii=False, indent=4)
-        saveProfiles(self.env)
         event.accept()
         sys.exit(0)

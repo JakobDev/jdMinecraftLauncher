@@ -1,16 +1,19 @@
 __pycache__/
 
-#setup.py
+# Compiled Qt translations
+*.qm
+
+# Build
 build/
 dist/
 jdMinecraftLauncher.egg-info/
 
-#Windows
+# Windows
 WindowsBuild/
 output/
 
-#Idea
+# Idea
 .idea/
 
-#AppImage
+# AppImage
 *.AppImage
