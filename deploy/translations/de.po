@@ -32,7 +32,7 @@ msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:13
 msgid "Features:"
-msgstr "Features"
+msgstr "Features:"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:15
 msgid "All Minecraft versions are supported"
