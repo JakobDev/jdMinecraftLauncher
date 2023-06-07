@@ -61,5 +61,11 @@ version = { file = "jdMinecraftLauncher/version.txt" }
 script = "jdMinecraftLauncher"
 output = "jdMinecraftLauncher.AppImage"
 icon = "jdMinecraftLauncher/Icon.svg"
-rename-icon = "com.gitlab.JakobDev.jdMinecraftLauncher"
-desktop-entry = "deploy/com.gitlab.JakobDev.jdMinecraftLauncher.desktop"
+rename-icon = "page.codeberg.JakobDev.jdMinecraftLauncher.png"
+desktop-entry = "deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop"
+gettext-desktop-entry = true
+appstream = "deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml"
+gettext-appstream = true
+gettext-directory = "deploy/translations"
+python-version = "3.11"
+

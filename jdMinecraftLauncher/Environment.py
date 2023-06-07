@@ -29,11 +29,11 @@ class Environment:
         parser = argparse.ArgumentParser()
         parser.add_argument("url", nargs="?")
         parser.add_argument("--minecraft-dir", help="Set the Minecraft Directory")
-        parser.add_argument("--data-dir", help="Set the Minecraft Directory")
+        parser.add_argument("--data-dir", help="Set the Data Directory")
         parser.add_argument("--launch-profile", help="Launch a Profile")
         parser.add_argument("--offline-mode", help="Force offline Mode", action="store_true")
         parser.add_argument("--force-start", help="Forces the start on unsupported Platforms", action="store_true")
-        parser.add_argument("--dont-save-data", help="Dont save data to the disk", action="store_true")
+        parser.add_argument("--dont-save-data", help="Don't save data to the disk", action="store_true")
         self.args = parser.parse_known_args()[0]
 
         if self.args.minecraft_dir:
