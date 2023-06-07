@@ -1,4 +1,4 @@
-<interface name="com.gitlab.JakobDev.jdMinecraftLauncher">
+<interface name="page.codeberg.JakobDev.jdMinecraftLauncher">
     <method name="LaunchProfile">
         <arg direction="in" type="s" name="name"/>
         <arg direction="out" type="b" name="ok"/>

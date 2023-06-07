@@ -3,6 +3,9 @@ __pycache__/
 # Compiled Qt translations
 *.qm
 
+# Compiled gettext translations
+*.mo
+
 # Build
 build/
 dist/

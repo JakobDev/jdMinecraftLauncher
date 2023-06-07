@@ -27,15 +27,15 @@ def _createLinuxShortcut(path: str, profile: "Profile") -> None:
     except Exception:
         pass
 
-    with open(os.path.join(path, f"com.gitlab.JakobDev.Profile.{profile.name}.desktop"), "w", encoding="utf-8") as f:
+    with open(os.path.join(path, f"page.codeberg.JakobDev.Profile.{profile.name}.desktop"), "w", encoding="utf-8") as f:
         f.write("[Desktop Entry]\n")
         f.write("Type=Application\n")
         f.write(f"Name={profile.name}\n")
-        f.write("Icon=com.gitlab.JakobDev.jdMinecraftLauncher\n")
+        f.write("Icon=page.codeberg.JakobDev.jdMinecraftLauncher\n")
         f.write("Categories=Game;\n")
         f.write("Exec=" + subprocess.list2cmdline(["xdg-open", "jdMinecraftLauncher:LaunchProfileByID/" + profile.id]) + "\n")
 
-    subprocess.run(["chmod", "+x", os.path.join(path, f"com.gitlab.JakobDev.Profile.{profile.name}.desktop")])
+    subprocess.run(["chmod", "+x", os.path.join(path, f"page.codeberg.JakobDev.Profile.{profile.name}.desktop")])
 
 
 def _ensureWindowsUrlSchema(env: "Environment") -> None:

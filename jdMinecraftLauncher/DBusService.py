@@ -15,14 +15,14 @@ if TYPE_CHECKING:
 with open(os.path.join(os.path.dirname(__file__), "DBusInterface.xml"), "r", encoding="utf-8") as f:
     interface = f.read()
 
-@pyqtClassInfo("D-Bus Interface", "com.gitlab.JakobDev.jdMinecraftLauncher")
+@pyqtClassInfo("D-Bus Interface", "page.codeberg.JakobDev.jdMinecraftLauncher")
 @pyqtClassInfo("D-Bus Introspection", interface)
 class DBusService(QDBusAbstractAdaptor):
     def __init__(self, env: "Environment", parent: QApplication):
         super().__init__(parent)
         QDBusConnection.sessionBus().registerObject("/", parent)
 
-        if not QDBusConnection.sessionBus().registerService("com.gitlab.JakobDev.jdMinecraftLauncher"):
+        if not QDBusConnection.sessionBus().registerService("page.codeberg.JakobDev.jdMinecraftLauncher"):
             print(QDBusConnection.sessionBus().lastError().message(), file=sys.stderr)
 
         self._env = env

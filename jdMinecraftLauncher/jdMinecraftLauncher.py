@@ -16,7 +16,7 @@ def main():
 
     app.setWindowIcon(env.icon)
     app.setApplicationName("jdMinecraftLauncher")
-    app.setDesktopFileName("com.gitlab.JakobDev.jdMinecraftLauncher")
+    app.setDesktopFileName("page.codeberg.JakobDev.jdMinecraftLauncher")
 
     app_translator = QTranslator()
     qt_translator = QTranslator()

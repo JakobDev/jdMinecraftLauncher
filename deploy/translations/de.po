@@ -1,0 +1,85 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Jakob <jakobdev@gmx.de>, 2023.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-07 15:03+0200\n"
+"PO-Revision-Date: 2023-06-07 15:06+0200\n"
+"Last-Translator: Jakob <jakobdev@gmx.de>\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 23.04.1\n"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:6
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:6
+msgid "An classic styled Minecraft Launcher"
+msgstr "Ein Minecraft Launcher im klassischen Stil"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:12
+msgid ""
+"jdMinecraftLauncher is a Minecraft launcher which Look and Feel is close to "
+"the the good old official Launcher"
+msgstr ""
+"jdMinecraftLauncher ist ein Minecraft Launcher der sich am klassischem"
+" Launcher orientiert"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:13
+msgid "Features:"
+msgstr "Features"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:15
+msgid "All Minecraft versions are supported"
+msgstr "Alle Minecraft Versionen werden unterstützt"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:16
+msgid "Offline mode is aviable after your first login"
+msgstr "Nach dem ersten Login ist ein Offlinemodus verfügbar"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:17
+msgid "One click install of Forge and Fabric"
+msgstr "Forge und Fabric können mit einem Klick installiert werden"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:18
+msgid "FeralInteractive GameMode is supported"
+msgstr "FeralInteractive GameMode wird unterstützt"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:19
+msgid ""
+"Create Shortcuts in the Menu and on the Desktop to directly launch Minecraft"
+msgstr ""
+"Erstelle Verknüpfungen auf dem Desktop und im Startmenü um Minecraft direkt"
+" starten zu können"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:20
+msgid "For Developers commandline argumnets and a D-Bus Interface are provided"
+msgstr ""
+"Für Entwickler stehen Kommandozeilenoptionen und ein D-Bus Interface zur"
+" Verfügung"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:22
+msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
+msgstr ""
+"Zum Benutzen dieses Launchers wird ein Microsoft Account, der Minecraft"
+" besitzt, benötigt"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:23
+msgid ""
+"This Launcher is completly fanmade and not supported by Mojang/Microsoft"
+msgstr ""
+"Dieser Laucnher ist komplett Fanmade und wird nicht von Mojang/Microsoft"
+" unterstützt"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:27
+msgid "The MainWindow"
+msgstr "Das Hauptfenster"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:31
+msgid "The ProfileWindow"
+msgstr "Das Profilfenster"
