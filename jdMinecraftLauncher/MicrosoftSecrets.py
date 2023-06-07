@@ -23,8 +23,6 @@ class MicrosoftSecrets:
         self._decrypt("clientID", "client_id")
         self._decrypt("secret", "secret")
         self._decrypt("redirectURL", "redirect_url")
-        print(self.client_id)
-        print(self.redirect_url)
 
     def _decrypt(self, json_key: str, obj_key: str):
         if self._json_data[json_key] is None:
