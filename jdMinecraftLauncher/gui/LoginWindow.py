@@ -49,6 +49,7 @@ class LoginWindow(QWebEngineView):
                 self.env.accountList[count] = accountData
                 self.env.selectedAccount = count
                 self.env.mainWindow.updateAccountInformation()
+                self.close()
                 return
         self.env.accountList.append(accountData)
         self.env.selectedAccount = len(self.env.accountList) - 1
