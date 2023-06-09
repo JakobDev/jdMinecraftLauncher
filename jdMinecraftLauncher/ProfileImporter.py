@@ -59,6 +59,9 @@ def _importProfiles(env: "Environment") -> list[Profile]:
 
 
 def askProfileImport(env: "Environment") -> None:
+    if not minecraft_launcher_lib.vanilla_launcher.do_vanilla_launcher_profiles_exists(env.minecraftDir):
+        return
+
     if QMessageBox.question(env.mainWindow, QCoreApplication.translate("ProfileImporter", "Import Profiles"), QCoreApplication.translate("ProfileImporter", "jdMinecraftLauncher can import Profiles from the vanilla Launcher. Do you want to import your Profiles?"), QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
         return
 

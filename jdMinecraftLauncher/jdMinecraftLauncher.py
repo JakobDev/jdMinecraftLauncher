@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
 from jdMinecraftLauncher.gui.LoginWindow import LoginWindow
 from jdMinecraftLauncher.gui.MainWindow import MainWindow
 from jdMinecraftLauncher.Environment import Environment
+from .ProfileImporter import askProfileImport
 import minecraft_launcher_lib
 import copy
 import sys
@@ -54,7 +55,6 @@ def main():
         pass
 
     if env.firstLaunch:
-        from .ProfileImporter import askProfileImport
         splash_screen.close()
         askProfileImport(env)
 
