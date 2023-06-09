@@ -18,6 +18,7 @@
       <li>FeralInteractive GameMode is supported</li>
       <li>Create Shortcuts in the Menu and on the Desktop to directly launch Minecraft</li>
       <li>For Developers commandline argumnets and a D-Bus Interface are provided</li>
+      <li>Profiles can be imported from the vanilla launcher</li>
     </ul>
     <p>You need a Microsoft Account which owns Minecraft to use this Launcher</p>
     <p>This Launcher is completly fanmade and not supported by Mojang/Microsoft</p>

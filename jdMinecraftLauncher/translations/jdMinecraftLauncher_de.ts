@@ -264,22 +264,22 @@
   <context>
     <name>ProfileImporter</name>
     <message>
-      <location filename="../ProfileImporter.py" line="62" />
+      <location filename="../ProfileImporter.py" line="65" />
       <source>Import Profiles</source>
       <translation>Profile importieren</translation>
     </message>
     <message>
-      <location filename="../ProfileImporter.py" line="62" />
+      <location filename="../ProfileImporter.py" line="65" />
       <source>jdMinecraftLauncher can import Profiles from the vanilla Launcher. Do you want to import your Profiles?</source>
       <translation>jdMinecraftLauncher kann Profile des Vanilla Launchers importieren. Möchtest du deine Profile importieren?</translation>
     </message>
     <message>
-      <location filename="../ProfileImporter.py" line="69" />
+      <location filename="../ProfileImporter.py" line="72" />
       <source>Error</source>
       <translation>Fehler</translation>
     </message>
     <message>
-      <location filename="../ProfileImporter.py" line="70" />
+      <location filename="../ProfileImporter.py" line="73" />
       <source>Due to an error, the profiles could not be imported. Sorry for that.</source>
       <translation>Aufgrund eines Fehler konnetn die Profile nicht importiert werden.</translation>
     </message>
@@ -373,107 +373,107 @@
       <translation>Abbrechen</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="54" />
-      <source>Create Shortcut</source>
-      <translation>Verknüpfung erstellen</translation>
-    </message>
-    <message>
-      <location filename="../gui/ProfileWindow.py" line="55" />
-      <source>Open Game Dir</source>
-      <translation>Spieleverzeichnis öffnen</translation>
-    </message>
-    <message>
-      <location filename="../gui/ProfileWindow.py" line="56" />
-      <source>Save Profile</source>
-      <translation>Profil speichern</translation>
-    </message>
-    <message>
-      <location filename="../gui/ProfileWindow.py" line="61" />
-      <source>Hide Launcher and re-open when game closes</source>
-      <translation>Verstecke den Launcher und öffne ihn, wenn dass Spiel beendet ist</translation>
-    </message>
-    <message>
-      <location filename="../gui/ProfileWindow.py" line="62" />
-      <source>Close Launcher when Game starts</source>
-      <translation>Schließe den Launcher wenn das Spiel started</translation>
-    </message>
-    <message>
-      <location filename="../gui/ProfileWindow.py" line="63" />
-      <source>Keep the Launcher open</source>
-      <translation>Halte den Launcher offen</translation>
-    </message>
-    <message>
-      <location filename="../gui/ProfileWindow.py" line="95" />
-      <source>Profile Info</source>
-      <translation>Profilinfo</translation>
-    </message>
-    <message>
-      <location filename="../gui/ProfileWindow.py" line="96" />
-      <source>Profile Name:</source>
-      <translation>Profilname:</translation>
-    </message>
-    <message>
-      <location filename="../gui/ProfileWindow.py" line="106" />
-      <source>Use Version:</source>
-      <translation>Benutze Version:</translation>
-    </message>
-    <message>
-      <location filename="../gui/ProfileWindow.py" line="127" />
+      <location filename="../gui/ProfileWindow.py" line="53" />
       <source>Additional Options:</source>
       <translation>Weitere Optionen:</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="139" />
+      <location filename="../gui/ProfileWindow.py" line="55" />
+      <source>Create Shortcut</source>
+      <translation>Verknüpfung erstellen</translation>
+    </message>
+    <message>
+      <location filename="../gui/ProfileWindow.py" line="56" />
+      <source>Open Game Dir</source>
+      <translation>Spieleverzeichnis öffnen</translation>
+    </message>
+    <message>
+      <location filename="../gui/ProfileWindow.py" line="57" />
+      <source>Save Profile</source>
+      <translation>Profil speichern</translation>
+    </message>
+    <message>
+      <location filename="../gui/ProfileWindow.py" line="62" />
+      <source>Hide Launcher and re-open when game closes</source>
+      <translation>Verstecke den Launcher und öffne ihn, wenn dass Spiel beendet ist</translation>
+    </message>
+    <message>
+      <location filename="../gui/ProfileWindow.py" line="63" />
+      <source>Close Launcher when Game starts</source>
+      <translation>Schließe den Launcher wenn das Spiel started</translation>
+    </message>
+    <message>
+      <location filename="../gui/ProfileWindow.py" line="64" />
+      <source>Keep the Launcher open</source>
+      <translation>Halte den Launcher offen</translation>
+    </message>
+    <message>
+      <location filename="../gui/ProfileWindow.py" line="97" />
+      <source>Profile Info</source>
+      <translation>Profilinfo</translation>
+    </message>
+    <message>
+      <location filename="../gui/ProfileWindow.py" line="98" />
+      <source>Profile Name:</source>
+      <translation>Profilname:</translation>
+    </message>
+    <message>
+      <location filename="../gui/ProfileWindow.py" line="108" />
+      <source>Use Version:</source>
+      <translation>Benutze Version:</translation>
+    </message>
+    <message>
+      <location filename="../gui/ProfileWindow.py" line="141" />
       <source>Version Select</source>
       <translation>Versionsauswahl</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="144" />
+      <location filename="../gui/ProfileWindow.py" line="146" />
       <source>Java Settings (Advanced)</source>
       <translation>Java Einstellungen (Erweitert)</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="146" />
+      <location filename="../gui/ProfileWindow.py" line="148" />
       <source>Other</source>
       <translation>Sonstiges</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="158" />
+      <location filename="../gui/ProfileWindow.py" line="160" />
       <source>Profile Editor</source>
       <translation>Profileditor</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="189" />
+      <location filename="../gui/ProfileWindow.py" line="191" />
       <source>Note for Flatpak users</source>
       <translation>Hinweis für Flatpak Benutzer</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="189" />
+      <location filename="../gui/ProfileWindow.py" line="191" />
       <source>Please select in the following dialog the directory which contains bin/java</source>
       <translation>Bitte wähle im folgenden Dialog das Verzeichnis aus, das bin/java enthält</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="197" />
+      <location filename="../gui/ProfileWindow.py" line="199" />
       <source>Invalid directory</source>
       <translation>Ungültiges Verzeichnis</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="197" />
+      <location filename="../gui/ProfileWindow.py" line="199" />
       <source>This directory does not contain bin/java</source>
       <translation>Dieses Verzeichnis enthält nicht bin/java</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="206" />
+      <location filename="../gui/ProfileWindow.py" line="208" />
       <source>Copy of {{name}}</source>
       <translation>Kopie von {{name}}</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="299" />
+      <location filename="../gui/ProfileWindow.py" line="304" />
       <source>Use latest Version</source>
       <translation>Benutze neuste Version</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="301" />
+      <location filename="../gui/ProfileWindow.py" line="306" />
       <source>Use latest Snapshot</source>
       <translation>Benutze neusten Snapshot</translation>
     </message>
@@ -519,12 +519,12 @@
   <context>
     <name>jdMinecraftLauncher</name>
     <message>
-      <location filename="../jdMinecraftLauncher.py" line="40" />
+      <location filename="../jdMinecraftLauncher.py" line="41" />
       <source>Unsupported Platform</source>
       <translation>Nicht unterstütze Platform</translation>
     </message>
     <message>
-      <location filename="../jdMinecraftLauncher.py" line="40" />
+      <location filename="../jdMinecraftLauncher.py" line="41" />
       <source>Your current Platform is not supported by jdMinecraftLauncher</source>
       <translation>Deine aktuelle Platform wird von jdMinecraftLauncher nicht unterstützt</translation>
     </message>

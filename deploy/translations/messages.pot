@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-07 15:03+0200\n"
+"POT-Creation-Date: 2023-06-09 22:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,19 +57,23 @@ msgstr ""
 msgid "For Developers commandline argumnets and a D-Bus Interface are provided"
 msgstr ""
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:22
-msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:21
+msgid "Profiles can be imported from the vanilla launcher"
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:23
+msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:24
 msgid ""
 "This Launcher is completly fanmade and not supported by Mojang/Microsoft"
 msgstr ""
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:27
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:28
 msgid "The MainWindow"
 msgstr ""
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:31
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:32
 msgid "The ProfileWindow"
 msgstr ""

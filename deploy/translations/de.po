@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-07 15:03+0200\n"
-"PO-Revision-Date: 2023-06-07 15:06+0200\n"
+"POT-Creation-Date: 2023-06-09 22:10+0200\n"
+"PO-Revision-Date: 2023-06-09 22:11+0200\n"
 "Last-Translator: Jakob <jakobdev@gmx.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de_DE\n"
@@ -27,8 +27,8 @@ msgid ""
 "jdMinecraftLauncher is a Minecraft launcher which Look and Feel is close to "
 "the the good old official Launcher"
 msgstr ""
-"jdMinecraftLauncher ist ein Minecraft Launcher der sich am klassischem"
-" Launcher orientiert"
+"jdMinecraftLauncher ist ein Minecraft Launcher der sich am klassischem "
+"Launcher orientiert"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:13
 msgid "Features:"
@@ -54,32 +54,36 @@ msgstr "FeralInteractive GameMode wird unterstützt"
 msgid ""
 "Create Shortcuts in the Menu and on the Desktop to directly launch Minecraft"
 msgstr ""
-"Erstelle Verknüpfungen auf dem Desktop und im Startmenü um Minecraft direkt"
-" starten zu können"
+"Erstelle Verknüpfungen auf dem Desktop und im Startmenü um Minecraft direkt "
+"starten zu können"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:20
 msgid "For Developers commandline argumnets and a D-Bus Interface are provided"
 msgstr ""
-"Für Entwickler stehen Kommandozeilenoptionen und ein D-Bus Interface zur"
-" Verfügung"
+"Für Entwickler stehen Kommandozeilenoptionen und ein D-Bus Interface zur "
+"Verfügung"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:22
-msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
-msgstr ""
-"Zum Benutzen dieses Launchers wird ein Microsoft Account, der Minecraft"
-" besitzt, benötigt"
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:21
+msgid "Profiles can be imported from the vanilla launcher"
+msgstr "Profile können vom vanilla Launcher importiert werden"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:23
+msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
+msgstr ""
+"Zum Benutzen dieses Launchers wird ein Microsoft Account, der Minecraft "
+"besitzt, benötigt"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:24
 msgid ""
 "This Launcher is completly fanmade and not supported by Mojang/Microsoft"
 msgstr ""
-"Dieser Laucnher ist komplett Fanmade und wird nicht von Mojang/Microsoft"
-" unterstützt"
+"Dieser Laucnher ist komplett Fanmade und wird nicht von Mojang/Microsoft "
+"unterstützt"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:27
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:28
 msgid "The MainWindow"
 msgstr "Das Hauptfenster"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:31
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:32
 msgid "The ProfileWindow"
 msgstr "Das Profilfenster"
