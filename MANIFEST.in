@@ -1,7 +1,6 @@
-include README.md
-include jdMinecraftLauncher/mclauncher-cmd.jar
-include jdMinecraftLauncher/translation/*
+include jdMinecraftLauncher/DBusInterface.xml
+include jdMinecraftLauncher/translations/*.ts
 include jdMinecraftLauncher/secrets.json
 include jdMinecraftLauncher/Icon.svg
-include jdMinecraftLauncher/DBusInterface.xml
-include jdMinecraftLauncher/version.txt
+include BuildBackend.py
+exclude tools/*

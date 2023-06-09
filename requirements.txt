@@ -2,4 +2,3 @@ PyQt6
 PyQt6-WebEngine
 requests
 minecraft-launcher-lib
-jdTranslationHelper

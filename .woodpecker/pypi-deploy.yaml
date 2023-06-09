@@ -1,0 +1,11 @@
+pipeline:
+    pypi_deploy:
+        image: python:latest
+        commands:
+            - pip install twine build
+            - python -m build
+            - twine upload -u "$PYPI_USERNAME" -p "$PYPI_PASSWORD" dist/*
+        secrets: [PYPI_USERNAME, PYPI_PASSWORD]
+
+when:
+    event: tag

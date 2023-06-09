@@ -9,3 +9,4 @@ Exec=jdMinecraftLauncher %u
 MimeType=x-scheme-handler/jdMinecraftLauncher;
 Categories=Game;
 Keywords=Minecraft;NBT ;
+SingleMainWindow=true

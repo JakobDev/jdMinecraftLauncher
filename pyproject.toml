@@ -1,6 +1,7 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools", "PyQt6", "wheel"]
+build-backend = "BuildBackend"
+backend-path = ["."]
 
 [project]
 name = "jdMinecraftLauncher"
@@ -38,21 +39,21 @@ dependencies = [
     "PyQt6",
     "PyQt6-WebEngine",
     "minecraft-launcher-lib",
-    "jdTranslationHelper",
     "requests"
 ]
 dynamic = ["version"]
 
 [project.urls]
-Issues = "https://gitlab.com/JakobDev/jdMinecraftLauncher/-/issues"
-Source = "https://gitlab.com/JakobDev/jdMinecraftLauncher"
+Source = "https://codeberg.org/JakobDev/jdMinecraftLauncher"
+Issues = "https://codeberg.org/JakobDev/jdMinecraftLauncher/issues"
+Translate = "https://translate.codeberg.org/projects/jdMinecraftLauncher"
 Donation = "https://ko-fi.com/jakobdev"
 
 [project.scripts]
 jdMinecraftLauncher = "jdMinecraftLauncher.jdMinecraftLauncher:main"
 
-[tool.setuptools.packages]
-find = {namespaces = false}
+[tool.setuptools.package-dir]
+jdMinecraftLauncher = "jdMinecraftLauncher"
 
 [tool.setuptools.dynamic]
 version = { file = "jdMinecraftLauncher/version.txt" }

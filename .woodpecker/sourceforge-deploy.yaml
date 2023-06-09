@@ -1,0 +1,12 @@
+pipeline:
+    sourceforge_deploy:
+        image: codeberg.org/jakobdev/python-ci-build-container:latest
+        commands:
+            - init-container
+            - source set-file-env VERSION jdNBTExplorer/version.txt
+            - full-python-build --name jdNBTExplorer --version $VERSION
+            - sourceforge-upload --upload-dir ./Output/ --project jdnbtexplorer --version $VERSION --app-name jdNBTExplorer
+        secrets: [SOURCEFORGE_USERNAME, SOURCEFORGE_PASSWORD, SOURCEFORGE_API_KEY]
+
+when:
+    event: tag

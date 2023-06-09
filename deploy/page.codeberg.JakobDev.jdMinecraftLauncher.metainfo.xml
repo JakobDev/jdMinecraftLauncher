@@ -25,14 +25,24 @@
   <screenshots>
     <screenshot type="default">
       <caption>The MainWindow</caption>
-      <image type="source">https://gitlab.com/JakobDev/jdMinecraftLauncher/-/raw/3.0/Screenshots/MainWindow.png</image>
+      <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/91805dc106431030b5d02a7b6006441cad5883b1/Screenshots/MainWindow.png</image>
     </screenshot>
     <screenshot>
       <caption>The ProfileWindow</caption>
-      <image type="source">https://gitlab.com/JakobDev/jdMinecraftLauncher/-/raw/3.0/Screenshots/ProfileWindow.png</image>
+      <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/91805dc106431030b5d02a7b6006441cad5883b1/Screenshots/ProfileWindow.png</image>
     </screenshot>
   </screenshots>
   <releases>
+    <release version="5.0" date="2023-06-09" type="stable">
+      <description>
+        <ul>
+          <li>Moved to Codeberg</li>
+          <li>Add more Options to Profiles</li>
+          <li>Better compatibility with Minecraft 1.20</li>
+          <li>Code refactor</li>
+        </ul>
+      </description>
+    </release>
     <release version="4.1" date="2022-11-16" type="stable">
       <description>
         <ul>
