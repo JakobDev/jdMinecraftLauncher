@@ -26,21 +26,22 @@ class ProfileCollection:
         with open(profileJSON, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        profileVersion = data.get("version", 1)
+        profileVersion = data.get("version", 0)
 
         for i in data["profileList"]:
             self.profileList.append(Profile.load(self._env, i, profileVersion))
+
+        if profileVersion != 1:
+            self.save()
 
     def save(self) -> None:
         if self._env.args.dont_save_data:
             return
 
-        data = {}
-        data["selectedProfile"] = self.selectedProfile
-        data["profileList"] = []
+        data = {"selectedProfile": self.selectedProfile, "profileList": []}
         for i in self.profileList:
             data["profileList"].append(i.toDict())
-        data["version"] = 2
+        data["version"] = 1
 
         with open(os.path.join(self._env.dataDir, "profiles.json"), "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)

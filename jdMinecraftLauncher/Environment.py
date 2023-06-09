@@ -85,17 +85,20 @@ class Environment:
             self.firstLaunch = True
 
     def getDataPath(self) -> str:
-        if platform.system() == "Windows":
-            return os.path.join(os.getenv("APPDATA"), "JakobDev", "jdMinecraftLauncher")
+        if os.path.isdir(os.path.join(self.minecraftDir, "jdMinecraftLauncher")):
+            return os.path.join(self.minecraftDir, "jdMinecraftLauncher")
+        elif platform.system() == "Windows":
+            return os.path.join(os.getenv("appdata"), "jdMinecraftLauncher")
         elif platform.system() == "Darwin":
-            return os.path.join(str(Path.home()), "Library", "Application Support", "JakobDev", "jdMinecraftLauncher")
+            return os.path.join(str(Path.home()), "Library", "Application Support", "jdMinecraftLauncher")
         elif platform.system() == "Haiku":
-            return os.path.join(str(Path.home()), "config", "settings", "JakobDev", "jdMinecraftLauncher")
+            return os.path.join(str(Path.home()), "config", "settings", "jdMinecraftLauncher")
         else:
             if os.getenv("XDG_DATA_HOME"):
-                return os.path.join(os.getenv("XDG_DATA_HOME"), "JakobDev", "jdMinecraftLauncher")
+                return os.path.join(os.getenv("XDG_DATA_HOME"), "jdMinecraftLauncher")
             else:
-                return os.path.join(str(Path.home()), ".local", "share", "JakobDev", "jdMinecraftLauncher")
+                return os.path.join(str(Path.home()), ".local", "share", "jdMinecraftLauncher")
+
     def loadVersions(self):
         if not self.offlineMode:
             try:

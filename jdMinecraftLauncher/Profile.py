@@ -74,6 +74,8 @@ class Profile:
 
         if "id" in objects:
             profile.id = objects["id"]
+        else:
+            profile.id = profile._generateProfileID()
 
         profile.version = objects["version"]
         profile.useLatestVersion = objects["useLatestVersion"]
@@ -97,7 +99,7 @@ class Profile:
         profile.demoMode = objects["demoMode"]
         profile.disableMultiplayer = objects.get("disableMultiplayer", False)
         profile.disableChat = objects.get("disableMultiplayer", False)
-        profile.minecraftOptions = objects.get("disableMultiplayer", "")
+        profile.minecraftOptions = objects.get("minecraftOptions", "")
         profile.useGameMode = objects.get("useGameMode", False)
 
         if profileVersion == 1:
