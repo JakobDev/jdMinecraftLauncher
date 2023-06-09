@@ -52,7 +52,7 @@ def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: st
 
     command = minecraft_launcher_lib.command.get_minecraft_command(version, env.minecraftDir, options)
 
-    if profile.minecraftOptions.strip() != "":
+    if profile.hasMinecraftOptions:
         command += profile.minecraftOptions.strip().split(" ")
 
     if profile.useGameMode and shutil.which("gamemoderun"):

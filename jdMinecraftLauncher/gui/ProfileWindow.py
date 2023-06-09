@@ -50,6 +50,7 @@ class ProfileWindow(QDialog):
         self.disableChatCheckBox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Disable Chat"))
         self.gameModeCheckBox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Use Gamemode"))
         self.cancelButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Cancel"))
+        self.minecraftOptionsCheckBox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Additional Options:"))
         self.minecraftOptionsEdit = QLineEdit()
         self.createShortcutButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Create Shortcut"))
         self.openGameDirectoryButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Open Game Dir"))
@@ -80,6 +81,7 @@ class ProfileWindow(QDialog):
         self.executableButton.clicked.connect(self.browseExecutableClicked)
         self.jvmArgumentsCheckbox.stateChanged.connect(lambda: self.jvmArgumentsEdit.setEnabled(self.jvmArgumentsCheckbox.isChecked()))
         self.serverCheckbox.stateChanged.connect(self.changeServerConnect)
+        self.minecraftOptionsCheckBox.stateChanged.connect(lambda: self.minecraftOptionsEdit.setEnabled(self.minecraftOptionsCheckBox.isChecked()))
 
         gameDirectoryLayout = QHBoxLayout()
         gameDirectoryLayout.addWidget(self.gameDirectoryEdit)
@@ -124,7 +126,7 @@ class ProfileWindow(QDialog):
         self.serverLayout.addWidget(self.portEdit,1,1)
 
         minecraftOptionsLayout = QHBoxLayout()
-        minecraftOptionsLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Additional Options:")))
+        minecraftOptionsLayout.addWidget(self.minecraftOptionsCheckBox)
         minecraftOptionsLayout.addWidget(self.minecraftOptionsEdit)
 
         buttonLayout = QHBoxLayout()
@@ -237,6 +239,8 @@ class ProfileWindow(QDialog):
         self.demoModeCheckbox.setChecked(profile.demoMode)
         self.disableMultiplayerCheckBox.setChecked(profile.disableMultiplayer)
         self.disableChatCheckBox.setChecked(profile.disableChat)
+        self.minecraftOptionsCheckBox.setChecked(profile.hasMinecraftOptions)
+        self.minecraftOptionsEdit.setEnabled(profile.hasMinecraftOptions)
         self.minecraftOptionsEdit.setText(profile.minecraftOptions)
         self.gameModeCheckBox.setChecked(profile.useGameMode)
         self.changeCustomResolution()
@@ -274,6 +278,7 @@ class ProfileWindow(QDialog):
         profile.demoMode = self.demoModeCheckbox.isChecked()
         profile.disableMultiplayer = self.disableMultiplayerCheckBox.isChecked()
         profile.disableChat = self.disableChatCheckBox.isChecked()
+        profile.hasMinecraftOptions = self.minecraftOptionsCheckBox.isChecked()
         profile.minecraftOptions = self.minecraftOptionsEdit.text().strip()
         profile.useGameMode = self.gameModeCheckBox.isChecked()
         version = self.versionSelectCombobox.currentData()

@@ -36,6 +36,7 @@ class Profile:
         self.demoMode = False
         self.disableMultiplayer = False
         self.disableChat = False
+        self.hasMinecraftOptions = False
         self.minecraftOptions = ""
         self.useGameMode = False
 
@@ -99,6 +100,7 @@ class Profile:
         profile.demoMode = objects["demoMode"]
         profile.disableMultiplayer = objects.get("disableMultiplayer", False)
         profile.disableChat = objects.get("disableMultiplayer", False)
+        profile.hasMinecraftOptions = objects.get("hasMinecraftOptions", False)
         profile.minecraftOptions = objects.get("minecraftOptions", "")
         profile.useGameMode = objects.get("useGameMode", False)
 
