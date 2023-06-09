@@ -3,9 +3,9 @@ pipeline:
         image: codeberg.org/jakobdev/python-ci-build-container:latest
         commands:
             - init-container
-            - source set-file-env VERSION jdNBTExplorer/version.txt
-            - full-python-build --name jdNBTExplorer --version $VERSION
-            - sourceforge-upload --upload-dir ./Output/ --project jdnbtexplorer --version $VERSION --app-name jdNBTExplorer
+            - source set-file-env VERSION jdMinecraftLauncher/version.txt
+            - full-python-build --name jdMinecraftLauncher --version $VERSION
+            - sourceforge-upload --upload-dir ./Output/ --project jdminecraftlauncher --version $VERSION --app-name jdMinecraftLauncher
         secrets: [SOURCEFORGE_USERNAME, SOURCEFORGE_PASSWORD, SOURCEFORGE_API_KEY]
 
 when:
