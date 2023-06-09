@@ -8,5 +8,5 @@ TryExec=jdMinecraftLauncher
 Exec=jdMinecraftLauncher %u
 MimeType=x-scheme-handler/jdMinecraftLauncher;
 Categories=Game;
-Keywords=Minecraft;NBT ;
+Keywords=Minecraft;Sandbox;
 SingleMainWindow=true
