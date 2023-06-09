@@ -29,8 +29,8 @@ SetCompressor /SOLID lzma
 
 !define MUI_ABORTWARNING
 
-!define MUI_ICON "Icon.ico"
-!define MUI_UNICON "Icon.ico"
+!define MUI_ICON "icon-windows.ico"
+!define MUI_UNICON "icon-windows.ico"
 !define MUI_FINISHPAGE_RUN "${APPBIN}"
 
 ;Installer Pages
