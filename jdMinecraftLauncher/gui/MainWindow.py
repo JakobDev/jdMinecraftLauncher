@@ -382,7 +382,7 @@ class AboutTab(QWidget):
         self.viewSourceButton = QPushButton(QCoreApplication.translate("MainWindow", "View Source"))
         copyrightLabel = QLabel("Copyright © 2019-2023 JakobDev")
 
-        self.viewSourceButton.clicked.connect(lambda: webbrowser.open("https://gitlab.com/JakobDev/jdMinecraftLauncher"))
+        self.viewSourceButton.clicked.connect(lambda: webbrowser.open("https://codeberg.org/JakobDev/jdMinecraftLauncher"))
 
         self.titleLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.fanmadeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
