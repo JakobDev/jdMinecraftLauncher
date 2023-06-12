@@ -29,7 +29,7 @@ class DBusService(QDBusAbstractAdaptor):
 
     @pyqtSlot(str, result=bool)
     def LaunchProfile(self, name: str) -> bool:
-        profile = self._env.getProfileByName(name)
+        profile = self._env.profileCollection.getProfileByName(name)
         if profile:
             self._env.mainWindow.launchProfile(profile)
             return True

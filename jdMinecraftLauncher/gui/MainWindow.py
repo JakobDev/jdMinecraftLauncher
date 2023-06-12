@@ -543,7 +543,7 @@ class MainWindow(QWidget):
             DBusService(self.env, self.env.app)
 
         if self.env.args.launch_profile:
-            profile = self.env.getProfileByName(self.env.args.launch_profile)
+            profile = self.env.profileCollection.getProfileByName(self.env.args.launch_profile)
             if profile:
                 self.env.mainWindow.launchProfile(profile)
             else:
@@ -563,13 +563,13 @@ class MainWindow(QWidget):
             return
 
         if method == "LaunchProfileByID":
-            profile = self.env.getProfileByID(param)
+            profile = self.env.profileCollection.getProfileByID(param)
             if profile:
-                self.env.mainWindow.launchProfile(profile)
+                self.env.profileCollection.mainWindow.launchProfile(profile)
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
         elif method == "LaunchProfileByName":
-            profile = self.env.getProfileByName(param)
+            profile = self.profileCollection.env.getProfileByName(param)
             if profile:
                 self.env.mainWindow.launchProfile(profile)
             else:

@@ -145,15 +145,3 @@ class Environment:
 
                     if vinfo["id"] not in versioncheck:
                         self.versions["versions"].append(tmp)
-
-    def getProfileByName(self, name: str) -> Optional[Profile]:
-        for i in self.profiles:
-            if i.name == name:
-                return i
-        return None
-
-    def getProfileByID(self, profile_id: str) -> Optional[Profile]:
-        for i in self.profiles:
-            if i.id == profile_id:
-                return i
-        return None
