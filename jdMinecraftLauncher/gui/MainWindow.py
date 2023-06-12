@@ -415,12 +415,9 @@ class GameOutputTab(QPlainTextEdit):
         self.moveCursor(cursor.MoveOperation.End)
 
     def procStarted(self):
-        if self.env.settings.get("enableMultiLaunch"):
-            self.env.mainWindow.playButton.setEnabled(True)
-            return
         if self.profile.launcherVisibility != 2:
             self.env.mainWindow.hide()
-        self.env.mainWindow.playButton.setEnabled(False)
+        self.env.mainWindow.playButton.setEnabled(self.env.settings.get("enableMultiLaunch"))
 
     def procFinish(self):
         if self.profile.launcherVisibility == 0:
