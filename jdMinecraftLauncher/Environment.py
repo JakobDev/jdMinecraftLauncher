@@ -12,6 +12,7 @@ import platform
 import requests
 import json
 import copy
+import sys
 import os
 
 
@@ -31,9 +32,10 @@ class Environment:
         parser.add_argument("--minecraft-dir", help="Set the Minecraft Directory")
         parser.add_argument("--data-dir", help="Set the Data Directory")
         parser.add_argument("--launch-profile", help="Launch a Profile")
+        parser.add_argument("--account", help="Launch with the selected Account")
         parser.add_argument("--offline-mode", help="Force offline Mode", action="store_true")
         parser.add_argument("--force-start", help="Forces the start on unsupported Platforms", action="store_true")
-        parser.add_argument("--dont-save-data", help="Don't save data to the disk", action="store_true")
+        parser.add_argument("--dont-save-data", help="Don't save data to the disk (only for development usage", action="store_true")
         self.args = parser.parse_known_args()[0]
 
         if self.args.minecraft_dir:
@@ -70,6 +72,14 @@ class Environment:
                 except IndexError:
                     self.account = copy.copy(self.accountList[0])
                     self.selectedAccount = 0
+
+        if self.args.account:
+            for count, account in enumerate(self.accountList):
+                if self.args.account == account["name"]:
+                    self.account = copy.copy(account)
+                    break
+            else:
+                print(f"Account {self.args.account} was not found", file=sys.stderr)
 
         self.loadVersions()
 
