@@ -6,7 +6,7 @@ from PyQt6.QtGui import QCursor, QAction, QIcon, QContextMenuEvent, QCloseEvent
 from jdMinecraftLauncher.gui.ProfileWindow import ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
 from jdMinecraftLauncher.Shortcut import canCreateShortcuts, askCreateShortcut
-from jdMinecraftLauncher.Functions import openFile
+from jdMinecraftLauncher.Functions import openFile, getAccountDict
 from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import getMinecraftCommand
 from jdMinecraftLauncher.Environment import Environment
@@ -205,24 +205,6 @@ class OptionsTab(QWidget):
     def extractNativesCheckBoxChanged(self):
         self.env.settings.set("extractNatives", self.extractNativesCheckBox.isChecked())
 
-class SwitchAccountButton(QPushButton):
-    def __init__(self, text: str, env: Environment, pos: int):
-        self.env = env
-        self.pos = pos
-        super().__init__(text)
-        self.clicked.connect(self.clickCallback)
-
-    def clickCallback(self):
-        account = self.env.accountList[self.pos]
-        if minecraft_launcher_lib.account.validate_access_token(account["accessToken"]):
-            self.env.account = self.env.accountList[self.pos]
-            self.env.mainWindow.updateAccountInformation()
-            self.env.selectedAccount = self.pos
-        else:
-            # self.env.loginWindow.reset()
-            # self.env.loginWindow.setName(account.get("mail",""))
-            self.env.loginWindow.show()
-
 class ForgeTab(QTableWidget):
     def __init__(self, env: Environment, mainWindow: "MainWindow"):
         self.env = env
@@ -333,6 +315,29 @@ class FabricTab(QTableWidget):
     def setButtonsEnabled(self, enabled: bool):
         for i in range(self.rowCount()):
             self.cellWidget(i, 1).setEnabled(enabled)
+
+
+class SwitchAccountButton(QPushButton):
+    def __init__(self, text: str, env: Environment, pos: int):
+        self.env = env
+        self.pos = pos
+        super().__init__(text)
+        self.clicked.connect(self.clickCallback)
+
+    def clickCallback(self):
+        account = self.env.accountList[self.pos]
+        if not self.env.offlineMode:
+            try:
+                self.env.account = getAccountDict(minecraft_launcher_lib.microsoft_account.complete_refresh(self.env.secrets.client_id, self.env.secrets.secret, self.env.secrets.redirect_url, account["refreshToken"]))
+                self.env.mainWindow.updateAccountInformation()
+                self.env.selectedAccount = self.pos
+            except minecraft_launcher_lib.exceptions.InvalidRefreshToken:
+                self.env.loginWindow.reset()
+                self.env.loginWindow.show()
+        else:
+            self.env.account = self.env.accountList[self.pos]
+            self.env.mainWindow.updateAccountInformation()
+            self.env.selectedAccount = self.pos
 
 
 class AccountTab(QTableWidget):

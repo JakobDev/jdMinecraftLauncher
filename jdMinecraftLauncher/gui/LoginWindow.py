@@ -21,6 +21,9 @@ class LoginWindow(QWebEngineView):
         # Connects a function that is called when the url changed
         self.urlChanged.connect(self.new_url)
 
+    def reset(self) -> None:
+        self.load(QUrl(minecraft_launcher_lib.microsoft_account.get_login_url(self.env.secrets.client_id, self.env.secrets.redirect_url)))
+
     def new_url(self, url: QUrl):
         # Check if the url contains the code
         if minecraft_launcher_lib.microsoft_account.url_contains_auth_code(url.toString()):
