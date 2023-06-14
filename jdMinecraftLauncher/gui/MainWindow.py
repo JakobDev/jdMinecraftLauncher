@@ -365,6 +365,7 @@ class AccountTab(QTableWidget):
             count += 1
 
     def addAccount(self):
+        self.env.loginWindow.reset()
         self.env.loginWindow.show()
 
     def contextMenuEvent(self, event):
@@ -405,6 +406,7 @@ class AboutTab(QWidget):
         self.mainLayout.addWidget(copyrightLabel, 4, 1)
         self.mainLayout.addWidget(self.viewSourceButton, 5, 1)
         self.setLayout(self.mainLayout)
+
 
 class GameOutputTab(QPlainTextEdit):
     def __init__(self, env: Environment):

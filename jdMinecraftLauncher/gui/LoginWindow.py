@@ -47,15 +47,17 @@ class LoginWindow(QWebEngineView):
 
         self.env.mainWindow.openMainWindow()
         self.env.mainWindow.setFocus()
+
         for count, i in enumerate(self.env.accountList):
             if i["uuid"] == accountData["uuid"]:
                 self.env.accountList[count] = accountData
                 self.env.selectedAccount = count
                 self.env.mainWindow.updateAccountInformation()
-                self.close()
+                self.hide()
                 return
+
         self.env.accountList.append(accountData)
         self.env.selectedAccount = len(self.env.accountList) - 1
         self.env.mainWindow.updateAccountInformation()
-        self.close()
+        self.hide()
 
