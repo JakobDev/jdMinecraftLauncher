@@ -480,6 +480,7 @@ class MainWindow(QWidget):
     def __init__(self, env: Environment):
         super().__init__()
         self.env = env
+        self.profileListRebuild = False
         self.tabWidget = Tabs(env, self)
         self.profileWindow = ProfileWindow(self.env,self)
         self.progressBar = QProgressBar()
@@ -584,6 +585,7 @@ class MainWindow(QWidget):
 
     def updateProfileList(self):
         currentIndex = 0
+        self.profileListRebuild = True
         self.profileComboBox.clear()
         for count, i in enumerate(self.env.profileCollection.profileList):
             self.profileComboBox.addItem(i.name)
@@ -591,9 +593,11 @@ class MainWindow(QWidget):
                 currentIndex = count
         self.tabWidget.updateProfiles()
         self.profileComboBox.setCurrentIndex(currentIndex)
+        self.profileListRebuild = False
 
     def profileComboBoxIndexChanged(self, index: int):
-        self.env.profileCollection.selectedProfile = self.env.profileCollection.profileList[index].id
+        if not self.profileListRebuild:
+            self.env.profileCollection.selectedProfile = self.env.profileCollection.profileList[index].id
         
     def newProfileButtonClicked(self):
         self.profileWindow.loadProfile(self.env.profileCollection.getSelectedProfile(), True, True)
@@ -674,6 +678,7 @@ class MainWindow(QWidget):
             sys.exit(0)
 
         options = self.tabWidget.options
+        self.env.profileCollection.save()
         self.env.settings.set("language", options.languageComboBox.currentData())
         self.env.settings.set("newsURL", options.urlEdit.text())
         self.env.settings.set("enableMultiLaunch", options.allowMultiLaunchCheckBox.isChecked())

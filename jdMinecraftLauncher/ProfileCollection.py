@@ -28,6 +28,8 @@ class ProfileCollection:
 
         profileVersion = data.get("version", 0)
 
+        self.selectedProfile = data.get("selectedProfile", "")
+
         for i in data["profileList"]:
             self.profileList.append(Profile.load(self._env, i, profileVersion))
 
