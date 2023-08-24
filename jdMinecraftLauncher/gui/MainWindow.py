@@ -409,24 +409,24 @@ class AboutTab(QWidget):
 
 
 class GameOutputTab(QPlainTextEdit):
-    def __init__(self, env: Environment):
+    def __init__(self, env: Environment) -> None:
         super().__init__()
         self.env = env
         self.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
         self.setReadOnly(True)
 
-    def dataReady(self):
+    def dataReady(self) -> None:
         cursor = self.textCursor()
         cursor.movePosition(cursor.MoveOperation.End)
         cursor.insertText(bytes(self.process.readAll()).decode(encoding=sys.stdout.encoding,errors="replace"))
         self.moveCursor(cursor.MoveOperation.End)
 
-    def procStarted(self):
+    def procStarted(self) -> None:
         if self.profile.launcherVisibility != 2:
             self.env.mainWindow.hide()
         self.env.mainWindow.playButton.setEnabled(self.env.settings.get("enableMultiLaunch"))
 
-    def procFinish(self):
+    def procFinish(self) -> None:
         if self.profile.launcherVisibility == 0:
             self.env.mainWindow.show()
             self.env.mainWindow.setFocus()
@@ -439,7 +439,7 @@ class GameOutputTab(QPlainTextEdit):
             except Exception:
                 pass
 
-    def executeCommand(self,profile: Profile, command: List[str], natives_path: str):
+    def executeCommand(self,profile: Profile, command: List[str], natives_path: str) -> None:
         self.profile = profile
         self.natives_path = natives_path
         self.process = QProcess(self)
@@ -448,6 +448,13 @@ class GameOutputTab(QPlainTextEdit):
         self.process.started.connect(self.procStarted)
         self.process.finished.connect(self.procFinish)
         self.process.start(command[0], command[1:])
+
+        if not self.process.waitForStarted():
+            self.setPlainText(QCoreApplication.translate("MainWindow", "Failed to start Minecraft"))
+            QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Failed to start"), QCoreApplication.translate("MainWindow", "Minecraft could not be started. Maybe you use a invalid Java executable."))
+            self.env.mainWindow.playButton.setEnabled(True)
+            return
+
 
 class Tabs(QTabWidget):
     def __init__(self, env: Environment, parent: "MainWindow"):
@@ -643,8 +650,24 @@ class MainWindow(QWidget):
         self.tabWidget.setCurrentIndex(tabid)
         o.executeCommand(profile,args,natives_path)
 
-    def installFinish(self):
-        if self.installThread.shouldStartMinecraft():
+    def installFinish(self) -> None:
+        if self.installThread.getError() is not None:
+            text = QCoreApplication.translate("MainWindow", "Due to an error, the installation could not be completed") + "<br><br>"
+            text += QCoreApplication.translate("MainWindow", "This may have been caused by a network error")
+
+            msgBox = QMessageBox()
+            msgBox.setWindowTitle(QCoreApplication.translate("MainWindow", "Installation failed"))
+            msgBox.setText(text)
+            msgBox.setDetailedText(self.installThread.getError())
+            msgBox.exec()
+
+            self.progressBar.setValue(0)
+            self.progressBar.setFormat("")
+            self.setInstallButtonsEnabled(True)
+
+            return
+
+        if self.installThread.shouldStartMinecraft() and self.installThread.getError() is None:
             self.env.updateInstalledVersions()
             self.tabWidget.versionTab.updateVersions()
             self.startMinecraft(self.env.current_running_profile)
