@@ -11,6 +11,9 @@ This program uses [minecraft-launcher-lib](https://pypi.org/project/minecraft-la
 
 You need [Python](https://www.python.org/) to run jdMinecraftLauncher.
 
+## Translate
+You can translate jdMinecraftLauncher on [Weblate](https://translate.codeberg.org/projects/jdMinecraftLauncher)
+
 ## Installation
 ### Windows
 You can find a prebuild portable version on [Sourceforge](https://sourceforge.net/projects/jdminecraftlauncher).
