@@ -1,4 +1,4 @@
-pipeline:
+steps:
     pypi_deploy:
         image: python:latest
         commands:
