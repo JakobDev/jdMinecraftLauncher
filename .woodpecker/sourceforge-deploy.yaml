@@ -5,6 +5,7 @@ steps:
             - init-container
             - source set-file-env VERSION jdMinecraftLauncher/version.txt
             - full-python-build --name jdMinecraftLauncher --version $VERSION
+            - write-changelog-readme --name jdMinecraftLauncher --version $VERSION  --output-file Output/README.md
             - sourceforge-upload --upload-dir ./Output/ --project jdminecraftlauncher --version $VERSION --app-name jdMinecraftLauncher
         secrets: [SOURCEFORGE_USERNAME, SOURCEFORGE_PASSWORD, SOURCEFORGE_API_KEY]
 
