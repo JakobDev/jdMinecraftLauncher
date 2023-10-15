@@ -125,7 +125,7 @@
     <message>
         <location filename="../gui/MainWindow.py" line="191"/>
         <source>News URL:</source>
-        <translation>News URL:</translation>
+        <translation>News-URL:</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="293"/>
