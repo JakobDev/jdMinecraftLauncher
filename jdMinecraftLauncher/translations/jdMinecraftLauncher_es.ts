@@ -6,12 +6,12 @@
     <message>
         <location filename="../Languages.py" line="6"/>
         <source>English</source>
-        <translation type="unfinished"></translation>
+        <translation>Español</translation>
     </message>
     <message>
         <location filename="../Languages.py" line="7"/>
         <source>German</source>
-        <translation type="unfinished"></translation>
+        <translation>Aleman</translation>
     </message>
 </context>
 <context>
@@ -19,7 +19,7 @@
     <message>
         <location filename="../gui/LoginWindow.py" line="16"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Inicio de sesión</translation>
     </message>
 </context>
 <context>
@@ -27,268 +27,268 @@
     <message>
         <location filename="../gui/MainWindow.py" line="33"/>
         <source>Profile Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre del perfil</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="119"/>
         <location filename="../gui/MainWindow.py" line="33"/>
         <source>Minecraft Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versión Minecraft</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="49"/>
         <source>(Latest version)</source>
-        <translation type="unfinished"></translation>
+        <translation>(Última versión)</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="51"/>
         <source>(Latest snapshot)</source>
-        <translation type="unfinished"></translation>
+        <translation>(Última Snapshot)</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="63"/>
         <source>Add Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir perfil</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="497"/>
         <location filename="../gui/MainWindow.py" line="67"/>
         <source>Edit Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar perfil</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="71"/>
         <source>Copy Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Copiar perfil</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="75"/>
         <source>Remove Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar perfil</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="79"/>
         <source>Open Game Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir carpeta de juegos</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="84"/>
         <source>Create Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear acceso directo</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="496"/>
         <location filename="../gui/MainWindow.py" line="91"/>
         <source>New Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuevo perfil</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="104"/>
         <source>Can&apos;t delete Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>No se puede borrar el perfil</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="104"/>
         <source>You can&apos;t delete all Profiles. At least one Profile must stay.</source>
-        <translation type="unfinished"></translation>
+        <translation>No puedes borrar todos los Perfiles. Al menos un Perfil debe permanecer.</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="115"/>
         <source>Uninstall Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Desinstalar versión</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="119"/>
         <source>Version Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de versión</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="164"/>
         <source>Allow starting multiple instances (not recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir el inicio de varias instancias (no recomendado)</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="165"/>
         <source>Unpack natives separately for each instance</source>
-        <translation type="unfinished"></translation>
+        <translation>Desempaquetar los nativos por separado para cada instancia</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="168"/>
         <source>Use System Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizar el lenguaje del sistema</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="189"/>
         <source>Language:</source>
-        <translation type="unfinished"></translation>
+        <translation>Idioma:</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="191"/>
         <source>News URL:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">URL de las noticias:</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="293"/>
         <location filename="../gui/MainWindow.py" line="240"/>
         <source>Install</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Instalar</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="349"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="361"/>
         <location filename="../gui/MainWindow.py" line="349"/>
         <source>Switch</source>
-        <translation type="unfinished"></translation>
+        <translation>Interruptor</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="374"/>
         <source>New Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuenta nueva</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="385"/>
         <source>This Launcher is fanmade and not from Mojang/Microsoft</source>
-        <translation type="unfinished"></translation>
+        <translation>Este Launcher es fanmade y no de Mojang/Microsoft</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="386"/>
         <source>This Program uses minecraft-launcher-lib {{version}}</source>
-        <translation type="unfinished"></translation>
+        <translation>Este programa utiliza minecraft-launcher-lib {{version}}</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="387"/>
         <source>This Program is licensed under GPL 3.0</source>
-        <translation type="unfinished"></translation>
+        <translation>Este programa está bajo licencia GPL 3.0</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="388"/>
         <source>View Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Ver Fuente</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="453"/>
         <source>Failed to start Minecraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Error al iniciar Minecraft</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="454"/>
         <source>Failed to start</source>
-        <translation type="unfinished"></translation>
+        <translation>Fallo al arrancar</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="454"/>
         <source>Minecraft could not be started. Maybe you use a invalid Java executable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Minecraft no se ha podido iniciar. Tal vez usted utiliza un ejecutable Java no válido.</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="466"/>
         <source>News</source>
-        <translation type="unfinished"></translation>
+        <translation>Noticias</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="468"/>
         <source>Profile Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor de perfiles</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="470"/>
         <source>Version Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor de versiones</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="472"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opciones</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="479"/>
         <source>Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuenta</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="481"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca de</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="495"/>
         <source>Profile:</source>
-        <translation type="unfinished"></translation>
+        <translation>Perfil:</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="691"/>
         <location filename="../gui/MainWindow.py" line="498"/>
         <source>Play</source>
-        <translation type="unfinished"></translation>
+        <translation>Jugar</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="500"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Cierre de sesión</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="591"/>
         <location filename="../gui/MainWindow.py" line="585"/>
         <location filename="../gui/MainWindow.py" line="565"/>
         <source>Profile not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Perfil no encontrado</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="591"/>
         <location filename="../gui/MainWindow.py" line="585"/>
         <location filename="../gui/MainWindow.py" line="565"/>
         <source>The given Profile was not found</source>
-        <translation type="unfinished"></translation>
+        <translation>No se ha encontrado el perfil indicado</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="631"/>
         <location filename="../gui/MainWindow.py" line="622"/>
         <source>No Internet Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sin conexión a Internet</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="622"/>
         <source>You need a internet connection to install a new version, but you are still able to play already installed versions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Necesitas una conexión a Internet para instalar una nueva versión, pero puedes seguir jugando a las versiones ya instaladas.</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="631"/>
         <source>This Feature needs a internet connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta función requiere conexión a Internet</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="649"/>
         <source>Game Output</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Salida del juego</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="655"/>
         <source>Due to an error, the installation could not be completed</source>
-        <translation type="unfinished"></translation>
+        <translation>Debido a un error, la instalación no ha podido completarse</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="656"/>
         <source>This may have been caused by a network error</source>
-        <translation type="unfinished"></translation>
+        <translation>Esto puede haber sido causado por un error de red</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="659"/>
         <source>Installation failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Error de instalación</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="686"/>
         <source>Welcome, {{name}}</source>
-        <translation type="unfinished"></translation>
+        <translation>Bienvenido, {{name}}</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow.py" line="689"/>
         <source>Play Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Jugar sin conexión</translation>
     </message>
 </context>
 <context>
@@ -296,22 +296,22 @@
     <message>
         <location filename="../ProfileImporter.py" line="65"/>
         <source>Import Profiles</source>
-        <translation type="unfinished"></translation>
+        <translation>Perfiles de importación</translation>
     </message>
     <message>
         <location filename="../ProfileImporter.py" line="65"/>
         <source>jdMinecraftLauncher can import Profiles from the vanilla Launcher. Do you want to import your Profiles?</source>
-        <translation type="unfinished"></translation>
+        <translation>jdMinecraftLauncher puede importar perfiles de la vainilla Launcher. Quieres importar tus perfiles?</translation>
     </message>
     <message>
         <location filename="../ProfileImporter.py" line="72"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../ProfileImporter.py" line="73"/>
         <source>Due to an error, the profiles could not be imported. Sorry for that.</source>
-        <translation type="unfinished"></translation>
+        <translation>Debido a un error, no se han podido importar los perfiles. Lo sentimos.</translation>
     </message>
 </context>
 <context>
@@ -319,193 +319,193 @@
     <message>
         <location filename="../gui/ProfileWindow.py" line="25"/>
         <source>Game Directory:</source>
-        <translation type="unfinished"></translation>
+        <translation>Directorio del Juego:</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="40"/>
         <location filename="../gui/ProfileWindow.py" line="26"/>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Visite</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="28"/>
         <source>Resolution:</source>
-        <translation type="unfinished"></translation>
+        <translation>Resolución:</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="32"/>
         <source>Launcher Visibility:</source>
-        <translation type="unfinished"></translation>
+        <translation>Visibilidad del lanzador:</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="34"/>
         <source>Enable experimental development Versions (&quot;snapshots&quot;)</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir el desarrollo experimental Versiones (&quot;Snapshots&quot;)</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="35"/>
         <source>Allow use of old &quot;Beta&quot; Minecraft Versions (From 2010-2011)</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir el uso de viejas versiones &quot;Beta&quot; de Minecraft (De 2010-2011)</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="36"/>
         <source>Allow use of old &quot;Alpha&quot; Minecraft Versions (From 2010)</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir el uso de viejas versiones &quot;Alpha&quot; de Minecraft (Desde 2010)</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="38"/>
         <source>Executable:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ejecutable:</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="41"/>
         <source>JVM Arguments:</source>
-        <translation type="unfinished"></translation>
+        <translation>Argumentos JVM:</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="43"/>
         <source>Connect to Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Conectarse al servidor</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="44"/>
         <source>Server IP:</source>
-        <translation type="unfinished"></translation>
+        <translation>IP del servidor:</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="46"/>
         <source>Server Port:</source>
-        <translation type="unfinished"></translation>
+        <translation>Puerto del servidor:</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="48"/>
         <source>Start in demo mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Inicio en modo demo</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="49"/>
         <source>Disable Multiplayer</source>
-        <translation type="unfinished"></translation>
+        <translation>Desactivar multijugador</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="50"/>
         <source>Disable Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Desactivar chat</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="51"/>
         <source>Use Gamemode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Utilizar modo de juego</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="52"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="53"/>
         <source>Additional Options:</source>
-        <translation type="unfinished"></translation>
+        <translation>Opciones adicionales:</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="55"/>
         <source>Create Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear acceso directo</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="56"/>
         <source>Open Game Dir</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Juego abierto Dir</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="57"/>
         <source>Save Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar perfil</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="62"/>
         <source>Hide Launcher and re-open when game closes</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar Launcher y volver a abrir cuando se cierra el juego</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="63"/>
         <source>Close Launcher when Game starts</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar el Launcher al iniciar el Juego</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="64"/>
         <source>Keep the Launcher open</source>
-        <translation type="unfinished"></translation>
+        <translation>Mantener abierto el Launcher</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="97"/>
         <source>Profile Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Información de perfil</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="98"/>
         <source>Profile Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre del perfil:</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="108"/>
         <source>Use Version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar versión:</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="141"/>
         <source>Version Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar versión</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="146"/>
         <source>Java Settings (Advanced)</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuración de Java (avanzada)</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="148"/>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Otros</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="160"/>
         <source>Profile Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor de perfiles</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="191"/>
         <source>Note for Flatpak users</source>
-        <translation type="unfinished"></translation>
+        <translation>Nota para los usuarios de Flatpak</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="191"/>
         <source>Please select in the following dialog the directory which contains bin/java</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccione en el siguiente cuadro de diálogo el directorio que contiene bin/java</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="199"/>
         <source>Invalid directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Directorio no válido</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="199"/>
         <source>This directory does not contain bin/java</source>
-        <translation type="unfinished"></translation>
+        <translation>Este directorio no contiene bin/java</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="208"/>
         <source>Copy of {{name}}</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia de {{name}}</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="304"/>
         <source>Use latest Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizar la última versión</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="306"/>
         <source>Use latest Snapshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizar la última Snapshot</translation>
     </message>
 </context>
 <context>
@@ -513,37 +513,37 @@
     <message>
         <location filename="../Shortcut.py" line="51"/>
         <source>Add URL Schema</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir esquema URL</translation>
     </message>
     <message>
         <location filename="../Shortcut.py" line="51"/>
         <source>To make Shortcuts work, you need to add the jdMinecraftLauncher URL Schema to Windows. Should it be added?</source>
-        <translation type="unfinished"></translation>
+        <translation>Para que funcionen los accesos directos, es necesario añadir el esquema de URL jdMinecraftLauncher a Windows. ¿Debe añadirse?</translation>
     </message>
     <message>
         <location filename="../Shortcut.py" line="95"/>
         <source>Select where you want to create the Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccione dónde desea crear el acceso directo</translation>
     </message>
     <message>
         <location filename="../Shortcut.py" line="96"/>
         <source>Create Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear acceso directo</translation>
     </message>
     <message>
         <location filename="../Shortcut.py" line="100"/>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Escritorio</translation>
     </message>
     <message>
         <location filename="../Shortcut.py" line="104"/>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menu</translation>
     </message>
     <message>
         <location filename="../Shortcut.py" line="108"/>
         <source>Both</source>
-        <translation type="unfinished"></translation>
+        <translation>Ambos</translation>
     </message>
 </context>
 <context>
@@ -551,22 +551,22 @@
     <message>
         <location filename="../jdMinecraftLauncher.py" line="41"/>
         <source>Unsupported Platform</source>
-        <translation type="unfinished"></translation>
+        <translation>Plataforma no compatible</translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="41"/>
         <source>Your current Platform is not supported by jdMinecraftLauncher</source>
-        <translation type="unfinished"></translation>
+        <translation>Tu plataforma actual no es compatible con jdMinecraftLauncher</translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="85"/>
         <source>No Internet Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sin conexión a Internet</translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="85"/>
         <source>You have no Internet connection. If you start jdMinecraftLauncher for the first time, you have to login using the Internet before you can use the offline Mode.</source>
-        <translation type="unfinished"></translation>
+        <translation>No tienes conexión a Internet. Si inicias jdMinecraftLauncher por primera vez, tienes que iniciar sesión usando Internet antes de poder usar el Modo sin conexión.</translation>
     </message>
 </context>
 </TS>
