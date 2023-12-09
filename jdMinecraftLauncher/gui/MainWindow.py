@@ -165,7 +165,6 @@ class OptionsTab(QWidget):
         self.extractNativesCheckBox = QCheckBox(QCoreApplication.translate("MainWindow", "Unpack natives separately for each instance"))
 
         languageNames = getLanguageNames()
-        self.languageComboBox.addItem(QCoreApplication.translate("MainWindow", "Use System Language"), "default")
         self.languageComboBox.addItem(languageNames.get("en", "en"), "en")
         for i in os.listdir(os.path.join(env.currentDir,"translations")):
             if not i.endswith(".qm"):
@@ -173,6 +172,8 @@ class OptionsTab(QWidget):
 
             lang = i.removeprefix("jdMinecraftLauncher_").removesuffix(".qm")
             self.languageComboBox.addItem(languageNames.get(lang, lang), lang)
+        self.languageComboBox.model().sort(0, Qt.SortOrder.AscendingOrder)
+        self.languageComboBox.insertItem(0, QCoreApplication.translate("MainWindow", "Use System Language"), "default")
 
         for i in range(self.languageComboBox.count()):
             if self.languageComboBox.itemData(i) == env.settings.get("language"):
