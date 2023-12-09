@@ -1,5 +1,6 @@
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtCore import QUrl, QCoreApplication
+from PyQt6.QtWidgets import QMessageBox
 from typing import TYPE_CHECKING
 import minecraft_launcher_lib
 
@@ -30,9 +31,19 @@ class LoginWindow(QWebEngineView):
             # Get the code from the url
             auth_code = minecraft_launcher_lib.microsoft_account.get_auth_code_from_url(url.toString())
             # Do the login
-            account_information = minecraft_launcher_lib.microsoft_account.complete_login(self.env.secrets.client_id, self.env.secrets.secret, self.env.secrets.redirect_url, auth_code)
+            try:
+                account_information = minecraft_launcher_lib.microsoft_account.complete_login(self.env.secrets.client_id, self.env.secrets.secret, self.env.secrets.redirect_url, auth_code)
+            except minecraft_launcher_lib.exceptions.AccountNotOwnMinecraft:
+                text = QCoreApplication.translate("LoginWindow", "Your account appears to not own Minecraft.")
+                text += " " + QCoreApplication.translate("LoginWindow", "You need an account that owns Minecraft to use jdMinecraftLauncher.")
+                text += " " + QCoreApplication.translate("LoginWindow", "If you've purchased Minecraft and still encounter this error, try logging in with the official launcher first.")
+                text += " " + QCoreApplication.translate("LoginWindow", "If the error still persists, please write a bug report.")
+                self.hide()
+                QMessageBox.critical(self, QCoreApplication.translate("LoginWindow", "Account does not own Minecraft"), text)
+                self.load(QUrl(minecraft_launcher_lib.microsoft_account.get_login_url(self.env.secrets.client_id, self.env.secrets.redirect_url)))
+                self.show()
+                return
 
-            # Show the login information
             self.login_done(account_information)
 
     def login_done(self, information_dict: minecraft_launcher_lib.microsoft_types.CompleteLoginResponse):

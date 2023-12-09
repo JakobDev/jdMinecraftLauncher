@@ -27,9 +27,34 @@
   <context>
     <name>LoginWindow</name>
     <message>
-      <location filename="../gui/LoginWindow.py" line="16" />
+      <location filename="../gui/LoginWindow.py" line="17" />
       <source>Login</source>
       <translation>Inloggen</translation>
+    </message>
+    <message>
+      <location filename="../gui/LoginWindow.py" line="37" />
+      <source>Your account appears to not own Minecraft.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/LoginWindow.py" line="38" />
+      <source>You need an account that owns Minecraft to use jdMinecraftLauncher.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/LoginWindow.py" line="39" />
+      <source>If you've purchased Minecraft and still encounter this error, try logging in with the official launcher first.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/LoginWindow.py" line="40" />
+      <source>If the error still persists, please write a bug report.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/LoginWindow.py" line="42" />
+      <source>Account does not own Minecraft</source>
+      <translation type="unfinished" />
     </message>
   </context>
   <context>
