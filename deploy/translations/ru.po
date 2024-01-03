@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-09 22:10+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:6
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:6
+msgid "An classic styled Minecraft Launcher"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:12
+msgid ""
+"jdMinecraftLauncher is a Minecraft launcher which Look and Feel is close to "
+"the the good old official Launcher"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:13
+msgid "Features:"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:15
+msgid "All Minecraft versions are supported"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:16
+msgid "Offline mode is aviable after your first login"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:17
+msgid "One click install of Forge and Fabric"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:18
+msgid "FeralInteractive GameMode is supported"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:19
+msgid ""
+"Create Shortcuts in the Menu and on the Desktop to directly launch Minecraft"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:20
+msgid "For Developers commandline argumnets and a D-Bus Interface are provided"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:21
+msgid "Profiles can be imported from the vanilla launcher"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:23
+msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:24
+msgid ""
+"This Launcher is completly fanmade and not supported by Mojang/Microsoft"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:28
+msgid "The MainWindow"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:32
+msgid "The ProfileWindow"
+msgstr ""
