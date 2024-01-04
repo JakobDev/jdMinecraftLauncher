@@ -7,4 +7,5 @@ def getLanguageNames() -> dict[str, str]:
         "de": QCoreApplication.translate("Language", "German"),
         "nl": QCoreApplication.translate("Language", "Dutch"),
         "es": QCoreApplication.translate("Language", "Spanish"),
+        "ru": QCoreApplication.translate("Language", "Russian"),
     }
