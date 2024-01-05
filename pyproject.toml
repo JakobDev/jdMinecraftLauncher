@@ -43,6 +43,9 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[project.optional-dependencies]
+window-icon-progress-windows = ["PyTaskbarProgress"]
+
 [project.urls]
 Source = "https://codeberg.org/JakobDev/jdMinecraftLauncher"
 Issues = "https://codeberg.org/JakobDev/jdMinecraftLauncher/issues"

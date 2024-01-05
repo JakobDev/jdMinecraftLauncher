@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QTableWidget, QTableWidgetItem, QVBoxLayout, QHBoxLayout, QGridLayout, QPlainTextEdit, QTabWidget, QAbstractItemView, QHeaderView, QPushButton, QComboBox, QProgressBar, QLabel, QCheckBox, QMenu, QLineEdit, QSizePolicy, QMessageBox
-from PyQt6.QtCore import QUrl, QLocale, Qt, QProcess, QCoreApplication
+from PyQt6.QtCore import QUrl, QLocale, Qt, QProcess, QCoreApplication, QEvent
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebEngineCore import QWebEngineProfile
 from PyQt6.QtGui import QCursor, QAction, QIcon, QContextMenuEvent, QCloseEvent
@@ -11,6 +11,7 @@ from jdMinecraftLauncher.InstallThread import InstallThread
 from jdMinecraftLauncher.RunMinecraft import getMinecraftCommand
 from jdMinecraftLauncher.Environment import Environment
 from jdMinecraftLauncher.Languages import getLanguageNames
+from jdMinecraftLauncher.utils.WindowIconProgress import createWindowIconProgress
 import minecraft_launcher_lib
 from typing import List
 import urllib.parse
@@ -155,14 +156,16 @@ class VersionEditorTab(QTableWidget):
         self.updateVersions()
 
 class OptionsTab(QWidget):
-    def __init__(self, env: Environment):
+    def __init__(self, env: Environment, parent: "MainWindow"):
         super().__init__()
         self.env = env
+        self._parent = parent
 
         self.languageComboBox = QComboBox()
         self.urlEdit = QLineEdit()
         self.allowMultiLaunchCheckBox = QCheckBox(QCoreApplication.translate("MainWindow", "Allow starting multiple instances (not recommended)"))
         self.extractNativesCheckBox = QCheckBox(QCoreApplication.translate("MainWindow", "Unpack natives separately for each instance"))
+        self.windowIconProgressCheckBox = QCheckBox(QCoreApplication.translate("MainWindow", "Display installation progress in the window icon"))
 
         languageNames = getLanguageNames()
         self.languageComboBox.addItem(languageNames.get("en", "en"), "en")
@@ -182,9 +185,13 @@ class OptionsTab(QWidget):
         self.urlEdit.setText(env.settings.get("newsURL"))
         self.allowMultiLaunchCheckBox.setChecked(self.env.settings.get("enableMultiLaunch"))
         self.extractNativesCheckBox.setChecked(self.env.settings.get("extractNatives"))
+        self.windowIconProgressCheckBox.setChecked(self.env.settings.get("windowIconProgress"))
+
+        self.windowIconProgressCheckBox.setVisible(parent.windowIconProgress.isSupported())
 
         self.allowMultiLaunchCheckBox.stateChanged.connect(self.multiLaunchCheckBoxChanged)
         self.extractNativesCheckBox.stateChanged.connect(self.extractNativesCheckBoxChanged)
+        self.windowIconProgressCheckBox.stateChanged.connect(self.windowIconProgressCheckBoxChanged)
 
         gridLayout = QGridLayout()
         gridLayout.addWidget(QLabel(QCoreApplication.translate("MainWindow", "Language:")), 0, 0)
@@ -196,6 +203,7 @@ class OptionsTab(QWidget):
         mainLayout.addLayout(gridLayout)
         mainLayout.addWidget(self.allowMultiLaunchCheckBox)
         mainLayout.addWidget(self.extractNativesCheckBox)
+        mainLayout.addWidget(self.windowIconProgressCheckBox)
         mainLayout.addStretch(1)
         
         self.setLayout(mainLayout)
@@ -205,6 +213,13 @@ class OptionsTab(QWidget):
 
     def extractNativesCheckBoxChanged(self):
         self.env.settings.set("extractNatives", self.extractNativesCheckBox.isChecked())
+
+    def windowIconProgressCheckBoxChanged(self) -> None:
+        checked = self.windowIconProgressCheckBox.isChecked()
+        self.env.settings.set("windowIconProgress", checked)
+        if not checked:
+            self._parent.windowIconProgress.hide()
+
 
 class ForgeTab(QTableWidget):
     def __init__(self, env: Environment, mainWindow: "MainWindow"):
@@ -469,7 +484,7 @@ class Tabs(QTabWidget):
         self.addTab(self.profileEditor, QCoreApplication.translate("MainWindow", "Profile Editor"))
         self.versionTab = VersionEditorTab(env)
         self.addTab(self.versionTab, QCoreApplication.translate("MainWindow", "Version Editor"))
-        self.options = OptionsTab(env)
+        self.options = OptionsTab(env, parent)
         self.addTab(self.options, QCoreApplication.translate("MainWindow", "Options"))
         if not env.offlineMode:
             self.forgeTab = ForgeTab(env, parent)
@@ -489,6 +504,7 @@ class MainWindow(QWidget):
         super().__init__()
         self.env = env
         self.profileListRebuild = False
+        self.windowIconProgress = createWindowIconProgress(self)
         self.tabWidget = Tabs(env, self)
         self.profileWindow = ProfileWindow(self.env,self)
         self.progressBar = QProgressBar()
@@ -543,7 +559,7 @@ class MainWindow(QWidget):
 
         self.installThread = InstallThread(env)
         self.installThread.text.connect(lambda text: self.progressBar.setFormat(text))
-        self.installThread.progress.connect(lambda progress: self.progressBar.setValue(progress))
+        self.installThread.progress.connect(self.updateProgress)
         self.installThread.progress_max.connect(lambda progress_max: self.progressBar.setMaximum(progress_max))
         self.installThread.finished.connect(self.installFinish)
 
@@ -652,6 +668,8 @@ class MainWindow(QWidget):
         o.executeCommand(profile,args,natives_path)
 
     def installFinish(self) -> None:
+        self.windowIconProgress.hide()
+
         if self.installThread.getError() is not None:
             text = QCoreApplication.translate("MainWindow", "Due to an error, the installation could not be completed") + "<br><br>"
             text += QCoreApplication.translate("MainWindow", "This may have been caused by a network error")
@@ -695,6 +713,18 @@ class MainWindow(QWidget):
         self.playButton.setEnabled(enabled)
         self.tabWidget.forgeTab.setButtonsEnabled(enabled)
         self.tabWidget.fabricTab.setButtonsEnabled(enabled)
+
+    def updateProgress(self, progress: int) -> None:
+        self.progressBar.setValue(progress)
+
+        if self.env.settings.get("windowIconProgress"):
+            self.windowIconProgress.setProgress(progress / self.progressBar.maximum())
+
+    def event(self, event: QEvent) -> bool:
+        if event.type() == QEvent.Type.WinIdChange:
+            self.windowIconProgress = createWindowIconProgress(self)
+
+        return super().event(event)
 
     def closeEvent(self,event):
         if self.env.args.dont_save_data:

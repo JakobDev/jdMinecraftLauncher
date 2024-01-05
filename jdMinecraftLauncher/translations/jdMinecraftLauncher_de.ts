@@ -65,268 +65,273 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../gui/MainWindow.py" line="33"/>
+        <location filename="../gui/MainWindow.py" line="34"/>
         <source>Profile Name</source>
         <translation>Profilname</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="119"/>
-        <location filename="../gui/MainWindow.py" line="33"/>
+        <location filename="../gui/MainWindow.py" line="120"/>
+        <location filename="../gui/MainWindow.py" line="34"/>
         <source>Minecraft Version</source>
         <translation>Minecraftversion</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="49"/>
+        <location filename="../gui/MainWindow.py" line="50"/>
         <source>(Latest version)</source>
         <translation>(Neuste Version)</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="51"/>
+        <location filename="../gui/MainWindow.py" line="52"/>
         <source>(Latest snapshot)</source>
         <translation>(Neuster Snapshot)</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="63"/>
+        <location filename="../gui/MainWindow.py" line="64"/>
         <source>Add Profile</source>
         <translation>Profil hinzufügen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="498"/>
-        <location filename="../gui/MainWindow.py" line="67"/>
+        <location filename="../gui/MainWindow.py" line="514"/>
+        <location filename="../gui/MainWindow.py" line="68"/>
         <source>Edit Profile</source>
         <translation>Profil bearbeiten</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="71"/>
+        <location filename="../gui/MainWindow.py" line="72"/>
         <source>Copy Profile</source>
         <translation>Profil kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="75"/>
+        <location filename="../gui/MainWindow.py" line="76"/>
         <source>Remove Profile</source>
         <translation>Profil löschen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="79"/>
+        <location filename="../gui/MainWindow.py" line="80"/>
         <source>Open Game Folder</source>
         <translation>Spieleordner öffnen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="84"/>
+        <location filename="../gui/MainWindow.py" line="85"/>
         <source>Create Shortcut</source>
         <translation>Verknüpfung erstellen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="497"/>
-        <location filename="../gui/MainWindow.py" line="91"/>
+        <location filename="../gui/MainWindow.py" line="513"/>
+        <location filename="../gui/MainWindow.py" line="92"/>
         <source>New Profile</source>
         <translation>Neues Profil</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="104"/>
+        <location filename="../gui/MainWindow.py" line="105"/>
         <source>Can&apos;t delete Profile</source>
         <translation>Kann Profil nicht löschen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="104"/>
+        <location filename="../gui/MainWindow.py" line="105"/>
         <source>You can&apos;t delete all Profiles. At least one Profile must stay.</source>
         <translation>Du kannst nicht alle Profile löschen. Es muss mindestens ein Profil übrigbleiben.</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="115"/>
+        <location filename="../gui/MainWindow.py" line="116"/>
         <source>Uninstall Version</source>
         <translation>Version deinstallieren</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="119"/>
+        <location filename="../gui/MainWindow.py" line="120"/>
         <source>Version Type</source>
         <translation>Versiontyp</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="164"/>
+        <location filename="../gui/MainWindow.py" line="166"/>
         <source>Allow starting multiple instances (not recommended)</source>
         <translation>Starten von mehreren Instanzen erlauben (nicht empfohlen)</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="165"/>
+        <location filename="../gui/MainWindow.py" line="167"/>
         <source>Unpack natives separately for each instance</source>
         <translation>Natives für jede Instanz getrennt entpacken</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="176"/>
+        <location filename="../gui/MainWindow.py" line="168"/>
+        <source>Display installation progress in the window icon</source>
+        <translation>Installationsfortschritts im Fenstersymbol anzeigen</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow.py" line="179"/>
         <source>Use System Language</source>
         <translation>Systemsprache benutzen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="190"/>
+        <location filename="../gui/MainWindow.py" line="197"/>
         <source>Language:</source>
         <translation>Sprache:</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="192"/>
+        <location filename="../gui/MainWindow.py" line="199"/>
         <source>News URL:</source>
         <translation>News-URL:</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="294"/>
-        <location filename="../gui/MainWindow.py" line="241"/>
+        <location filename="../gui/MainWindow.py" line="309"/>
+        <location filename="../gui/MainWindow.py" line="256"/>
         <source>Install</source>
         <translation>Installieren</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="350"/>
+        <location filename="../gui/MainWindow.py" line="365"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="362"/>
-        <location filename="../gui/MainWindow.py" line="350"/>
+        <location filename="../gui/MainWindow.py" line="377"/>
+        <location filename="../gui/MainWindow.py" line="365"/>
         <source>Switch</source>
         <translation>Wechseln</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="375"/>
+        <location filename="../gui/MainWindow.py" line="390"/>
         <source>New Account</source>
         <translation>Neuer Account</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="386"/>
+        <location filename="../gui/MainWindow.py" line="401"/>
         <source>This Launcher is fanmade and not from Mojang/Microsoft</source>
         <translation>Dieser Launcher ist Fanmade und nicht von Mojang/Microsoft</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="387"/>
+        <location filename="../gui/MainWindow.py" line="402"/>
         <source>This Program uses minecraft-launcher-lib {{version}}</source>
         <translation>Dieses Programm benutzt minecraft-launcher-lib {{version}}</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="388"/>
+        <location filename="../gui/MainWindow.py" line="403"/>
         <source>This Program is licensed under GPL 3.0</source>
         <translation>Dieses Programm ist unter der GPL 3.0 lizenziert</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="389"/>
+        <location filename="../gui/MainWindow.py" line="404"/>
         <source>View Source</source>
         <translation>Quelltext ansehen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="454"/>
+        <location filename="../gui/MainWindow.py" line="469"/>
         <source>Failed to start Minecraft</source>
         <translation>Konnte Minecraft nicht starten</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="455"/>
+        <location filename="../gui/MainWindow.py" line="470"/>
         <source>Failed to start</source>
         <translation>Starten fehlgeschalgen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="455"/>
+        <location filename="../gui/MainWindow.py" line="470"/>
         <source>Minecraft could not be started. Maybe you use a invalid Java executable.</source>
         <translation>Minecraft konnte nicht gestartet werden. Eventuell benutzt du eine ungültige Java version.</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="467"/>
+        <location filename="../gui/MainWindow.py" line="482"/>
         <source>News</source>
         <translation>News</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="469"/>
+        <location filename="../gui/MainWindow.py" line="484"/>
         <source>Profile Editor</source>
         <translation>Profileditor</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="471"/>
+        <location filename="../gui/MainWindow.py" line="486"/>
         <source>Version Editor</source>
         <translation>Versionseditor</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="473"/>
+        <location filename="../gui/MainWindow.py" line="488"/>
         <source>Options</source>
         <translation>Optionen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="480"/>
+        <location filename="../gui/MainWindow.py" line="495"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="482"/>
+        <location filename="../gui/MainWindow.py" line="497"/>
         <source>About</source>
         <translation>Über</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="496"/>
+        <location filename="../gui/MainWindow.py" line="512"/>
         <source>Profile:</source>
         <translation>Profil:</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="692"/>
-        <location filename="../gui/MainWindow.py" line="499"/>
+        <location filename="../gui/MainWindow.py" line="710"/>
+        <location filename="../gui/MainWindow.py" line="515"/>
         <source>Play</source>
         <translation>Spielen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="501"/>
+        <location filename="../gui/MainWindow.py" line="517"/>
         <source>Logout</source>
         <translation>Abmelden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="592"/>
-        <location filename="../gui/MainWindow.py" line="586"/>
-        <location filename="../gui/MainWindow.py" line="566"/>
+        <location filename="../gui/MainWindow.py" line="608"/>
+        <location filename="../gui/MainWindow.py" line="602"/>
+        <location filename="../gui/MainWindow.py" line="582"/>
         <source>Profile not found</source>
         <translation>Profil nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="592"/>
-        <location filename="../gui/MainWindow.py" line="586"/>
-        <location filename="../gui/MainWindow.py" line="566"/>
+        <location filename="../gui/MainWindow.py" line="608"/>
+        <location filename="../gui/MainWindow.py" line="602"/>
+        <location filename="../gui/MainWindow.py" line="582"/>
         <source>The given Profile was not found</source>
         <translation>Das angegebene Profil wurde nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="632"/>
-        <location filename="../gui/MainWindow.py" line="623"/>
+        <location filename="../gui/MainWindow.py" line="648"/>
+        <location filename="../gui/MainWindow.py" line="639"/>
         <source>No Internet Connection</source>
         <translation>Keine Internetverbindung</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="623"/>
+        <location filename="../gui/MainWindow.py" line="639"/>
         <source>You need a internet connection to install a new version, but you are still able to play already installed versions.</source>
         <translation>Du benötigst zum Installieren einer neuen Version eine Internetverbindung. Bereits installierte Version können Problemlos gespielt werden.</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="632"/>
+        <location filename="../gui/MainWindow.py" line="648"/>
         <source>This Feature needs a internet connection</source>
         <translation>Dieses Feature benötigt eine Internetverbindung</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="650"/>
+        <location filename="../gui/MainWindow.py" line="666"/>
         <source>Game Output</source>
         <translation>Spieleausgabe</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="656"/>
+        <location filename="../gui/MainWindow.py" line="674"/>
         <source>Due to an error, the installation could not be completed</source>
         <translation>Aufgrund eines Fehlers konnte die Installation nicht vollendet werden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="657"/>
+        <location filename="../gui/MainWindow.py" line="675"/>
         <source>This may have been caused by a network error</source>
         <translation>Dies wurde möglicherweise von einem Netzwerkfehler verursacht</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="660"/>
+        <location filename="../gui/MainWindow.py" line="678"/>
         <source>Installation failed</source>
         <translation>Installation fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="687"/>
+        <location filename="../gui/MainWindow.py" line="705"/>
         <source>Welcome, {{name}}</source>
         <translation>Willkommen, {{name}}</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow.py" line="690"/>
+        <location filename="../gui/MainWindow.py" line="708"/>
         <source>Play Offline</source>
         <translation>Offline spielen</translation>
     </message>
