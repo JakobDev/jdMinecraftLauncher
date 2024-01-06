@@ -1,5 +1,5 @@
-depends_on:
-    - check-starting
+#epends_on:
+#    - check-starting
 
 steps:
     pypi_deploy:
