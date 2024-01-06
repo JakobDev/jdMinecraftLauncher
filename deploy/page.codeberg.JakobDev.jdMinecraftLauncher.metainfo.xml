@@ -34,6 +34,13 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="5.4" date="2024-01-06" type="stable">
+      <description>
+        <ul>
+          <li>Fix crash on startup</li>
+        </ul>
+      </description>
+    </release>
     <release version="5.3" date="2024-01-06" type="stable">
       <description>
         <ul>

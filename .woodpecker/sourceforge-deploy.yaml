@@ -1,3 +1,6 @@
+depends_on:
+    - check-starting
+
 steps:
     sourceforge_deploy:
         image: codeberg.org/jakobdev/python-ci-build-container:latest

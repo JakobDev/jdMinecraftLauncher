@@ -10,6 +10,7 @@ class Settings():
             "newsURL": "https://www.minecraft.net",
             "enableMultiLaunch": False,
             "extractNatives": False,
+            "windowIconProgress": True,
         }
 
         self._user_settings = {}
