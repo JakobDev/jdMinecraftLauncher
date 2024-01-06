@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <component type="desktop">
-  <!--Created with jdAppStreamEdit 7.0-->
+  <!--Created with jdAppStreamEdit 8.0-->
   <id>page.codeberg.JakobDev.jdMinecraftLauncher</id>
   <name>jdMinecraftLauncher</name>
   <summary>An classic styled Minecraft Launcher</summary>
@@ -34,6 +34,15 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="5.3" date="2024-01-06" type="stable">
+      <description>
+        <ul>
+          <li>Display installation progress in the window icon</li>
+          <li>Add Spanisch translation ( AviDevs)</li>
+          <li>Add Russian translation (0que)</li>
+        </ul>
+      </description>
+    </release>
     <release version="5.2" date="2023-08-25" type="stable">
       <description>
         <ul>
@@ -216,7 +225,7 @@
   <recommends>
     <control>pointing</control>
     <control>keyboard</control>
-    <display_length compare="ge">medium</display_length>
+    <display_length compare="ge">760</display_length>
   </recommends>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">moderate</content_attribute>
