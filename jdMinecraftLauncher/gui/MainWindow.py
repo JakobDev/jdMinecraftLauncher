@@ -54,8 +54,8 @@ class ProfileEditorTab(QTableWidget):
                 versionItem = QTableWidgetItem(i.version)
             versionItem.setFlags(versionItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
             self.insertRow(count)
-            self.setItem(count, 0, nameItem) 
-            self.setItem(count, 1, versionItem) 
+            self.setItem(count, 0, nameItem)
+            self.setItem(count, 1, versionItem)
             count += 1
 
     def contextMenuEvent(self, event: QContextMenuEvent):
@@ -64,7 +64,7 @@ class ProfileEditorTab(QTableWidget):
         addProfile = QAction(QCoreApplication.translate("MainWindow", "Add Profile"), self)
         addProfile.triggered.connect(self.addProfile)
         self.menu.addAction(addProfile)
-    
+
         editProfile = QAction(QCoreApplication.translate("MainWindow", "Edit Profile"), self)
         editProfile.triggered.connect(self.editProfile)
         self.menu.addAction(editProfile)
@@ -90,15 +90,15 @@ class ProfileEditorTab(QTableWidget):
 
     def addProfile(self):
         self.mainWindow.profileWindow.loadProfile(Profile(QCoreApplication.translate("MainWindow", "New Profile"), self.env), True)
-        self.mainWindow.profileWindow.exec()
+        self.mainWindow.profileWindow.open()
 
     def editProfile(self):
         self.mainWindow.profileWindow.loadProfile(self.env.profileCollection.profileList[self.currentRow()],False)
-        self.mainWindow.profileWindow.exec()
+        self.mainWindow.profileWindow.open()
 
     def copyProfile(self):
         self.mainWindow.profileWindow.loadProfile(self.env.profileCollection.profileList[self.currentRow()], True, True)
-        self.mainWindow.profileWindow.exec()
+        self.mainWindow.profileWindow.open()
 
     def removeProfile(self):
         if len(self.env.profileCollection.profileList) == 1:
@@ -139,8 +139,8 @@ class VersionEditorTab(QTableWidget):
             typeItem = QTableWidgetItem(i["type"])
             typeItem.setFlags(typeItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
             self.insertRow(count)
-            self.setItem(count, 0, idItem) 
-            self.setItem(count, 1, typeItem) 
+            self.setItem(count, 0, idItem)
+            self.setItem(count, 1, typeItem)
             count += 1
 
     def contextMenuEvent(self, event: QContextMenuEvent):
@@ -205,7 +205,7 @@ class OptionsTab(QWidget):
         mainLayout.addWidget(self.extractNativesCheckBox)
         mainLayout.addWidget(self.windowIconProgressCheckBox)
         mainLayout.addStretch(1)
-        
+
         self.setLayout(mainLayout)
 
     def multiLaunchCheckBoxChanged(self):
@@ -553,7 +553,7 @@ class MainWindow(QWidget):
         self.mainLayout.addLayout(self.barLayout)
 
         self.updateProfileList()
-    
+
         self.setWindowTitle("jdMinecraftLauncher")
         self.setLayout(self.mainLayout)
 
@@ -622,14 +622,14 @@ class MainWindow(QWidget):
     def profileComboBoxIndexChanged(self, index: int):
         if not self.profileListRebuild:
             self.env.profileCollection.selectedProfile = self.env.profileCollection.profileList[index].id
-        
+
     def newProfileButtonClicked(self):
         self.profileWindow.loadProfile(self.env.profileCollection.getSelectedProfile(), True, True)
-        self.profileWindow.exec()
+        self.profileWindow.open()
 
     def editProfileButtonClicked(self):
         self.profileWindow.loadProfile(self.env.profileCollection.getSelectedProfile(), False)
-        self.profileWindow.exec()
+        self.profileWindow.open()
 
     def launchProfile(self, profile: Profile) -> None:
         if self.env.offlineMode:

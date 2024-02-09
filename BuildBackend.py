@@ -21,6 +21,30 @@ def get_lrelease_command() -> Optional[str]:
     return None
 
 
+def compile_ui(path: str):
+    if shutil.which("pyuic6") is None:
+        print("pyuic6 was not found", file=sys.stderr)
+        sys.exit(1)
+
+    program_dir = pathlib.Path(path) / "jdMinecraftLauncher"
+    compiled_dir = program_dir / "ui_compiled"
+    source_dir = program_dir / "ui"
+
+    try:
+        shutil.rmtree(compiled_dir)
+    except FileNotFoundError:
+        pass
+
+    compiled_dir.mkdir()
+    (compiled_dir / "__init__.py").touch()
+
+    for i in source_dir.iterdir():
+        if i.suffix != ".ui":
+            continue
+
+        subprocess.run(["pyuic6", str(i), "-o", str(compiled_dir / f"{i.stem}.py")], check=True)
+
+
 def build_translations(path: str) -> None:
     command = get_lrelease_command()
     for i in TRANSLATION_DIRS:
@@ -45,10 +69,16 @@ def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
         subprocess.run(["wheel", "unpack", "--dest", tempdir, wheel_path])
         current_dir = os.path.join(tempdir, os.listdir(tempdir)[0])
 
+        compile_ui(current_dir)
         build_translations(current_dir)
 
         try:
             os.remove(os.path.join(current_dir, os.path.basename(__file__)))
+        except FileNotFoundError:
+            pass
+
+        try:
+            shutil.rmtree(os.path.join(current_dir, "jdMinecraftLauncher", "ui"))
         except FileNotFoundError:
             pass
 

@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import QDialog, QLabel, QLineEdit, QCheckBox, QComboBox, QPushButton, QFileDialog, QMessageBox, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
 from jdMinecraftLauncher.Functions import saveProfiles, openFile, findJavaRuntimes, isFlatpak
 from jdMinecraftLauncher.Shortcut import canCreateShortcuts, askCreateShortcut
-from ..ui_compiled.ProfileWindow import Ui_ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
 from PyQt6.QtCore import QCoreApplication
 from PyQt6.QtGui import QIntValidator
@@ -17,14 +16,45 @@ if TYPE_CHECKING:
     from jdMinecraftLauncher.Profile import Profile
 
 
-class ProfileWindow(QDialog, Ui_ProfileWindow):
+class ProfileWindow(QDialog):
     def __init__(self, env: "Environment", parent: "MainWindow"):
         super().__init__(parent)
-
-        self.setupUi(self)
-
         self.env = env
         self.mainwindow = parent
+        self.profileeNameEdit = QLineEdit()
+        self.gameDirectoryCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Game Directory:"))
+        self.gameDirectoryBrowseButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Browse"))
+        self.gameDirectoryEdit = QLineEdit()
+        self.resolutionCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Resolution:"))
+        self.resolutionEditX = QLineEdit()
+        self.resolutionLabel = QLabel("x")
+        self.resolutionEditY = QLineEdit()
+        self.launcherVisibilityCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Launcher Visibility:"))
+        self.launcherVisibilityCombobox = QComboBox()
+        self.enableSnapshots = QCheckBox(QCoreApplication.translate("ProfileWindow", 'Enable experimental development Versions ("snapshots")'))
+        self.enableBeta = QCheckBox(QCoreApplication.translate("ProfileWindow", 'Allow use of old "Beta" Minecraft Versions (From 2010-2011)'))
+        self.enableAlpha = QCheckBox(QCoreApplication.translate("ProfileWindow", 'Allow use of old "Alpha" Minecraft Versions (From 2010)'))
+        self.versionSelectCombobox = QComboBox()
+        self.executableCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Executable:"))
+        self.executableEdit = QComboBox()
+        self.executableButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Browse"))
+        self.jvmArgumentsCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "JVM Arguments:"))
+        self.jvmArgumentsEdit = QLineEdit()
+        self.serverCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Connect to Server"))
+        self.serverLabel = QLabel(QCoreApplication.translate("ProfileWindow", "Server IP:"))
+        self.serverEdit = QLineEdit()
+        self.portLabel = QLabel(QCoreApplication.translate("ProfileWindow", "Server Port:"))
+        self.portEdit = QLineEdit()
+        self.demoModeCheckbox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Start in demo mode"))
+        self.disableMultiplayerCheckBox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Disable Multiplayer"))
+        self.disableChatCheckBox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Disable Chat"))
+        self.gameModeCheckBox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Use Gamemode"))
+        self.cancelButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Cancel"))
+        self.minecraftOptionsCheckBox = QCheckBox(QCoreApplication.translate("ProfileWindow", "Additional Options:"))
+        self.minecraftOptionsEdit = QLineEdit()
+        self.createShortcutButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Create Shortcut"))
+        self.openGameDirectoryButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Open Game Dir"))
+        self.saveProfileButton = QPushButton(QCoreApplication.translate("ProfileWindow", "Save Profile"))
 
         self.resolutionEditX.setValidator(QIntValidator(self.resolutionEditX))
         self.resolutionEditY.setValidator(QIntValidator(self.resolutionEditY))
@@ -53,6 +83,82 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         self.serverCheckbox.stateChanged.connect(self.changeServerConnect)
         self.minecraftOptionsCheckBox.stateChanged.connect(lambda: self.minecraftOptionsEdit.setEnabled(self.minecraftOptionsCheckBox.isChecked()))
 
+        gameDirectoryLayout = QHBoxLayout()
+        gameDirectoryLayout.addWidget(self.gameDirectoryEdit)
+        gameDirectoryLayout.addWidget(self.gameDirectoryBrowseButton)
+        gameDirectoryLayout.setSpacing(1)
+
+        self.resolutionLayout = QHBoxLayout()
+        self.resolutionLayout.addWidget(self.resolutionEditX)
+        self.resolutionLayout.addWidget(self.resolutionLabel)
+        self.resolutionLayout.addWidget(self.resolutionEditY)
+
+        self.profileInfoLayout = QGridLayout()
+        self.profileInfoLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Profile Info")), 0, 0)
+        self.profileInfoLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Profile Name:")), 1, 0)
+        self.profileInfoLayout.addWidget(self.profileeNameEdit, 1, 1)
+        self.profileInfoLayout.addWidget(self.gameDirectoryCheckbox, 2, 0)
+        self.profileInfoLayout.addLayout(gameDirectoryLayout, 2, 1)
+        self.profileInfoLayout.addWidget(self.resolutionCheckbox, 3, 0)
+        self.profileInfoLayout.addLayout(self.resolutionLayout, 3, 1)
+        self.profileInfoLayout.addWidget(self.launcherVisibilityCheckbox, 4, 0)
+        self.profileInfoLayout.addWidget(self.launcherVisibilityCombobox, 4, 1)
+
+        self.useVersionLayout = QHBoxLayout()
+        self.useVersionLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Use Version:")))
+        self.useVersionLayout.addWidget(self.versionSelectCombobox)
+
+        javaExecutableLayout = QHBoxLayout()
+        javaExecutableLayout.addWidget(self.executableEdit, 2)
+        javaExecutableLayout.addWidget(self.executableButton)
+        javaExecutableLayout.setSpacing(1)
+
+        self.javaSettingsLayout = QGridLayout()
+        self.javaSettingsLayout.addWidget(self.executableCheckbox, 0, 0)
+        self.javaSettingsLayout.addLayout(javaExecutableLayout, 0, 1)
+        self.javaSettingsLayout.addWidget(self.jvmArgumentsCheckbox, 1, 0)
+        self.javaSettingsLayout.addWidget(self.jvmArgumentsEdit, 1, 1)
+
+        self.serverLayout = QGridLayout()
+        self.serverLayout.addWidget(self.serverLabel,0,0)
+        self.serverLayout.addWidget(self.serverEdit,0,1)
+        self.serverLayout.addWidget(self.portLabel,1,0)
+        self.serverLayout.addWidget(self.portEdit,1,1)
+
+        minecraftOptionsLayout = QHBoxLayout()
+        minecraftOptionsLayout.addWidget(self.minecraftOptionsCheckBox)
+        minecraftOptionsLayout.addWidget(self.minecraftOptionsEdit)
+
+        buttonLayout = QHBoxLayout()
+        buttonLayout.addWidget(self.cancelButton)
+        buttonLayout.addWidget(self.createShortcutButton)
+        buttonLayout.addStretch(1)
+        buttonLayout.addWidget(self.openGameDirectoryButton)
+        buttonLayout.addWidget(self.saveProfileButton)
+
+        self.mainLayout = QVBoxLayout()
+        self.mainLayout.addLayout(self.profileInfoLayout)
+        self.mainLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Version Select")))
+        self.mainLayout.addWidget(self.enableSnapshots)
+        self.mainLayout.addWidget(self.enableBeta)
+        self.mainLayout.addWidget(self.enableAlpha)
+        self.mainLayout.addLayout(self.useVersionLayout)
+        self.mainLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Java Settings (Advanced)")))
+        self.mainLayout.addLayout(self.javaSettingsLayout)
+        self.mainLayout.addWidget(QLabel(QCoreApplication.translate("ProfileWindow", "Other")))
+        self.mainLayout.addWidget(self.serverCheckbox)
+        self.mainLayout.addLayout(self.serverLayout)
+        self.mainLayout.addWidget(self.demoModeCheckbox)
+        self.mainLayout.addWidget(self.disableMultiplayerCheckBox)
+        self.mainLayout.addWidget(self.disableChatCheckBox)
+        self.mainLayout.addLayout(minecraftOptionsLayout)
+        if platform.system() == "Linux":
+            self.mainLayout.addWidget(self.gameModeCheckBox)
+        self.mainLayout.addLayout(buttonLayout)
+
+        self.mainLayout.setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
+        self.setWindowTitle(QCoreApplication.translate("ProfileWindow", "Profile Editor"))
+        self.setLayout(self.mainLayout)
         self.selectLatestVersion = True
 
         if isFlatpak():

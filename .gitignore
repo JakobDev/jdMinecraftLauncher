@@ -11,6 +11,10 @@ build/
 dist/
 jdMinecraftLauncher.egg-info/
 
+# Compiled UI
+jdMinecraftLauncher/ui_compiled
+jdMinecraftLauncher/ui/*.py
+
 # Windows
 WindowsBuild/
 output/
