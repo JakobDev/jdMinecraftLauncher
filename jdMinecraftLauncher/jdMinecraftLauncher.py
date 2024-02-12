@@ -1,8 +1,8 @@
 from jdMinecraftLauncher.Functions import hasInternetConnection, getAccountDict
 from PyQt6.QtCore import QCoreApplication, QTranslator, QLibraryInfo, QLocale
 from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
+from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
 from jdMinecraftLauncher.gui.LoginWindow import LoginWindow
-from jdMinecraftLauncher.gui.MainWindow import MainWindow
 from jdMinecraftLauncher.Environment import Environment
 from .ProfileImporter import askProfileImport
 import minecraft_launcher_lib
