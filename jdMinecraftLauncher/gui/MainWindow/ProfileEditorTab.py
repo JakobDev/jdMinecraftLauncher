@@ -25,11 +25,12 @@ class ProfileEditorTab(QTableWidget):
         self.verticalHeader().hide()
         self.setShowGrid(False)
 
-        self._updateProfiles()
+        self.updateProfiles()
 
-    def _updateProfiles(self):
+    def updateProfiles(self):
         while self.rowCount() > 0:
             self.removeRow(0)
+
         count = 0
         for i in self._env.profileCollection.profileList:
             nameItem = QTableWidgetItem(i.name)

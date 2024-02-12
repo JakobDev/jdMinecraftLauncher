@@ -45,11 +45,11 @@ class WindowIconProgressUnix(WindowIconProgressBase):
         self._message = QDBusMessage.createSignal("/", "com.canonical.Unity.LauncherEntry", "Update")
 
     def setProgress(self, value: float) -> None:
-        self._message.setArguments(("application://page.codeberg.JakobDev.jdMinecraftLauncher", {"progress": value, "progress-visible": True}))
+        self._message.setArguments(("application://page.codeberg.JakobDev.jdMinecraftLauncher.desktop", {"progress": value, "progress-visible": True}))
         self._connection.send(self._message)
 
     def hide(self) -> None:
-        self._message.setArguments(("application://page.codeberg.JakobDev.jdMinecraftLauncher", {"progress-visible": False}))
+        self._message.setArguments(("application://page.codeberg.JakobDev.jdMinecraftLauncher.desktop", {"progress-visible": False}))
         self._connection.send(self._message)
 
     def isSupported(self) -> bool:

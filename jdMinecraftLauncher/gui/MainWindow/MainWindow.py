@@ -1,23 +1,22 @@
-
-
-from PyQt6.QtWidgets import QWidget
 from jdMinecraftLauncher.utils.WindowIconProgress import createWindowIconProgress
-from .ProfileEditorTab import ProfileEditorTab
-from ...ui_compiled.MainWindow import Ui_MainWindow
-from .VersionEditorTab import VersionEditorTab
-from .OptionsTab import OptionsTab
-from .GameOutputTab import GameOutputTab
-from typing import TYPE_CHECKING
 from PyQt6.QtCore import QCoreApplication, QEvent, QUrl, QLocale
-from PyQt6.QtGui import QCloseEvent
-from ..ProfileWindow import ProfileWindow
-from ...InstallThread import InstallThread
-from ...RunMinecraft import getMinecraftCommand
-from .ForgeTab import ForgeTab
-from .FabricTab import FabricTab
-from .AboutTab import AboutTab
+from ...ui_compiled.MainWindow import Ui_MainWindow
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebEngineCore import QWebEngineProfile
+from PyQt6.QtWidgets import QWidget, QMessageBox
+from ...RunMinecraft import getMinecraftCommand
+from .ProfileEditorTab import ProfileEditorTab
+from .VersionEditorTab import VersionEditorTab
+from ...InstallThread import InstallThread
+from ..ProfileWindow import ProfileWindow
+from .GameOutputTab import GameOutputTab
+from PyQt6.QtGui import QCloseEvent
+from .OptionsTab import OptionsTab
+from typing import TYPE_CHECKING
+from .FabricTab import FabricTab
+from .ForgeTab import ForgeTab
+from .AboutTab import AboutTab
+import urllib.parse
 import platform
 import json
 import sys
@@ -124,11 +123,13 @@ class MainWindow(QWidget, Ui_MainWindow):
         currentIndex = 0
         self.profileListRebuild = True
         self.profileComboBox.clear()
+
         for count, i in enumerate(self.env.profileCollection.profileList):
             self.profileComboBox.addItem(i.name)
             if i.id == self.env.profileCollection.selectedProfile:
                 currentIndex = count
-        #self.tabWidget.updateProfiles()
+
+        self._profileEditorTab.updateProfiles()
         self.profileComboBox.setCurrentIndex(currentIndex)
         self.profileListRebuild = False
 
@@ -176,10 +177,10 @@ class MainWindow(QWidget, Ui_MainWindow):
             natives_path = ""
 
         args = getMinecraftCommand(self.env.profileCollection.getSelectedProfile(), self.env, natives_path)
-        o = GameOutputTab(self.env)
-        tabid = self.tabWidget.addTab(o, QCoreApplication.translate("MainWindow", "Game Output"))
-        self.tabWidget.setCurrentIndex(tabid)
-        o.executeCommand(profile,args,natives_path)
+        outputTab = GameOutputTab(self.env)
+        tabID = self.tabWidget.addTab(outputTab, QCoreApplication.translate("MainWindow", "Game Output"))
+        self.tabWidget.setCurrentIndex(tabID)
+        outputTab.executeCommand(profile, args, natives_path)
 
     def installFinish(self) -> None:
         self.windowIconProgress.hide()
@@ -217,7 +218,8 @@ class MainWindow(QWidget, Ui_MainWindow):
 
     def updateAccountInformation(self) -> None:
         self.accountLabel.setText(QCoreApplication.translate("MainWindow", "Welcome, {{name}}").replace("{{name}}", self.env.account["name"]))
-        #self.tabWidget.accountTab.updateAccountList()
+        self._profileEditorTab.updateProfiles()
+
         if self.env.offlineMode:
             self.playButton.setText(QCoreApplication.translate("MainWindow", "Play Offline"))
         else:

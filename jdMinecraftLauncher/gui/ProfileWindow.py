@@ -24,7 +24,7 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         self.setupUi(self)
 
         self.env = env
-        self.mainwindow = parent
+        self.mainWindow = parent
 
         self.resolutionEditX.setValidator(QIntValidator(self.resolutionEditX))
         self.resolutionEditY.setValidator(QIntValidator(self.resolutionEditY))
@@ -54,6 +54,9 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         self.minecraftOptionsCheckBox.stateChanged.connect(lambda: self.minecraftOptionsEdit.setEnabled(self.minecraftOptionsCheckBox.isChecked()))
 
         self.selectLatestVersion = True
+
+        if platform.system() != "Linux":
+            self.gameModeCheckBox.setVisible(False)
 
         if isFlatpak():
             self.gameDirectoryEdit.setReadOnly(True)
@@ -101,11 +104,12 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
     def loadProfile(self, profile: "Profile", isNew: bool, copyText: bool = False):
         if isNew:
             if copyText:
-                self.profileeNameEdit.setText(QCoreApplication.translate("ProfileWindow", "Copy of {{name}}").replace("{{name}}", profile.name))
+                self.profileNameEdit.setText(QCoreApplication.translate("ProfileWindow", "Copy of {{name}}").replace("{{name}}", profile.name))
             else:
-                self.profileeNameEdit.setText(profile.name)
+                self.profileNameEdit.setText(profile.name)
         else:
-            self.profileeNameEdit.setText(profile.name)
+            self.profileNameEdit.setText(profile.name)
+
         self.gameDirectoryCheckbox.setChecked(profile.customGameDirectory)
         self.gameDirectoryEdit.setEnabled(profile.customGameDirectory)
         self.gameDirectoryBrowseButton.setEnabled(profile.customGameDirectory)
@@ -150,10 +154,12 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
 
     def saveProfile(self):
         profile = self.profile
+
         if self.isNew:
-            profile = Profile(self.profileeNameEdit.text(), self.env)
+            profile = Profile(self.profileNameEdit.text(), self.env)
         else:
-            profile.name = self.profileeNameEdit.text()
+            profile.name = self.profileNameEdit.text()
+
         profile.customGameDirectory = self.gameDirectoryCheckbox.isChecked()
         profile.gameDirectoryPath = self.gameDirectoryEdit.text()
         profile.customResolution = self.resolutionCheckbox.isChecked()
@@ -178,6 +184,7 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         profile.minecraftOptions = self.minecraftOptionsEdit.text().strip()
         profile.useGameMode = self.gameModeCheckBox.isChecked()
         version = self.versionSelectCombobox.currentData()
+
         if version == "latestRelease":
             profile.useLatestVersion = True
             profile.useLatestSnapshot = False
@@ -188,18 +195,22 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
             profile.useLatestVersion = False
             profile.useLatestSnapshot = False
             profile.version = version
+
         if self.isNew:
             self.env.profileCollection.profileList.append(profile)
             self.env.profileCollection.selectedProfile = profile.id
-        self.mainwindow.updateProfileList()
+
+        self.mainWindow.updateProfileList()
         self.env.profileCollection.save()
         self.close()
 
     def updateVersionsList(self):
         self.versionSelectCombobox.clear()
         self.versionSelectCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Use latest Version"), "latestRelease")
+
         if self.enableSnapshots.isChecked():
             self.versionSelectCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Use latest Snapshot"), "latestSnapshot")
+
         for i in self.env.versions["versions"]:
             if i["type"] == "release":
                 self.versionSelectCombobox.addItem("release " + i["id"], i["id"])
@@ -209,6 +220,7 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
                 self.versionSelectCombobox.addItem("old_beta " + i["id"], i["id"])
             elif i["type"] == "old_alpha" and self.enableAlpha.isChecked():
                 self.versionSelectCombobox.addItem("old_alpha " + i["id"], i["id"])
+
         if self.selectLatestVersion:
             self.versionSelectCombobox.setCurrentIndex(0)
         elif self.selectLatestSnapshot and self.enableSnapshots.isChecked():
