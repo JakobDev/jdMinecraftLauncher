@@ -1,6 +1,8 @@
 from jdMinecraftLauncher.Profile import Profile
 from typing import Optional, TYPE_CHECKING
+import traceback
 import json
+import sys
 import os
 
 
@@ -12,6 +14,7 @@ class ProfileCollection:
     def __init__(self, env: "Environment"):
         self.profileList: list[Profile] = []
         self.selectedProfile = ""
+        self._loadError = None
         self._env = env
 
     def loadProfiles(self) -> None:
@@ -23,18 +26,28 @@ class ProfileCollection:
             self.profileList.append(defaultProfile)
             return
 
-        with open(profileJSON, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        try:
+            with open(profileJSON, "r", encoding="utf-8") as f:
+                data = json.load(f)
 
-        profileVersion = data.get("version", 0)
+            profileVersion = data.get("version", 0)
 
-        self.selectedProfile = data.get("selectedProfile", "")
+            self.selectedProfile = data.get("selectedProfile", "")
 
-        for i in data["profileList"]:
-            self.profileList.append(Profile.load(self._env, i, profileVersion))
+            for i in data["profileList"]:
+                self.profileList.append(Profile.load(self._env, i, profileVersion))
 
-        if profileVersion != 1:
-            self.save()
+            if profileVersion != 1:
+                self.save()
+        except Exception:
+            self._loadError = traceback.format_exc()
+            print(self._loadError, file=sys.stderr)
+
+            if len(self.profileList) == 0:
+                defaultProfile = Profile("Default", self._env)
+                self.selectedProfile = defaultProfile.id
+                self.profileList.append(defaultProfile)
+                return
 
     def save(self) -> None:
         if self._env.args.dont_save_data:
@@ -62,3 +75,6 @@ class ProfileCollection:
 
     def getSelectedProfile(self) -> Profile:
         return self.getProfileByID(self.selectedProfile)
+
+    def getLoadError(self) -> Optional[str]:
+        return self._loadError

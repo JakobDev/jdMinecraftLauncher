@@ -1,5 +1,7 @@
-from typing import Any
+from typing import Optional, Any
+import traceback
 import json
+import sys
 import os
 
 
@@ -14,6 +16,7 @@ class Settings():
         }
 
         self._user_settings = {}
+        self._loadError = None
 
     def get(self, key: str) -> Any:
         """Returns the given setting"""
@@ -39,9 +42,17 @@ class Settings():
         """Load settings from file"""
         if not os.path.isfile(path):
             return
-        with open(path, "r", encoding="utf-8") as f:
-            self._user_settings = json.load(f)
+
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                self._user_settings = json.load(f)
+        except Exception:
+            self._loadError = traceback.format_exc()
+            print(self._loadError, file=sys.stderr)
 
     def reset(self):
         """Resets all settings to the default values"""
         self._user_settings.clear()
+
+    def getLoadError(self) -> Optional[str]:
+        return self._loadError

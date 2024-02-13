@@ -137,7 +137,7 @@
       <translation>Editar perfil</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="224" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="244" />
       <location filename="../ui/MainWindow.ui" line="0" />
       <source>Play</source>
       <translation>Jugar</translation>
@@ -148,97 +148,127 @@
       <translation>Cierre de sesión</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="57" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="56" />
       <source>News</source>
       <translation>Noticias</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="58" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="57" />
       <source>Profile Editor</source>
       <translation>Editor de perfiles</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="59" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="58" />
       <source>Version Editor</source>
       <translation>Editor de versiones</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="60" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="59" />
       <source>Options</source>
       <translation>Opciones</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="61" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="60" />
       <source>Forge</source>
       <translation>Forge</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="62" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="61" />
       <source>Fabric</source>
       <translation>Fabric</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="63" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="62" />
       <source>About</source>
       <translation>Acerca de</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="121" />
-      <location filename="../gui/MainWindow/MainWindow.py" line="115" />
-      <location filename="../gui/MainWindow/MainWindow.py" line="95" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="134" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="128" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="94" />
       <source>Profile not found</source>
       <translation>Perfil no encontrado</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="121" />
-      <location filename="../gui/MainWindow/MainWindow.py" line="115" />
-      <location filename="../gui/MainWindow/MainWindow.py" line="95" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="134" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="128" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="94" />
       <source>The given Profile was not found</source>
       <translation>No se ha encontrado el perfil indicado</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="161" />
-      <location filename="../gui/MainWindow/MainWindow.py" line="152" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="105" />
+      <source>Unable to load Profiles</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/MainWindow.py" line="106" />
+      <source>jdMinecraft was unable to load your profiles due to an error. Apologies for any inconvenience. Please report this bug.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/MainWindow.py" line="112" />
+      <source>Unable to load Settings</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/MainWindow.py" line="113" />
+      <source>jdMinecraft was unable to load your settings due to an error. Apologies for any inconvenience. Please report this bug.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/MainWindow.py" line="176" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="167" />
       <source>No Internet Connection</source>
       <translation>Sin conexión a Internet</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="152" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="167" />
       <source>You need a internet connection to install a new version, but you are still able to play already installed versions.</source>
       <translation>Necesitas una conexión a Internet para instalar una nueva versión, pero puedes seguir jugando a las versiones ya instaladas.</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="161" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="176" />
       <source>This Feature needs a internet connection</source>
       <translation>Esta función requiere conexión a Internet</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="180" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="195" />
       <source>Game Output</source>
       <translation>Edición de juegos</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="188" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="203" />
+      <source>Version not found</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/MainWindow.py" line="203" />
+      <source>The version used by this profile was not found and could not be installed. Perhaps you have uninstalled it.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/MainWindow.py" line="207" />
       <source>Due to an error, the installation could not be completed</source>
       <translation>Debido a un error, la instalación no ha podido completarse</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="189" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="208" />
       <source>This may have been caused by a network error</source>
       <translation>Esto puede haber sido causado por un error de red</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="192" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="211" />
       <source>Installation failed</source>
       <translation>Error de instalación</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="219" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="238" />
       <source>Welcome, {{name}}</source>
       <translation>Bienvenido, {{name}}</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/MainWindow.py" line="222" />
+      <location filename="../gui/MainWindow/MainWindow.py" line="242" />
       <source>Play Offline</source>
       <translation>Jugar sin conexión</translation>
     </message>
@@ -289,57 +319,57 @@
       <translation>Versión Minecraft</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="38" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="39" />
       <source>(Latest version)</source>
       <translation>(Última versión)</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="40" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="41" />
       <source>(Latest snapshot)</source>
       <translation>(Última Snapshot)</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="52" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="53" />
       <source>Add Profile</source>
       <translation>Añadir perfil</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="56" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="57" />
       <source>Edit Profile</source>
       <translation>Editar perfil</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="60" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="61" />
       <source>Copy Profile</source>
       <translation>Copiar perfil</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="64" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="65" />
       <source>Remove Profile</source>
       <translation>Eliminar perfil</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="68" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="69" />
       <source>Open Game Folder</source>
       <translation>Abrir carpeta de juegos</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="73" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="74" />
       <source>Create Shortcut</source>
       <translation>Crear acceso directo</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="80" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="81" />
       <source>New Profile</source>
       <translation>Nuevo perfil</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="93" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="94" />
       <source>Can't delete Profile</source>
       <translation>No se puede borrar el perfil</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="93" />
+      <location filename="../gui/MainWindow/ProfileEditorTab.py" line="94" />
       <source>You can't delete all Profiles. At least one Profile must stay.</source>
       <translation>No puedes borrar todos los Perfiles. Al menos un Perfil debe permanecer.</translation>
     </message>
@@ -526,37 +556,37 @@
       <translation>Mantener abierto el Launcher</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="87" />
+      <location filename="../gui/ProfileWindow.py" line="90" />
       <source>Note for Flatpak users</source>
       <translation>Nota para los usuarios de Flatpak</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="87" />
+      <location filename="../gui/ProfileWindow.py" line="90" />
       <source>Please select in the following dialog the directory which contains bin/java</source>
       <translation>Seleccione en el siguiente cuadro de diálogo el directorio que contiene bin/java</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="95" />
+      <location filename="../gui/ProfileWindow.py" line="98" />
       <source>Invalid directory</source>
       <translation>Directorio no válido</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="95" />
+      <location filename="../gui/ProfileWindow.py" line="98" />
       <source>This directory does not contain bin/java</source>
       <translation>Este directorio no contiene bin/java</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="104" />
+      <location filename="../gui/ProfileWindow.py" line="107" />
       <source>Copy of {{name}}</source>
       <translation>Copia de {{name}}</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="200" />
+      <location filename="../gui/ProfileWindow.py" line="209" />
       <source>Use latest Version</source>
       <translation>Utilizar la última versión</translation>
     </message>
     <message>
-      <location filename="../gui/ProfileWindow.py" line="202" />
+      <location filename="../gui/ProfileWindow.py" line="212" />
       <source>Use latest Snapshot</source>
       <translation>Utilizar la última Snapshot</translation>
     </message>

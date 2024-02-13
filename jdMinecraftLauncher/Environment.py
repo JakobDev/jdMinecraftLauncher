@@ -7,6 +7,7 @@ from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
 from typing import Optional
 from pathlib import Path
+import traceback
 import argparse
 import platform
 import requests
@@ -62,16 +63,20 @@ class Environment:
         self.accountList = []
         self.selectedAccount = 0
         self.disableAccountSave = []
+
         if os.path.isfile(os.path.join(self.dataDir, "microsoft_accounts.json")):
-            with open(os.path.join(self.dataDir, "microsoft_accounts.json")) as f:
-                data = json.load(f)
-                self.accountList = data.get("accountList",[])
-                self.selectedAccount = data.get("selectedAccount",0)
-                try:
-                    self.account = copy.copy(self.accountList[self.selectedAccount])
-                except IndexError:
-                    self.account = copy.copy(self.accountList[0])
-                    self.selectedAccount = 0
+            try:
+                with open(os.path.join(self.dataDir, "microsoft_accounts.json")) as f:
+                    data = json.load(f)
+                    self.accountList = data.get("accountList",[])
+                    self.selectedAccount = data.get("selectedAccount",0)
+                    try:
+                        self.account = copy.copy(self.accountList[self.selectedAccount])
+                    except IndexError:
+                        self.account = copy.copy(self.accountList[0])
+                        self.selectedAccount = 0
+            except Exception:
+                print(traceback.format_exc(), file=sys.stderr)
 
         if self.args.account:
             for count, account in enumerate(self.accountList):

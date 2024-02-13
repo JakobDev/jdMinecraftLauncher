@@ -19,6 +19,7 @@ class InstallThread(QThread):
         self.forgeVersion = None
         self.fabricVersion = None
         self._currentError = None
+        self._versionNotFound = False
         self.env = env
 
     def __del__(self):
@@ -28,6 +29,7 @@ class InstallThread(QThread):
         self.forgeVersion = None
         self.fabricVersion = None
         self._currentError = None
+        self._versionNotFound = False
 
     def setup(self, profile) -> None:
         self._setupAll()
@@ -50,6 +52,9 @@ class InstallThread(QThread):
     def getError(self) -> Optional[str]:
         return self._currentError
 
+    def isVersionNotFound(self) -> bool:
+        return self._versionNotFound
+
     def run(self) -> None:
         try:
             if self.forgeVersion:
@@ -58,5 +63,7 @@ class InstallThread(QThread):
                 minecraft_launcher_lib.fabric.install_fabric(self.fabricVersion, self.env.minecraftDir, callback=self.callback)
             else:
                 minecraft_launcher_lib.install.install_minecraft_version(self.profile.getVersionID(),self.env.minecraftDir,callback=self.callback)
+        except minecraft_launcher_lib.exceptions.VersionNotFound:
+            self._versionNotFound = True
         except Exception:
             self._currentError = traceback.format_exc()

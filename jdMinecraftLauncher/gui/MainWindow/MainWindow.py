@@ -100,6 +100,20 @@ class MainWindow(QWidget, Ui_MainWindow):
         self._is_first_open = True
         self.show()
 
+        if (loadError := self.env.profileCollection.getLoadError()) is not None:
+            msgBox = QMessageBox()
+            msgBox.setWindowTitle(QCoreApplication.translate("MainWindow", "Unable to load Profiles"))
+            msgBox.setText(QCoreApplication.translate("MainWindow", "jdMinecraft was unable to load your profiles due to an error. Apologies for any inconvenience. Please report this bug."))
+            msgBox.setDetailedText(loadError)
+            msgBox.exec()
+
+        if (loadError := self.env.settings.getLoadError()) is not None:
+            msgBox = QMessageBox()
+            msgBox.setWindowTitle(QCoreApplication.translate("MainWindow", "Unable to load Settings"))
+            msgBox.setText(QCoreApplication.translate("MainWindow", "jdMinecraft was unable to load your settings due to an error. Apologies for any inconvenience. Please report this bug."))
+            msgBox.setDetailedText(loadError)
+            msgBox.exec()
+
     def _handleCustomURL(self, args: str) -> None:
         try:
             method, param = args.split("/", 1)
@@ -184,6 +198,10 @@ class MainWindow(QWidget, Ui_MainWindow):
 
     def installFinish(self) -> None:
         self.windowIconProgress.hide()
+
+        if self.installThread.isVersionNotFound():
+            QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Version not found"), QCoreApplication.translate("MainWindow", "The version used by this profile was not found and could not be installed. Perhaps you have uninstalled it."))
+            return
 
         if self.installThread.getError() is not None:
             text = QCoreApplication.translate("MainWindow", "Due to an error, the installation could not be completed") + "<br><br>"
