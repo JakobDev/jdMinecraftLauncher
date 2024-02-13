@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-09 22:10+0200\n"
+"POT-Creation-Date: 2024-02-13 18:41+0100\n"
 "PO-Revision-Date: 2024-02-02 14:56+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://translate.codeberg.org/projects/"
@@ -89,3 +89,7 @@ msgstr "Ventana principal"
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:32
 msgid "The ProfileWindow"
 msgstr "Ventana del perfil"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:17
+msgid "Offline Mode"
+msgstr ""

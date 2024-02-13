@@ -1,4 +1,4 @@
-# Created with jdDesktopEntryEdit 1.1
+# Created with jdDesktopEntryEdit 1.4
 [Desktop Entry]
 Type=Application
 Name=jdMinecraftLauncher
@@ -10,3 +10,8 @@ MimeType=x-scheme-handler/jdMinecraftLauncher;
 Categories=Game;
 Keywords=Minecraft;Sandbox;
 SingleMainWindow=true
+Actions=offline-mode;
+
+[Desktop Action offline-mode]
+Name=Offline Mode
+Exec=jdMinecraftLauncher --offline-mode
