@@ -7,6 +7,7 @@ from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
 from typing import Optional
 from pathlib import Path
+import minecraft_launcher_lib
 import traceback
 import argparse
 import platform
@@ -39,18 +40,10 @@ class Environment:
         parser.add_argument("--dont-save-data", help="Don't save data to the disk (only for development usage", action="store_true")
         self.args = parser.parse_known_args()[0]
 
-        if self.args.minecraft_dir:
-            self.minecraftDir = self.args.minecraft_dir
-        else:
-            self.minecraftDir = minecraft_launcher_lib.utils.get_minecraft_directory()
-
         if self.args.data_dir:
             self.dataDir = self.args.data_dir
         else:
             self.dataDir = self.getDataPath()
-
-        if not os.path.exists(self.minecraftDir):
-            os.makedirs(self.minecraftDir)
 
         if not os.path.exists(self.dataDir):
             os.makedirs(self.dataDir)
@@ -59,6 +52,13 @@ class Environment:
 
         self.settings = Settings()
         self.settings.load(os.path.join(self.dataDir, "settings.json"))
+
+        if self.args.minecraft_dir:
+            self.minecraftDir = self.args.minecraft_dir
+        elif self.settings.get("customMinecraftDir") is not None:
+            self.minecraftDir = self.settings.get("customMinecraftDir")
+        else:
+            self.minecraftDir = minecraft_launcher_lib.utils.get_minecraft_directory()
 
         self.accountList = []
         self.selectedAccount = 0
@@ -101,9 +101,9 @@ class Environment:
             self.firstLaunch = True
 
     def getDataPath(self) -> str:
-        if os.path.isdir(os.path.join(self.minecraftDir, "jdMinecraftLauncher")):
-            return os.path.join(self.minecraftDir, "jdMinecraftLauncher")
-        elif platform.system() == "Windows":
+        if os.path.isdir(os.path.join(minecraft_launcher_lib.utils.get_minecraft_directory(), "jdMinecraftLauncher")):
+            return os.path.join(minecraft_launcher_lib.utils.get_minecraft_directory(), "jdMinecraftLauncher")
+        if platform.system() == "Windows":
             return os.path.join(os.getenv("appdata"), "jdMinecraftLauncher")
         elif platform.system() == "Darwin":
             return os.path.join(str(Path.home()), "Library", "Application Support", "jdMinecraftLauncher")

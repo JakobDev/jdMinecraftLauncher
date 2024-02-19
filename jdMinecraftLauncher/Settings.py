@@ -13,6 +13,7 @@ class Settings():
             "enableMultiLaunch": False,
             "extractNatives": False,
             "windowIconProgress": True,
+            "customMinecraftDir": None,
         }
 
         self._user_settings = {}

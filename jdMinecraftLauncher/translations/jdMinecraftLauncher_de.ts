@@ -301,9 +301,59 @@
         <translation>Installationsfortschritts im Fenstersymbol anzeigen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/OptionsTab.py" line="32"/>
+        <location filename="../ui/OptionsTab.ui" line="0"/>
+        <source>Minecraft directory:</source>
+        <translation>Minecraft Verzeichnis:</translation>
+    </message>
+    <message>
+        <location filename="../ui/OptionsTab.ui" line="0"/>
+        <source>Change</source>
+        <translation>Ändern</translation>
+    </message>
+    <message>
+        <location filename="../ui/OptionsTab.ui" line="0"/>
+        <source>Reset</source>
+        <translation>Zurücksetzen</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="33"/>
         <source>Use System Language</source>
         <translation>Systemsprache benutzen</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="73"/>
+        <source>This will change your Minecraft directory.</source>
+        <translation>Dadurch wird dein Minecraft Verzeichnis geändert.</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="74"/>
+        <source>This is the directory where Minecraft is installed.</source>
+        <translation>Dies ist das Verzeichnis, in dem Minecraft installiert ist.</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="75"/>
+        <source>If you don&apos;t set a game directory for your profile, Minecraft will also save its data (saves, options, etc.) there.</source>
+        <translation>Wenn Sdu kein Spielverzeichnis für dein Profil festlegst, speichert Minecraft seine Daten (Spielstände, Optionen usw.) ebenfalls dort.</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="76"/>
+        <source>Would you like to proceed?</source>
+        <translation>Möchtest du fortfahren?</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="78"/>
+        <source>Change Minecraft directory</source>
+        <translation>Minecraft-Verzeichnis ändern</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="97"/>
+        <source>Reset Minecraft directory</source>
+        <translation>Minecraft Verzeichnis zurücksetzen</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="97"/>
+        <source>Would you like to reset your Minecraft directory to its default location?</source>
+        <translation>Möchten du dein Minecraft-Verzeichnis auf den Standardspeicherort zurücksetzen?</translation>
     </message>
 </context>
 <context>
@@ -650,22 +700,38 @@
 <context>
     <name>jdMinecraftLauncher</name>
     <message>
-        <location filename="../jdMinecraftLauncher.py" line="41"/>
+        <location filename="../jdMinecraftLauncher.py" line="24"/>
+        <source>The Minecraft directory was not found and could not be created.</source>
+        <translation>Das Minecraft Verzeichnis wurde nicht gefunden und konnte nicht erstellt werden.</translation>
+    </message>
+    <message>
+        <location filename="../jdMinecraftLauncher.py" line="32"/>
+        <location filename="../jdMinecraftLauncher.py" line="27"/>
+        <source>Minecraft directory not found</source>
+        <translation>Minecraft Verzeichnis nicht gefunden</translation>
+    </message>
+    <message>
+        <location filename="../jdMinecraftLauncher.py" line="30"/>
+        <source>You have set a custom Minecraft directory. Would you like to revert it back to the default?</source>
+        <translation>Du hast ein eigenes Minecraft Verzeichnis eingestellt. Möchten du es wieder auf den Standard zurücksetzen?</translation>
+    </message>
+    <message>
+        <location filename="../jdMinecraftLauncher.py" line="70"/>
         <source>Unsupported Platform</source>
         <translation>Nicht unterstütze Platform</translation>
     </message>
     <message>
-        <location filename="../jdMinecraftLauncher.py" line="41"/>
+        <location filename="../jdMinecraftLauncher.py" line="70"/>
         <source>Your current Platform is not supported by jdMinecraftLauncher</source>
         <translation>Deine aktuelle Platform wird von jdMinecraftLauncher nicht unterstützt</translation>
     </message>
     <message>
-        <location filename="../jdMinecraftLauncher.py" line="85"/>
+        <location filename="../jdMinecraftLauncher.py" line="116"/>
         <source>No Internet Connection</source>
         <translation>Keine Internetverbindung</translation>
     </message>
     <message>
-        <location filename="../jdMinecraftLauncher.py" line="85"/>
+        <location filename="../jdMinecraftLauncher.py" line="116"/>
         <source>You have no Internet connection. If you start jdMinecraftLauncher for the first time, you have to login using the Internet before you can use the offline Mode.</source>
         <translation>Wenn du jdMinecraftLauncher zum ersten Mal startest, benötigst du eine Internetverbindung um dich mit deinem Mojang Account anzumelden. Nachdem du dich erstmal angemeldet hast, benötigst du keine Internetverbindung mehr.</translation>
     </message>

@@ -301,9 +301,59 @@
       <translation>Отображать прогресс установки в иконке окна</translation>
     </message>
     <message>
-      <location filename="../gui/MainWindow/OptionsTab.py" line="32" />
+      <location filename="../ui/OptionsTab.ui" line="0" />
+      <source>Minecraft directory:</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../ui/OptionsTab.ui" line="0" />
+      <source>Change</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../ui/OptionsTab.ui" line="0" />
+      <source>Reset</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/OptionsTab.py" line="33" />
       <source>Use System Language</source>
       <translation>Использовать язык системы</translation>
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/OptionsTab.py" line="73" />
+      <source>This will change your Minecraft directory.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/OptionsTab.py" line="74" />
+      <source>This is the directory where Minecraft is installed.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/OptionsTab.py" line="75" />
+      <source>If you don't set a game directory for your profile, Minecraft will also save its data (saves, options, etc.) there.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/OptionsTab.py" line="76" />
+      <source>Would you like to proceed?</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/OptionsTab.py" line="78" />
+      <source>Change Minecraft directory</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/OptionsTab.py" line="97" />
+      <source>Reset Minecraft directory</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../gui/MainWindow/OptionsTab.py" line="97" />
+      <source>Would you like to reset your Minecraft directory to its default location?</source>
+      <translation type="unfinished" />
     </message>
   </context>
   <context>
@@ -650,22 +700,38 @@
   <context>
     <name>jdMinecraftLauncher</name>
     <message>
-      <location filename="../jdMinecraftLauncher.py" line="41" />
+      <location filename="../jdMinecraftLauncher.py" line="24" />
+      <source>The Minecraft directory was not found and could not be created.</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../jdMinecraftLauncher.py" line="32" />
+      <location filename="../jdMinecraftLauncher.py" line="27" />
+      <source>Minecraft directory not found</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../jdMinecraftLauncher.py" line="30" />
+      <source>You have set a custom Minecraft directory. Would you like to revert it back to the default?</source>
+      <translation type="unfinished" />
+    </message>
+    <message>
+      <location filename="../jdMinecraftLauncher.py" line="70" />
       <source>Unsupported Platform</source>
       <translation>Неподдерживаемая платформа</translation>
     </message>
     <message>
-      <location filename="../jdMinecraftLauncher.py" line="41" />
+      <location filename="../jdMinecraftLauncher.py" line="70" />
       <source>Your current Platform is not supported by jdMinecraftLauncher</source>
       <translation>Текущая платформа не поддерживается jdMinecraftLauncher</translation>
     </message>
     <message>
-      <location filename="../jdMinecraftLauncher.py" line="85" />
+      <location filename="../jdMinecraftLauncher.py" line="116" />
       <source>No Internet Connection</source>
       <translation>Нет соединения с интернетом</translation>
     </message>
     <message>
-      <location filename="../jdMinecraftLauncher.py" line="85" />
+      <location filename="../jdMinecraftLauncher.py" line="116" />
       <source>You have no Internet connection. If you start jdMinecraftLauncher for the first time, you have to login using the Internet before you can use the offline Mode.</source>
       <translation>Соединение с интернетом отсутствует. Если вы запускаете jdMinecraftLauncher впервые, вам понадобиться интернет прежде, чем вы сможете играть в автономном режиме.</translation>
     </message>

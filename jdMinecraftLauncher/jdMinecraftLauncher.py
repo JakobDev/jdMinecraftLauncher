@@ -6,12 +6,41 @@ from jdMinecraftLauncher.gui.LoginWindow import LoginWindow
 from jdMinecraftLauncher.Environment import Environment
 from .ProfileImporter import askProfileImport
 import minecraft_launcher_lib
+import traceback
 import copy
 import sys
 import os
 
 
-def main():
+def _ensureMinecraftDirectoryExists(env: Environment) -> None:
+    if os.path.isdir(env.minecraftDir):
+        return
+
+    try:
+        os.makedirs(env.minecraftDir)
+    except Exception:
+        print(traceback.format_exc(), file=sys.stderr)
+
+        text = QCoreApplication.translate("jdMinecraftLauncher", "The Minecraft directory was not found and could not be created.")
+
+        if env.settings.get("customMinecraftDir") is None:
+            QMessageBox.critical(None, QCoreApplication.translate("jdMinecraftLauncher", "Minecraft directory not found"), text)
+            sys.exit(1)
+        else:
+            text += "<br><br>" + QCoreApplication.translate("jdMinecraftLauncher", "You have set a custom Minecraft directory. Would you like to revert it back to the default?")
+
+            if QMessageBox.question(None, QCoreApplication.translate("jdMinecraftLauncher", "Minecraft directory not found"), text, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
+                sys.exit(1)
+
+            env.minecraftDir = minecraft_launcher_lib.utils.get_minecraft_directory()
+
+            env.settings.set("customMinecraftDir", None)
+            env.settings.save(os.path.join(env.dataDir, "settings.json"))
+
+            _ensureMinecraftDirectoryExists(env)
+
+
+def main() -> None:
     app = QApplication(sys.argv)
     env = Environment(app)
 
@@ -40,6 +69,8 @@ def main():
     if not minecraft_launcher_lib.utils.is_platform_supported() and not env.args.force_start:
         QMessageBox.critical(None, QCoreApplication.translate("jdMinecraftLauncher", "Unsupported Platform"), QCoreApplication.translate("jdMinecraftLauncher", "Your current Platform is not supported by jdMinecraftLauncher"))
         sys.exit(0)
+
+    _ensureMinecraftDirectoryExists(env)
 
     splash_screen = QSplashScreen()
     splash_screen.setPixmap(env.icon.pixmap(128, 128))
