@@ -1,7 +1,8 @@
+from PyQt6.QtWidgets import QWidget, QMessageBox, QFileDialog
 from ...ui_compiled.OptionsTab import Ui_OptionsTab
 from PyQt6.QtCore import Qt, QCoreApplication
 from ...Languages import getLanguageNames
-from PyQt6.QtWidgets import QWidget, QMessageBox, QFileDialog
+from ...Functions import isFlatpak
 from typing import TYPE_CHECKING
 import minecraft_launcher_lib
 import os
@@ -40,6 +41,7 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.allowMultiLaunchCheckBox.setChecked(self._env.settings.get("enableMultiLaunch"))
         self.extractNativesCheckBox.setChecked(self._env.settings.get("extractNatives"))
         self.windowIconProgressCheckBox.setChecked(self._env.settings.get("windowIconProgress"))
+        self.windowIconProgressCheckBox.setChecked(self._env.settings.get("useFlatpakSubsandbox"))
 
         self.windowIconProgressCheckBox.setVisible(parent.windowIconProgress.isSupported())
 
@@ -48,8 +50,12 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.windowIconProgressCheckBox.stateChanged.connect(self._windowIconProgressCheckBoxChanged)
         self.minecraftDirChangeButton.clicked.connect(self._minecraftDirChangeButtonClicked)
         self.minecraftDirResetButton.clicked.connect(self._minecraftDirResetButtonClicked)
+        self.flatpakSubsandboxCheckBox.stateChanged.connect(self._flatpakSubsandboxCheckBoxChanged)
 
         self._updateMinecraftDirWidgets()
+
+        if not isFlatpak():
+            self.flatpakSubsandboxCheckBox.setVisible(False)
 
     def _multiLaunchCheckBoxChanged(self):
         self._env.settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
@@ -62,6 +68,9 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self._env.settings.set("windowIconProgress", checked)
         if not checked:
             self._parent.windowIconProgress.hide()
+
+    def _flatpakSubsandboxCheckBoxChanged(self) -> None:
+        self._env.settings.set("useFlatpakSubsandbox", self.flatpakSubsandboxCheckBox.isChecked())
 
     def _updateMinecraftDirWidgets(self) -> None:
         if (customMinecraftDir := self._env.settings.get("customMinecraftDir")) is not None:

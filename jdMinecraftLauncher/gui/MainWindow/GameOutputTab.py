@@ -46,7 +46,7 @@ class GameOutputTab(QPlainTextEdit):
         self.profile = profile
         self.natives_path = natives_path
         self.process = QProcess(self)
-        self.process.setWorkingDirectory(self.env.minecraftDir)
+        self.process.setWorkingDirectory(profile.getGameDirectoryPath())
         self.process.readyRead.connect(self.dataReady)
         self.process.started.connect(self.procStarted)
         self.process.finished.connect(self.procFinish)

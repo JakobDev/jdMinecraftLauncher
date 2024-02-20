@@ -1,11 +1,40 @@
 from typing import List, TYPE_CHECKING
+from .Functions import isFlatpak
 import minecraft_launcher_lib
+import pathlib
 import shutil
+import os
 
 
 if TYPE_CHECKING:
     from jdMinecraftLauncher.Environment import Environment
     from jdMinecraftLauncher.Profile import Profile
+
+
+def _getFlatpakSpawnCommand(profile: "Profile", env: "Environment") -> List[str]:
+    command = [
+                "flatpak-spawn",
+                "--sandbox",
+                "--sandbox-flag=share-display",
+                "--sandbox-flag=share-sound",
+                "--sandbox-flag=share-gpu",
+                "--sandbox-flag=allow-dbus",
+                "--sandbox-flag=allow-a11y"
+            ]
+
+    if profile.customGameDirectory:
+        command += [
+            f"--sandbox-expose-path-ro={env.minecraftDir}",
+            f"--sandbox-expose-path={profile.getGameDirectoryPath()}",
+            "--sandbox-expose-path=" + os.path.join(env.minecraftDir, "versions", profile.getVersionID()),
+        ]
+    else:
+        command += [f"--sandbox-expose-path={env.minecraftDir}"]
+
+    if profile.customExecutable:
+        command += ["--sandbox-expose-path=" + pathlib.Path(profile.executable).parent.parent]
+
+    return command
 
 
 def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: str) -> List[str]:
@@ -58,4 +87,7 @@ def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: st
     if profile.useGameMode and shutil.which("gamemoderun"):
         command.insert(0, "gamemoderun")
 
-    return command
+    if isFlatpak() and env.settings.get("useFlatpakSubsandbox"):
+        command = _getFlatpakSpawnCommand(profile, env) + command
+
+    return _getFlatpakSpawnCommand(profile, env) + command

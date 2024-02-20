@@ -270,6 +270,7 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.env.settings.set("newsURL", self._optionsTab.urlEdit.text())
         self.env.settings.set("enableMultiLaunch", self._optionsTab.allowMultiLaunchCheckBox.isChecked())
         self.env.settings.set("extractNatives", self._optionsTab.extractNativesCheckBox.isChecked())
+        self.env.settings.set("useFlatpakSubsandbox", self._optionsTab.flatpakSubsandboxCheckBox.isChecked())
         self.env.settings.save(os.path.join(self.env.dataDir, "settings.json"))
 
         with open(os.path.join(self.env.dataDir, "microsoft_accounts.json"),"w") as f:

@@ -92,6 +92,13 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="flatpakSubsandboxCheckBox">
+     <property name="text">
+      <string>Launch Minecraft in a Subsandbox</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

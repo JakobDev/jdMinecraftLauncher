@@ -14,6 +14,7 @@ class Settings():
             "extractNatives": False,
             "windowIconProgress": True,
             "customMinecraftDir": None,
+            "useFlatpakSubsandbox": False,
         }
 
         self._user_settings = {}
