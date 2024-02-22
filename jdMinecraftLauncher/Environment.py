@@ -2,6 +2,7 @@ from jdMinecraftLauncher.Profile import Profile
 from jdMinecraftLauncher.Settings import Settings
 from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
 from jdMinecraftLauncher.ProfileCollection import ProfileCollection
+from .AccountManager import AccountManager
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
@@ -37,7 +38,8 @@ class Environment:
         parser.add_argument("--account", help="Launch with the selected Account")
         parser.add_argument("--offline-mode", help="Force offline Mode", action="store_true")
         parser.add_argument("--force-start", help="Forces the start on unsupported Platforms", action="store_true")
-        parser.add_argument("--dont-save-data", help="Don't save data to the disk (only for development usage", action="store_true")
+        parser.add_argument("--dont-save-data", help="Don't save data to the disk (only for development usage)", action="store_true")
+        parser.add_argument("--debug", help="Start in Debug Mode", action="store_true")
         self.args = parser.parse_known_args()[0]
 
         if self.args.data_dir:
@@ -47,6 +49,8 @@ class Environment:
 
         if not os.path.exists(self.dataDir):
             os.makedirs(self.dataDir)
+
+        self.debugMode = bool(self.args.debug)
 
         self.secrets = MicrosoftSecrets(self)
 
@@ -60,23 +64,7 @@ class Environment:
         else:
             self.minecraftDir = minecraft_launcher_lib.utils.get_minecraft_directory()
 
-        self.accountList = []
-        self.selectedAccount = 0
-        self.disableAccountSave = []
-
-        if os.path.isfile(os.path.join(self.dataDir, "microsoft_accounts.json")):
-            try:
-                with open(os.path.join(self.dataDir, "microsoft_accounts.json")) as f:
-                    data = json.load(f)
-                    self.accountList = data.get("accountList",[])
-                    self.selectedAccount = data.get("selectedAccount",0)
-                    try:
-                        self.account = copy.copy(self.accountList[self.selectedAccount])
-                    except IndexError:
-                        self.account = copy.copy(self.accountList[0])
-                        self.selectedAccount = 0
-            except Exception:
-                print(traceback.format_exc(), file=sys.stderr)
+        self.accountManager = AccountManager(self)
 
         if self.args.account:
             for count, account in enumerate(self.accountList):
@@ -86,8 +74,6 @@ class Environment:
                     break
             else:
                 print(f"Account {self.args.account} was not found", file=sys.stderr)
-
-        self.loadVersions()
 
         self.profileCollection = ProfileCollection(self)
         self.profileCollection.loadProfiles()

@@ -12,6 +12,7 @@ from ..ProfileWindow import ProfileWindow
 from .GameOutputTab import GameOutputTab
 from PyQt6.QtGui import QCloseEvent
 from .OptionsTab import OptionsTab
+from .AccountTab import AccountTab
 from typing import TYPE_CHECKING
 from .FabricTab import FabricTab
 from .ForgeTab import ForgeTab
@@ -51,6 +52,7 @@ class MainWindow(QWidget, Ui_MainWindow):
         self._optionsTab = OptionsTab(env, self)
         self._forgeTab = ForgeTab(env, self)
         self._fabricTab = FabricTab(env, self)
+        self._accountTab = AccountTab(env, self)
         self._aboutTab = AboutTab(env)
 
         self.tabWidget.addTab(newsTab, QCoreApplication.translate("MainWindow", "News"))
@@ -59,6 +61,7 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.tabWidget.addTab(self._optionsTab, QCoreApplication.translate("MainWindow", "Options"))
         self.tabWidget.addTab(self._forgeTab, QCoreApplication.translate("MainWindow", "Forge"))
         self.tabWidget.addTab(self._fabricTab, QCoreApplication.translate("MainWindow", "Fabric"))
+        self.tabWidget.addTab(self._accountTab, QCoreApplication.translate("MainWindow", "Account"))
         self.tabWidget.addTab(self._aboutTab, QCoreApplication.translate("MainWindow", "About"))
 
         self.newProfileButton.clicked.connect(self.newProfileButtonClicked)
@@ -175,14 +178,17 @@ class MainWindow(QWidget, Ui_MainWindow):
         if self.env.offlineMode:
             QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "No Internet Connection"), QCoreApplication.translate("MainWindow", "This Feature needs a internet connection"))
             return
-        del self.env.accountList[self.env.selectedAccount]
-        if len(self.env.accountList) == 0:
+
+        self.env.accountManager.removeAccount(self.env.accountManager.getSelectedAccount())
+
+        if self.env.accountManager.getSelectedAccount() is None:
             self.hide()
-            self.env.loginWindow.show()
-            self.env.loginWindow.setFocus()
-        else:
-            self.env.account = self.env.accountList[0]
-            self.updateAccountInformation()
+            if self.env.accountManager.addMicrosoftAccount(self) is None:
+                self.close()
+                return
+            self.show()
+
+        self.updateAccountInformation()
 
     def startMinecraft(self, profile: "Profile"):
         if self.env.settings.get("extractNatives"):
@@ -235,13 +241,15 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.installThread.start()
 
     def updateAccountInformation(self) -> None:
-        self.accountLabel.setText(QCoreApplication.translate("MainWindow", "Welcome, {{name}}").replace("{{name}}", self.env.account["name"]))
+        self.accountLabel.setText(QCoreApplication.translate("MainWindow", "Welcome, {{name}}").replace("{{name}}", self.env.accountManager.getSelectedAccount().getName()))
         self._profileEditorTab.updateProfiles()
 
         if self.env.offlineMode:
             self.playButton.setText(QCoreApplication.translate("MainWindow", "Play Offline"))
         else:
             self.playButton.setText(QCoreApplication.translate("MainWindow", "Play"))
+
+        self._accountTab.updateAccountTable()
 
     def setInstallButtonsEnabled(self, enabled: bool) -> None:
         self.playButton.setEnabled(enabled)
@@ -272,18 +280,6 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.env.settings.set("extractNatives", self._optionsTab.extractNativesCheckBox.isChecked())
         self.env.settings.set("useFlatpakSubsandbox", self._optionsTab.flatpakSubsandboxCheckBox.isChecked())
         self.env.settings.save(os.path.join(self.env.dataDir, "settings.json"))
-
-        with open(os.path.join(self.env.dataDir, "microsoft_accounts.json"),"w") as f:
-            data = {}
-            data["selectedAccount"] = self.env.selectedAccount
-            data["accountList"] = []
-            for count, i in enumerate(self.env.accountList):
-                if i["name"] in self.env.disableAccountSave:
-                    if count == data["selectedAccount"]:
-                        data["selectedAccount"] = 0
-                else:
-                    data["accountList"].append(i)
-            json.dump(data, f, ensure_ascii=False, indent=4)
 
         event.accept()
         sys.exit(0)

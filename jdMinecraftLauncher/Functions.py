@@ -1,5 +1,5 @@
+from PyQt6.QtWidgets import QMessageBox, QTableWidget, QHeaderView
 from typing import Dict, List, TYPE_CHECKING
-from PyQt6.QtWidgets import QMessageBox
 import subprocess
 import platform
 import requests
@@ -92,3 +92,15 @@ def isFlatpak() -> bool:
 def isFrozen() -> bool:
     """Check if the App is frozen with PyInstaller"""
     return hasattr(sys, "frozen")
+
+
+def clearTableWidget(table: QTableWidget) -> None:
+    """Removes all Rows from a QTableWidget"""
+    while table.rowCount() > 0:
+        table.removeRow(0)
+
+
+def stretchTableWidgetColumnsSize(table: QTableWidget) -> None:
+    """Stretch all Columns of a QTableWidget"""
+    for i in range(table.columnCount()):
+        table.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeMode.Stretch)

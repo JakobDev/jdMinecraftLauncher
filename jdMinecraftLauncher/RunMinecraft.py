@@ -39,10 +39,13 @@ def _getFlatpakSpawnCommand(profile: "Profile", env: "Environment") -> List[str]
 
 def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: str) -> List[str]:
     version = profile.getVersionID()
+
+    account = env.accountManager.getSelectedAccount()
+
     options = {
-        "username": env.account["name"],
-        "uuid": env.account["uuid"],
-        "token": env.account["accessToken"],
+        "username": account.getName(),
+        "uuid": account.getMinecraftUUID(),
+        "token": account.getAccessToken(),
         "launcherName": "jdMinecraftLauncher",
         "launcherVersion": env.launcherVersion,
         "gameDirectory": profile.getGameDirectoryPath(),
@@ -90,4 +93,4 @@ def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: st
     if isFlatpak() and env.settings.get("useFlatpakSubsandbox"):
         command = _getFlatpakSpawnCommand(profile, env) + command
 
-    return _getFlatpakSpawnCommand(profile, env) + command
+    return command

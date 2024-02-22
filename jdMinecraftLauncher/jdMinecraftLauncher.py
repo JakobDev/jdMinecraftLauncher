@@ -2,7 +2,6 @@ from jdMinecraftLauncher.Functions import hasInternetConnection, getAccountDict
 from PyQt6.QtCore import QCoreApplication, QTranslator, QLibraryInfo, QLocale
 from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
 from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
-from jdMinecraftLauncher.gui.LoginWindow import LoginWindow
 from jdMinecraftLauncher.Environment import Environment
 from .ProfileImporter import askProfileImport
 import minecraft_launcher_lib
@@ -40,6 +39,30 @@ def _ensureMinecraftDirectoryExists(env: Environment) -> None:
             _ensureMinecraftDirectoryExists(env)
 
 
+def _handleAccount(env: Environment, splashScreen: QSplashScreen) -> None:
+    account = env.accountManager.getSelectedAccount()
+
+    if account is None:
+        splashScreen.close()
+        if env.offlineMode:
+            QMessageBox.critical(None, QCoreApplication.translate("jdMinecraftLauncher", "No Internet Connection"), QCoreApplication.translate("jdMinecraftLauncher", "You have no Internet connection. If you start jdMinecraftLauncher for the first time, you have to login using the Internet before you can use the offline Mode."))
+            return False
+
+        return env.accountManager.addMicrosoftAccount(None) is not None
+
+    if env.offlineMode:
+        splashScreen.close()
+        return True
+
+    if account.reload():
+        splashScreen.close()
+        return True
+
+    splashScreen.close()
+
+    return account.login(None)
+
+
 def main() -> None:
     app = QApplication(sys.argv)
     env = Environment(app)
@@ -72,12 +95,9 @@ def main() -> None:
 
     _ensureMinecraftDirectoryExists(env)
 
-    splash_screen = QSplashScreen()
-    splash_screen.setPixmap(env.icon.pixmap(128, 128))
-    splash_screen.show()
-
-    env.mainWindow = MainWindow(env)
-    env.loginWindow = LoginWindow(env)
+    splashScreen = QSplashScreen()
+    splashScreen.setPixmap(env.icon.pixmap(128, 128))
+    splashScreen.show()
 
     try:
         import setproctitle
@@ -85,35 +105,20 @@ def main() -> None:
     except ModuleNotFoundError:
         pass
 
+    if env.args.offline_mode or not hasInternetConnection():
+        env.offlineMode = True
+
+    env.loadVersions()
+
+    env.mainWindow = MainWindow(env)
+
+    if not _handleAccount(env, splashScreen):
+        sys.exit(0)
+
     if env.firstLaunch:
-        splash_screen.close()
         askProfileImport(env)
 
-    if hasattr(env, "account"):
-        if not env.args.offline_mode and hasInternetConnection():
-            try:
-                accountData = getAccountDict(minecraft_launcher_lib.microsoft_account.complete_refresh(env.secrets.client_id, env.secrets.secret, env.secrets.redirect_url, env.account["refreshToken"]))
-                env.accountList[env.selectedAccount] = copy.copy(accountData)
-                env.account = copy.copy(accountData)
-                splash_screen.close()
-                env.mainWindow.updateAccountInformation()
-                env.mainWindow.openMainWindow()
-            except minecraft_launcher_lib.exceptions.InvalidRefreshToken:
-                splash_screen.close()
-                env.loginWindow.show()
-        else:
-            env.offlineMode = True
-            env.loadVersions()
-            splash_screen.close()
-            env.mainWindow.updateAccountInformation()
-            env.mainWindow.openMainWindow()
-    else:
-        if not env.args.offline_mode and hasInternetConnection():
-            splash_screen.close()
-            env.loginWindow.show()
-        else:
-            splash_screen.close()
-            QMessageBox.critical(None, QCoreApplication.translate("jdMinecraftLauncher", "No Internet Connection"), QCoreApplication.translate("jdMinecraftLauncher", "You have no Internet connection. If you start jdMinecraftLauncher for the first time, you have to login using the Internet before you can use the offline Mode."))
-            sys.exit(0)
+    env.mainWindow.updateAccountInformation()
+    env.mainWindow.openMainWindow()
 
     sys.exit(app.exec())
