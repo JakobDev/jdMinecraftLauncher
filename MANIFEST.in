@@ -1,5 +1,6 @@
 include jdMinecraftLauncher/DBusInterface.xml
 include jdMinecraftLauncher/translations/*.ts
+include jdMinecraftLauncher/Distribution.toml
 exclude jdMinecraftLauncher/ui_compiled/*
 include jdMinecraftLauncher/secrets.json
 include jdMinecraftLauncher/Icon.svg

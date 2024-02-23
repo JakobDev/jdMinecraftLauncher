@@ -42,6 +42,7 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.extractNativesCheckBox.setChecked(self._env.settings.get("extractNatives"))
         self.windowIconProgressCheckBox.setChecked(self._env.settings.get("windowIconProgress"))
         self.windowIconProgressCheckBox.setChecked(self._env.settings.get("useFlatpakSubsandbox"))
+        self.checkUpdatesStartupCheckBox.setChecked(self._env.settings.get("checkUpdatesStartup"))
 
         self.windowIconProgressCheckBox.setVisible(parent.windowIconProgress.isSupported())
 
@@ -56,6 +57,8 @@ class OptionsTab(QWidget, Ui_OptionsTab):
 
         if not isFlatpak():
             self.flatpakSubsandboxCheckBox.setVisible(False)
+
+        self.checkUpdatesStartupCheckBox.setVisible(env.enableUpdater)
 
     def _multiLaunchCheckBoxChanged(self):
         self._env.settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())

@@ -3,6 +3,7 @@ from PyQt6.QtCore import QCoreApplication, QTranslator, QLibraryInfo, QLocale
 from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
 from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
 from jdMinecraftLauncher.Environment import Environment
+from .utils.UpdateChecker import checkUpdates
 from .ProfileImporter import askProfileImport
 import minecraft_launcher_lib
 import traceback
@@ -93,6 +94,12 @@ def main() -> None:
         QMessageBox.critical(None, QCoreApplication.translate("jdMinecraftLauncher", "Unsupported Platform"), QCoreApplication.translate("jdMinecraftLauncher", "Your current Platform is not supported by jdMinecraftLauncher"))
         sys.exit(0)
 
+    if env.args.offline_mode or not hasInternetConnection():
+        env.offlineMode = True
+
+    if env.enableUpdater and not env.offlineMode and env.settings.get("checkUpdatesStartup"):
+        checkUpdates(env)
+
     _ensureMinecraftDirectoryExists(env)
 
     splashScreen = QSplashScreen()
@@ -104,9 +111,6 @@ def main() -> None:
         setproctitle.setproctitle("jdMinecraftLauncher")
     except ModuleNotFoundError:
         pass
-
-    if env.args.offline_mode or not hasInternetConnection():
-        env.offlineMode = True
 
     env.loadVersions()
 

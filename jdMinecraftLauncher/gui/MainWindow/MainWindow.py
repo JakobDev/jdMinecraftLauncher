@@ -274,11 +274,13 @@ class MainWindow(QWidget, Ui_MainWindow):
             sys.exit(0)
 
         self.env.profileCollection.save()
+
         self.env.settings.set("language", self._optionsTab.languageComboBox.currentData())
         self.env.settings.set("newsURL", self._optionsTab.urlEdit.text())
         self.env.settings.set("enableMultiLaunch", self._optionsTab.allowMultiLaunchCheckBox.isChecked())
         self.env.settings.set("extractNatives", self._optionsTab.extractNativesCheckBox.isChecked())
         self.env.settings.set("useFlatpakSubsandbox", self._optionsTab.flatpakSubsandboxCheckBox.isChecked())
+        self.env.settings.set("checkUpdatesStartup", self._optionsTab.checkUpdatesStartupCheckBox.isChecked())
         self.env.settings.save(os.path.join(self.env.dataDir, "settings.json"))
 
         event.accept()

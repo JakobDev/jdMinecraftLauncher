@@ -4,6 +4,7 @@ from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
 from jdMinecraftLauncher.ProfileCollection import ProfileCollection
 from .AccountManager import AccountManager
 from PyQt6.QtWidgets import QApplication
+from .Functions import isFlatpak
 from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
 from typing import Optional
@@ -13,6 +14,7 @@ import traceback
 import argparse
 import platform
 import requests
+import tomllib
 import json
 import copy
 import sys
@@ -80,6 +82,11 @@ class Environment:
 
         self.profiles: list[Profile] = []
         self.selectedProfile = 0
+
+        with open(os.path.join(self.currentDir, "Distribution.toml"), "rb") as f:
+            distributionConfig = tomllib.load(f)
+
+        self.enableUpdater = not isFlatpak() and distributionConfig.get("EnableUpdater", True)
 
         if os.path.isdir(self.dataDir):
             self.firstLaunch = False

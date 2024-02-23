@@ -15,6 +15,7 @@ class Settings():
             "windowIconProgress": True,
             "customMinecraftDir": None,
             "useFlatpakSubsandbox": False,
+            "checkUpdatesStartup": True,
         }
 
         self._user_settings = {}
