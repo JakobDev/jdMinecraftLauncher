@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 class GameOutputTab(QPlainTextEdit):
     def __init__(self, env: "Environment") -> None:
         super().__init__()
-        self.env = env
+        self._env = env
         self.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
         self.setReadOnly(True)
 
@@ -24,17 +24,17 @@ class GameOutputTab(QPlainTextEdit):
 
     def procStarted(self) -> None:
         if self.profile.launcherVisibility != 2:
-            self.env.mainWindow.hide()
-        self.env.mainWindow.playButton.setEnabled(self.env.settings.get("enableMultiLaunch"))
+            self._env.mainWindow.hide()
+        self._env.mainWindow.playButton.setEnabled(self._env.settings.get("enableMultiLaunch"))
 
     def procFinish(self) -> None:
         if self.profile.launcherVisibility == 0:
-            self.env.mainWindow.show()
-            self.env.mainWindow.setFocus()
+            self._env.mainWindow.show()
+            self._env.mainWindow.setFocus()
         elif self.profile.launcherVisibility == 1:
-            self.env.mainWindow.close()
+            self._env.mainWindow.close()
 
-        self.env.mainWindow.playButton.setEnabled(True)
+        self._env.mainWindow.playButton.setEnabled(True)
 
         if self.natives_path != "":
             try:
@@ -55,5 +55,5 @@ class GameOutputTab(QPlainTextEdit):
         if not self.process.waitForStarted():
             self.setPlainText(QCoreApplication.translate("GameOutputTab", "Failed to start Minecraft"))
             QMessageBox.critical(self, QCoreApplication.translate("GameOutputTab", "Failed to start"), QCoreApplication.translate("GameOutputTab", "Minecraft could not be started. Maybe you use a invalid Java executable."))
-            self.env.mainWindow.playButton.setEnabled(True)
+            self._env.mainWindow.playButton.setEnabled(True)
             return

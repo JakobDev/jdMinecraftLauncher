@@ -1,6 +1,6 @@
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMessageBox
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtCore import QUrl, QCoreApplication
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QMessageBox
 from typing import TYPE_CHECKING
 import minecraft_launcher_lib
 

@@ -1,5 +1,6 @@
 from jdMinecraftLauncher.Profile import Profile
 from typing import Optional, TYPE_CHECKING
+from PyQt6.QtCore import QCoreApplication
 import traceback
 import json
 import sys
@@ -21,7 +22,7 @@ class ProfileCollection:
         profileJSON = os.path.join(self._env.dataDir, "profiles.json")
 
         if not os.path.isfile(profileJSON):
-            defaultProfile = Profile("Default", self._env)
+            defaultProfile = Profile(QCoreApplication.translate("ProfileCollection", "Default"), self._env)
             self.selectedProfile = defaultProfile.id
             self.profileList.append(defaultProfile)
             return

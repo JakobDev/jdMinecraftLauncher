@@ -38,10 +38,7 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "Wayland"),DisplayServerSetting.WAYLAND)
         self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "XWayland"),DisplayServerSetting.XWAYLAND)
 
-        for i in range(self.languageComboBox.count()):
-            if self.languageComboBox.itemData(i) == env.settings.get("language"):
-                self.languageComboBox.setCurrentIndex(i)
-
+        selectComboBoxData(self.languageComboBox, env.settings.get("language"))
         self.urlEdit.setText(env.settings.get("newsURL"))
         self.allowMultiLaunchCheckBox.setChecked(self._env.settings.get("enableMultiLaunch"))
         self.extractNativesCheckBox.setChecked(self._env.settings.get("extractNatives"))
@@ -113,7 +110,9 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self._parent.updateProfileList()
 
         self._env.settings.set("customMinecraftDir", path)
-        self._env.settings.save(os.path.join(self._env.dataDir, "settings.json"))
+
+        if not self._env.args.dont_save_data:
+            self._env.settings.save(os.path.join(self._env.dataDir, "settings.json"))
 
         self._updateMinecraftDirWidgets()
 
@@ -127,7 +126,9 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self._parent.updateProfileList()
 
         self._env.settings.set("customMinecraftDir", None)
-        self._env.settings.save(os.path.join(self._env.dataDir, "settings.json"))
+
+        if not self._env.args.dont_save_data:
+            self._env.settings.save(os.path.join(self._env.dataDir, "settings.json"))
 
         self._updateMinecraftDirWidgets()
 

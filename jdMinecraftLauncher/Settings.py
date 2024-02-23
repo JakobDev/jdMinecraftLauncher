@@ -40,8 +40,12 @@ class Settings():
         """Save settings into file"""
         if len(self._user_settings) == 0 and not os.path.isfile(path):
             return
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(self._user_settings, f, ensure_ascii=False, indent=4)
+
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(self._user_settings, f, ensure_ascii=False, indent=4)
+        except Exception:
+            print(traceback.format_exc(), file=sys.stderr)
 
     def load(self, path: str):
         """Load settings from file"""

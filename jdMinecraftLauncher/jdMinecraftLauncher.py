@@ -1,5 +1,5 @@
 from jdMinecraftLauncher.Functions import hasInternetConnection, getAccountDict
-from PyQt6.QtCore import QCoreApplication, QTranslator, QLibraryInfo, QLocale
+from PyQt6.QtCore import QCoreApplication, QTranslator, QLibraryInfo
 from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
 from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
 from jdMinecraftLauncher.Environment import Environment
@@ -72,23 +72,17 @@ def main() -> None:
     app.setApplicationName("jdMinecraftLauncher")
     app.setDesktopFileName("page.codeberg.JakobDev.jdMinecraftLauncher")
 
-    app_translator = QTranslator()
-    qt_translator = QTranslator()
-    app_trans_dir = os.path.join(env.currentDir, "translations")
-    qt_trans_dir = QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)
-    language = env.settings.get("language")
-    if language == "default":
-        system_language = QLocale.system().name()
-        app_translator.load(os.path.join(app_trans_dir, "jdMinecraftLauncher_" + system_language.split("_")[0] + ".qm"))
-        app_translator.load(os.path.join(app_trans_dir, "jdMinecraftLauncher_" + system_language + ".qm"))
-        qt_translator.load(os.path.join(qt_trans_dir, "qt_" + system_language.split("_")[0] + ".qm"))
-        qt_translator.load(os.path.join(qt_trans_dir, "qt_" + system_language + ".qm"))
-    else:
-        app_translator.load(os.path.join(app_trans_dir, "jdMinecraftLauncher_" + language + ".qm"))
-        qt_translator.load(os.path.join(qt_trans_dir, "qt_" + language.split("_")[0] + ".qm"))
-        qt_translator.load(os.path.join(qt_trans_dir, "qt_" + language + ".qm"))
-    app.installTranslator(app_translator)
-    app.installTranslator(qt_translator)
+    qtTranslator = QTranslator()
+    if qtTranslator.load(env.locale, "qt", "_", QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)):
+        app.installTranslator(qtTranslator)
+
+    webengineTranslator = QTranslator()
+    if webengineTranslator.load(env.locale, "qtwebengine", "_", QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)):
+        app.installTranslator(webengineTranslator)
+
+    appTranslator = QTranslator()
+    if appTranslator.load(env.locale, "jdMinecraftLauncher", "_", os.path.join(env.currentDir, "translations")):
+        app.installTranslator(appTranslator)
 
     if not minecraft_launcher_lib.utils.is_platform_supported() and not env.args.force_start:
         QMessageBox.critical(None, QCoreApplication.translate("jdMinecraftLauncher", "Unsupported Platform"), QCoreApplication.translate("jdMinecraftLauncher", "Your current Platform is not supported by jdMinecraftLauncher"))

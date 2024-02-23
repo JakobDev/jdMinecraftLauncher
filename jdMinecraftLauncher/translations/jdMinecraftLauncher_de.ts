@@ -25,9 +25,59 @@
     </message>
 </context>
 <context>
+    <name>AccountTab</name>
+    <message>
+        <location filename="../ui/AccountTab.ui" line="0"/>
+        <source>Name</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <location filename="../ui/AccountTab.ui" line="0"/>
+        <source>Type</source>
+        <translation>Typ</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/AccountTab.py" line="24"/>
+        <location filename="../ui/AccountTab.ui" line="0"/>
+        <source>Switch</source>
+        <translation>Wechseln</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/AccountTab.py" line="43"/>
+        <location filename="../ui/AccountTab.ui" line="0"/>
+        <source>Remove</source>
+        <translation>Entfernen</translation>
+    </message>
+    <message>
+        <location filename="../ui/AccountTab.ui" line="0"/>
+        <source>Add</source>
+        <translation>Hinzufügen</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/AccountTab.py" line="53"/>
+        <source>No Internet Connection</source>
+        <translation>Keine Internetverbindung</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/AccountTab.py" line="53"/>
+        <source>This Feature needs a internet connection</source>
+        <translation>Dieses Feature benötigt eine Internetverbindung</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/AccountTab.py" line="88"/>
+        <source>Add Account</source>
+        <translation>Konto hinzufügen</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/AccountTab.py" line="93"/>
+        <source>Add Dummy Account</source>
+        <translation>Dummkonto hinzufügen</translation>
+    </message>
+</context>
+<context>
     <name>FabricTab</name>
     <message>
-        <location filename="../gui/MainWindow/FabricTab.py" line="39"/>
+        <location filename="../gui/MainWindow/FabricTab.py" line="40"/>
         <source>Install</source>
         <translation>Installieren</translation>
     </message>
@@ -35,7 +85,7 @@
 <context>
     <name>ForgeTab</name>
     <message>
-        <location filename="../gui/MainWindow/ForgeTab.py" line="45"/>
+        <location filename="../gui/MainWindow/ForgeTab.py" line="46"/>
         <source>Install</source>
         <translation>Installieren</translation>
     </message>
@@ -94,27 +144,27 @@
         <translation>Anmelden</translation>
     </message>
     <message>
-        <location filename="../gui/LoginWindow.py" line="37"/>
+        <location filename="../gui/LoginWindow.py" line="47"/>
         <source>Your account appears to not own Minecraft.</source>
         <translation>Dein Account scheint Minecraft nicht zu besitzen.</translation>
     </message>
     <message>
-        <location filename="../gui/LoginWindow.py" line="38"/>
+        <location filename="../gui/LoginWindow.py" line="48"/>
         <source>You need an account that owns Minecraft to use jdMinecraftLauncher.</source>
         <translation>Du benötigst einen Account, der Minecraft besitzt um jdMinecraftLauncher zu benutzen.</translation>
     </message>
     <message>
-        <location filename="../gui/LoginWindow.py" line="39"/>
+        <location filename="../gui/LoginWindow.py" line="49"/>
         <source>If you&apos;ve purchased Minecraft and still encounter this error, try logging in with the official launcher first.</source>
         <translation>Wenn du Minecraft gekauft hast und immer noch diesen Fehler bekommst, versuche dich zuerst mit dem offiziellen Launcher anzumelden.</translation>
     </message>
     <message>
-        <location filename="../gui/LoginWindow.py" line="40"/>
+        <location filename="../gui/LoginWindow.py" line="50"/>
         <source>If the error still persists, please write a bug report.</source>
         <translation>Wenn der Fehler weiterhin besteht, schreibe bitte einen Fehlerbericht.</translation>
     </message>
     <message>
-        <location filename="../gui/LoginWindow.py" line="42"/>
+        <location filename="../gui/LoginWindow.py" line="52"/>
         <source>Account does not own Minecraft</source>
         <translation>Account besitzt kein Minecraft</translation>
     </message>
@@ -137,7 +187,7 @@
         <translation>Profil bearbeiten</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="244"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="250"/>
         <location filename="../ui/MainWindow.ui" line="0"/>
         <source>Play</source>
         <translation>Spielen</translation>
@@ -148,127 +198,132 @@
         <translation>Abmelden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="56"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="58"/>
         <source>News</source>
         <translation>News</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="57"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="59"/>
         <source>Profile Editor</source>
         <translation>Profileditor</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="58"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="60"/>
         <source>Version Editor</source>
         <translation>Versionseditor</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="59"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="61"/>
         <source>Options</source>
         <translation>Optionen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="60"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="62"/>
         <source>Forge</source>
         <translation>Forge</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="61"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="63"/>
         <source>Fabric</source>
         <translation>Fabric</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="62"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="64"/>
+        <source>Accounts</source>
+        <translation>Konten</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/MainWindow.py" line="65"/>
         <source>About</source>
         <translation>Über</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="134"/>
-        <location filename="../gui/MainWindow/MainWindow.py" line="128"/>
-        <location filename="../gui/MainWindow/MainWindow.py" line="94"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="137"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="131"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="97"/>
         <source>Profile not found</source>
         <translation>Profil nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="134"/>
-        <location filename="../gui/MainWindow/MainWindow.py" line="128"/>
-        <location filename="../gui/MainWindow/MainWindow.py" line="94"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="137"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="131"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="97"/>
         <source>The given Profile was not found</source>
         <translation>Das angegebene Profil wurde nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="105"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="108"/>
         <source>Unable to load Profiles</source>
         <translation>Profile können nicht geladen werden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="106"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="109"/>
         <source>jdMinecraft was unable to load your profiles due to an error. Apologies for any inconvenience. Please report this bug.</source>
         <translation>jdMinecraft konnte deine Profile aufgrund eines Fehlers nicht laden. Entschuldigung. Bitte melde diesen Fehler.</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="112"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="115"/>
         <source>Unable to load Settings</source>
         <translation>Konnte Einstellungen nicht laden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="113"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="116"/>
         <source>jdMinecraft was unable to load your settings due to an error. Apologies for any inconvenience. Please report this bug.</source>
         <translation>jdMinecraft konnte deine EInstellungen aufgrund eines Fehlers nicht laden. Entschuldigung. Bitte melde diesen Fehler.</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="176"/>
-        <location filename="../gui/MainWindow/MainWindow.py" line="167"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="179"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="170"/>
         <source>No Internet Connection</source>
         <translation>Keine Internetverbindung</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="167"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="170"/>
         <source>You need a internet connection to install a new version, but you are still able to play already installed versions.</source>
         <translation>Du benötigst zum Installieren einer neuen Version eine Internetverbindung. Bereits installierte Version können Problemlos gespielt werden.</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="176"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="179"/>
         <source>This Feature needs a internet connection</source>
         <translation>Dieses Feature benötigt eine Internetverbindung</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="195"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="201"/>
         <source>Game Output</source>
         <translation>Spieleausgabe</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="203"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="209"/>
         <source>Version not found</source>
         <translation>Version nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="203"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="209"/>
         <source>The version used by this profile was not found and could not be installed. Perhaps you have uninstalled it.</source>
         <translation>Die von diesem Profil verwendete Version wurde nicht gefunden und konnte nicht installiert werden. Vielleicht hast du sie deinstalliert.</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="207"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="213"/>
         <source>Due to an error, the installation could not be completed</source>
         <translation>Aufgrund eines Fehlers konnte die Installation nicht vollendet werden</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="208"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="214"/>
         <source>This may have been caused by a network error</source>
         <translation>Dies wurde möglicherweise von einem Netzwerkfehler verursacht</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="211"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="217"/>
         <source>Installation failed</source>
         <translation>Installation fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="238"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="244"/>
         <source>Welcome, {{name}}</source>
         <translation>Willkommen, {{name}}</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/MainWindow.py" line="242"/>
+        <location filename="../gui/MainWindow/MainWindow.py" line="248"/>
         <source>Play Offline</source>
         <translation>Offline spielen</translation>
     </message>
@@ -302,6 +357,16 @@
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
+        <source>Launch Minecraft in a Subsandbox</source>
+        <translation>Starte Minecraft in einer Subsandbox</translation>
+    </message>
+    <message>
+        <location filename="../ui/OptionsTab.ui" line="0"/>
+        <source>Check for Updates on Startup</source>
+        <translation>Beim Start nach Updates suchen</translation>
+    </message>
+    <message>
+        <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Minecraft directory:</source>
         <translation>Minecraft Verzeichnis:</translation>
     </message>
@@ -316,44 +381,72 @@
         <translation>Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/OptionsTab.py" line="33"/>
+        <location filename="../ui/OptionsTab.ui" line="0"/>
+        <source>Displayserver for Minecraft:</source>
+        <translation>Displayserver für Minecraft:</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="35"/>
         <source>Use System Language</source>
         <translation>Systemsprache benutzen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/OptionsTab.py" line="73"/>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="37"/>
+        <source>Auto</source>
+        <translation>Automatisch</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="38"/>
+        <source>Wayland</source>
+        <translation>Wayland</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="39"/>
+        <source>XWayland</source>
+        <translation>XWayland</translation>
+    </message>
+    <message>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="94"/>
         <source>This will change your Minecraft directory.</source>
         <translation>Dadurch wird dein Minecraft Verzeichnis geändert.</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/OptionsTab.py" line="74"/>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="95"/>
         <source>This is the directory where Minecraft is installed.</source>
         <translation>Dies ist das Verzeichnis, in dem Minecraft installiert ist.</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/OptionsTab.py" line="75"/>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="96"/>
         <source>If you don&apos;t set a game directory for your profile, Minecraft will also save its data (saves, options, etc.) there.</source>
         <translation>Wenn Sdu kein Spielverzeichnis für dein Profil festlegst, speichert Minecraft seine Daten (Spielstände, Optionen usw.) ebenfalls dort.</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/OptionsTab.py" line="76"/>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="97"/>
         <source>Would you like to proceed?</source>
         <translation>Möchtest du fortfahren?</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/OptionsTab.py" line="78"/>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="99"/>
         <source>Change Minecraft directory</source>
         <translation>Minecraft-Verzeichnis ändern</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/OptionsTab.py" line="97"/>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="120"/>
         <source>Reset Minecraft directory</source>
         <translation>Minecraft Verzeichnis zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../gui/MainWindow/OptionsTab.py" line="97"/>
+        <location filename="../gui/MainWindow/OptionsTab.py" line="120"/>
         <source>Would you like to reset your Minecraft directory to its default location?</source>
         <translation>Möchten du dein Minecraft-Verzeichnis auf den Standardspeicherort zurücksetzen?</translation>
+    </message>
+</context>
+<context>
+    <name>ProfileCollection</name>
+    <message>
+        <location filename="../ProfileCollection.py" line="25"/>
+        <source>Default</source>
+        <translation>Standard</translation>
     </message>
 </context>
 <context>
@@ -644,39 +737,77 @@
 <context>
     <name>Shortcut</name>
     <message>
-        <location filename="../Shortcut.py" line="51"/>
+        <location filename="../Shortcut.py" line="28"/>
+        <source>desktop-entry-lib not found</source>
+        <translation>desktop-entry-lib nicht gefunden</translation>
+    </message>
+    <message>
+        <location filename="../Shortcut.py" line="28"/>
+        <source>You need the desktop-entry-lib Python package to create a shortcut</source>
+        <translation>Du benötigst das desktop-entry-lib Python Paket um eine Verknüpfung zu erstellen</translation>
+    </message>
+    <message>
+        <location filename="../Shortcut.py" line="46"/>
+        <source>Start the {{name}} profile in jdMinecraftLauncher</source>
+        <translation>Startet das {{name}} Profil in jdMinecraftLauncher</translation>
+    </message>
+    <message>
+        <location filename="../Shortcut.py" line="66"/>
         <source>Add URL Schema</source>
         <translation>URL Schema hinzufügen</translation>
     </message>
     <message>
-        <location filename="../Shortcut.py" line="51"/>
+        <location filename="../Shortcut.py" line="66"/>
         <source>To make Shortcuts work, you need to add the jdMinecraftLauncher URL Schema to Windows. Should it be added?</source>
         <translation>Damit Verknüpfungen funktionieren, muss das jdMinecraftLauncher URL Schema zu Windows hinzugefügt werden. Möchtest du es jetzt hinzufügen?</translation>
     </message>
     <message>
-        <location filename="../Shortcut.py" line="95"/>
+        <location filename="../Shortcut.py" line="110"/>
         <source>Select where you want to create the Shortcut</source>
         <translation>Wähhle aus, wo die Verknüpfung erstellt werden soll</translation>
     </message>
     <message>
-        <location filename="../Shortcut.py" line="96"/>
+        <location filename="../Shortcut.py" line="111"/>
         <source>Create Shortcut</source>
         <translation>Verknüpfung erstellen</translation>
     </message>
     <message>
-        <location filename="../Shortcut.py" line="100"/>
+        <location filename="../Shortcut.py" line="115"/>
         <source>Desktop</source>
         <translation>Desktop</translation>
     </message>
     <message>
-        <location filename="../Shortcut.py" line="104"/>
+        <location filename="../Shortcut.py" line="119"/>
         <source>Menu</source>
         <translation>Menü</translation>
     </message>
     <message>
-        <location filename="../Shortcut.py" line="108"/>
+        <location filename="../Shortcut.py" line="123"/>
         <source>Both</source>
         <translation>Beides</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateChecker</name>
+    <message>
+        <location filename="../utils/UpdateChecker.py" line="24"/>
+        <source>Version {{version}} of jdMinecraftLauncher is now available.</source>
+        <translation>Version {{version}} von jdMinecraftLauncher ist jetzt verfügbar.</translation>
+    </message>
+    <message>
+        <location filename="../utils/UpdateChecker.py" line="25"/>
+        <source>You are currently using version {{version}}.</source>
+        <translation>Du benutzt aktuell Version {{version}}.</translation>
+    </message>
+    <message>
+        <location filename="../utils/UpdateChecker.py" line="26"/>
+        <source>Do you want to download the latest version?</source>
+        <translation>Möchtest du die neuste Version herunterladen?</translation>
+    </message>
+    <message>
+        <location filename="../utils/UpdateChecker.py" line="28"/>
+        <source>New version available</source>
+        <translation>Neue Version verfügbar</translation>
     </message>
 </context>
 <context>
@@ -716,24 +847,24 @@
         <translation>Du hast ein eigenes Minecraft Verzeichnis eingestellt. Möchten du es wieder auf den Standard zurücksetzen?</translation>
     </message>
     <message>
-        <location filename="../jdMinecraftLauncher.py" line="70"/>
-        <source>Unsupported Platform</source>
-        <translation>Nicht unterstütze Platform</translation>
-    </message>
-    <message>
-        <location filename="../jdMinecraftLauncher.py" line="70"/>
-        <source>Your current Platform is not supported by jdMinecraftLauncher</source>
-        <translation>Deine aktuelle Platform wird von jdMinecraftLauncher nicht unterstützt</translation>
-    </message>
-    <message>
-        <location filename="../jdMinecraftLauncher.py" line="116"/>
+        <location filename="../jdMinecraftLauncher.py" line="49"/>
         <source>No Internet Connection</source>
         <translation>Keine Internetverbindung</translation>
     </message>
     <message>
-        <location filename="../jdMinecraftLauncher.py" line="116"/>
+        <location filename="../jdMinecraftLauncher.py" line="49"/>
         <source>You have no Internet connection. If you start jdMinecraftLauncher for the first time, you have to login using the Internet before you can use the offline Mode.</source>
         <translation>Wenn du jdMinecraftLauncher zum ersten Mal startest, benötigst du eine Internetverbindung um dich mit deinem Mojang Account anzumelden. Nachdem du dich erstmal angemeldet hast, benötigst du keine Internetverbindung mehr.</translation>
+    </message>
+    <message>
+        <location filename="../jdMinecraftLauncher.py" line="88"/>
+        <source>Unsupported Platform</source>
+        <translation>Nicht unterstütze Platform</translation>
+    </message>
+    <message>
+        <location filename="../jdMinecraftLauncher.py" line="88"/>
+        <source>Your current Platform is not supported by jdMinecraftLauncher</source>
+        <translation>Deine aktuelle Platform wird von jdMinecraftLauncher nicht unterstützt</translation>
     </message>
 </context>
 </TS>

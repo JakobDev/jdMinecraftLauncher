@@ -1,15 +1,15 @@
-from jdMinecraftLauncher.Profile import Profile
-from jdMinecraftLauncher.Settings import Settings
-from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
 from jdMinecraftLauncher.ProfileCollection import ProfileCollection
+from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
+from jdMinecraftLauncher.Settings import Settings
+from jdMinecraftLauncher.Profile import Profile
 from .AccountManager import AccountManager
 from PyQt6.QtWidgets import QApplication
 from .Functions import isFlatpak
+from PyQt6.QtCore import QLocale
 from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
 from typing import Optional
 from pathlib import Path
-import minecraft_launcher_lib
 import traceback
 import argparse
 import platform
@@ -88,25 +88,39 @@ class Environment:
 
         self.enableUpdater = not isFlatpak() and distributionConfig.get("EnableUpdater", True)
 
+        if self.settings.get("language") == "default":
+            self.locale = QLocale()
+        else:
+            self.locale = QLocale(self.settings.get("language"))
+
         if os.path.isdir(self.dataDir):
             self.firstLaunch = False
         else:
             self.firstLaunch = True
 
+    def _getSystemDataDir(self) -> str:
+        match platform.system():
+            case "Windows":
+                return os.getenv("APPDATA")
+            case "Darwin":
+                 return os.path.join(Path.home(), "Library", "Application Support")
+            case "Haiku":
+                return os.path.join(Path.home(), "config", "settings")
+            case _:
+                if os.getenv("XDG_DATA_HOME"):
+                    return os.getenv("XDG_DATA_HOME")
+                else:
+                    return os.path.join(Path.home(), ".local", "share")
+
     def getDataPath(self) -> str:
         if os.path.isdir(os.path.join(minecraft_launcher_lib.utils.get_minecraft_directory(), "jdMinecraftLauncher")):
             return os.path.join(minecraft_launcher_lib.utils.get_minecraft_directory(), "jdMinecraftLauncher")
-        if platform.system() == "Windows":
-            return os.path.join(os.getenv("appdata"), "jdMinecraftLauncher")
-        elif platform.system() == "Darwin":
-            return os.path.join(str(Path.home()), "Library", "Application Support", "jdMinecraftLauncher")
-        elif platform.system() == "Haiku":
-            return os.path.join(str(Path.home()), "config", "settings", "jdMinecraftLauncher")
-        else:
-            if os.getenv("XDG_DATA_HOME"):
-                return os.path.join(os.getenv("XDG_DATA_HOME"), "jdMinecraftLauncher")
-            else:
-                return os.path.join(str(Path.home()), ".local", "share", "jdMinecraftLauncher")
+
+        dataPath = self._getSystemDataDir()
+        if os.path.isdir(os.path.join(dataPath, "jdMinecraftLauncher")):
+            return os.path.join(dataPath, "jdMinecraftLauncher")
+
+        return os.path.join(dataPath, "JakobDev", "jdMinecraftLauncher")
 
     def loadVersions(self):
         if not self.offlineMode:

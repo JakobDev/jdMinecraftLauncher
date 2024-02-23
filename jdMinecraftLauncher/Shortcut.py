@@ -1,6 +1,6 @@
 from jdMinecraftLauncher.Functions import isFrozen
-from PyQt6.QtCore import QCoreApplication
-from PyQt6.QtWidgets import QMessageBox
+from PyQt6.QtCore import QCoreApplication, QTranslator
+from PyQt6.QtWidgets import QWidget, QMessageBox
 from typing import TYPE_CHECKING
 from PyQt6.QtGui import QIcon
 from enum import Enum
@@ -21,24 +21,39 @@ class ShortcutLocation(Enum):
     MENU = 1
 
 
-def _createLinuxShortcut(path: str, profile: "Profile") -> None:
+def _createLinuxShortcut(env: "Environment", parent: QWidget | None, path: str, profile: "Profile") -> None:
     try:
-        os.makedirs(path)
-    except Exception:
-        pass
+        import desktop_entry_lib
+    except ModuleNotFoundError:
+        QMessageBox.critical(parent, QCoreApplication.translate("Shortcut", "desktop-entry-lib not found"), QCoreApplication.translate("Shortcut", "You need the desktop-entry-lib Python package to create a shortcut"))
+        return
 
-    with open(os.path.join(path, f"page.codeberg.JakobDev.Profile.{profile.name}.desktop"), "w", encoding="utf-8") as f:
-        f.write("[Desktop Entry]\n")
-        f.write("Type=Application\n")
-        f.write(f"Name={profile.name}\n")
-        f.write("Icon=page.codeberg.JakobDev.jdMinecraftLauncher\n")
-        f.write("Categories=Game;\n")
-        f.write("Exec=" + subprocess.list2cmdline(["xdg-open", "jdMinecraftLauncher:LaunchProfileByID/" + profile.id]) + "\n")
+    entry = desktop_entry_lib.DesktopEntry()
+    entry.Name.default_text = profile.name
+    entry.Icon = "page.codeberg.JakobDev.jdMinecraftLauncher"
+    entry.Exec = subprocess.list2cmdline(["xdg-open", "jdMinecraftLauncher:LaunchProfileByID/" + profile.id])
+    entry.Categories.append("Game")
+    entry.Comment.default_text = f"Start the {profile.name} profile in jdMinecraftLauncher"
+
+    for langFile in os.listdir(os.path.join(env.currentDir, "translations")):
+            if not langFile.endswith(".qm"):
+                continue
+
+            lang = langFile.removeprefix("jdMinecraftLauncher_").removesuffix(".qm")
+            fullPath = os.path.join(env.currentDir, "translations", langFile)
+            translator = QTranslator()
+            translator.load(fullPath)
+            comment = translator.translate("Shortcut", "Start the {{name}} profile in jdMinecraftLauncher").replace("{{name}}", profile.name)
+
+            if comment != "":
+                entry.Comment.translations[lang] = comment
+
+    entry.write_file(os.path.join(path, f"page.codeberg.JakobDev.Profile.{profile.name}.desktop"))
 
     subprocess.run(["chmod", "+x", os.path.join(path, f"page.codeberg.JakobDev.Profile.{profile.name}.desktop")])
 
 
-def _ensureWindowsUrlSchema(env: "Environment") -> None:
+def _ensureWindowsUrlSchema(env: "Environment", parent: QWidget | None) -> None:
     import winreg
 
     # Check if the Schema already exists
@@ -48,7 +63,7 @@ def _ensureWindowsUrlSchema(env: "Environment") -> None:
     except FileNotFoundError:
         pass
 
-    if QMessageBox.question(env.mainWindow, QCoreApplication.translate("Shortcut", "Add URL Schema"), QCoreApplication.translate("Shortcut", "To make Shortcuts work, you need to add the jdMinecraftLauncher URL Schema to Windows. Should it be added?"), QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
+    if QMessageBox.question(parent, QCoreApplication.translate("Shortcut", "Add URL Schema"), QCoreApplication.translate("Shortcut", "To make Shortcuts work, you need to add the jdMinecraftLauncher URL Schema to Windows. Should it be added?"), QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
         return
 
     with winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER, r"SOFTWARE\Classes\jdMinecraftLauncher", 0, winreg.KEY_WRITE) as protocolKey:
@@ -67,7 +82,7 @@ def _createWindowsShortcut(path: str, profile: "Profile") -> None:
     except Exception:
         pass
 
-    with open(os.path.join(path, f"{profile.name}.url"), "w", encoding="utf-8") as f:
+    with open(os.path.join(path, f"{profile.name}.url"), "w", encoding="utf-8", newline="\r\n") as f:
         f.write("[InternetShortcut]\n")
         f.write(f"URL=jdMinecraftLauncher:LaunchProfileByID/{profile.id}\n")
 
@@ -76,22 +91,22 @@ def canCreateShortcuts() -> bool:
     return platform.system() in ["Linux", "Windows"]
 
 
-def createShortcut(env: "Environment", profile: "Profile", location: ShortcutLocation) -> None:
+def createShortcut(env: "Environment", parent: QWidget | None, profile: "Profile", location: ShortcutLocation) -> None:
     if platform.system() == "Linux":
         if location == ShortcutLocation.DESKTOP:
-            _createLinuxShortcut(subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), profile)
+            _createLinuxShortcut(env, parent, subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), profile)
         elif location == ShortcutLocation.MENU:
-            _createLinuxShortcut(os.path.expanduser("~/.local/share/applications"), profile)
+            _createLinuxShortcut(env, parent, os.path.expanduser("~/.local/share/applications"), profile)
     elif platform.system() == "Windows":
-        _ensureWindowsUrlSchema(env)
+        _ensureWindowsUrlSchema(env, parent)
         if location == ShortcutLocation.DESKTOP:
             _createWindowsShortcut(str(pathlib.Path.home() / "Desktop"), profile)
         elif location == ShortcutLocation.MENU:
             _createWindowsShortcut(os.path.join(os.getenv("APPDATA"), "Microsoft", "Windows", "Start Menu", "Programs"), profile)
 
 
-def askCreateShortcut(env: "Environment", profile: "Profile") -> None:
-    box = QMessageBox()
+def askCreateShortcut(env: "Environment", parent: QWidget | None, profile: "Profile") -> None:
+    box = QMessageBox(parent)
     box.setText(QCoreApplication.translate("Shortcut", "Select where you want to create the Shortcut"))
     box.setWindowTitle(QCoreApplication.translate("Shortcut", "Create Shortcut"))
     box.setStandardButtons(QMessageBox.StandardButton.Save | QMessageBox.StandardButton.Discard | QMessageBox.StandardButton.Cancel)
@@ -111,9 +126,9 @@ def askCreateShortcut(env: "Environment", profile: "Profile") -> None:
     box.exec()
 
     if box.clickedButton() == desktopButton:
-        createShortcut(env, profile, ShortcutLocation.DESKTOP)
+        createShortcut(env, parent, profile, ShortcutLocation.DESKTOP)
     elif box.clickedButton() == menuButton:
-        createShortcut(env, profile, ShortcutLocation.MENU)
+        createShortcut(env, parent, profile, ShortcutLocation.MENU)
     elif box.clickedButton() == bothButton:
-        createShortcut(env, profile, ShortcutLocation.DESKTOP)
-        createShortcut(env, profile, ShortcutLocation.MENU)
+        createShortcut(env, parent, profile, ShortcutLocation.DESKTOP)
+        createShortcut(env, parent, profile, ShortcutLocation.MENU)

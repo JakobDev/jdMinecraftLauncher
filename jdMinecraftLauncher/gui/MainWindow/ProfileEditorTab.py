@@ -72,7 +72,7 @@ class ProfileEditorTab(QTableWidget):
 
         if canCreateShortcuts():
             createShortcut = QAction(QCoreApplication.translate("ProfileEditorTab", "Create Shortcut"), self)
-            createShortcut.triggered.connect(lambda: askCreateShortcut(self._env, self._env.profileCollection.profileList[self.currentRow()]))
+            createShortcut.triggered.connect(lambda: askCreateShortcut(self._env, self._mainWindow, self._env.profileCollection.profileList[self.currentRow()]))
             self.menu.addAction(createShortcut)
 
         self.menu.popup(event.globalPos())

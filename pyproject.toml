@@ -43,6 +43,7 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 window-icon-progress-windows = ["PyTaskbarProgress"]
+shortcut-linux = ["desktop-entry-lib"]
 
 [project.urls]
 Source = "https://codeberg.org/JakobDev/jdMinecraftLauncher"
@@ -69,5 +70,5 @@ gettext-desktop-entry = true
 appstream = "deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml"
 gettext-appstream = true
 gettext-directory = "deploy/translations"
-python-version = "3.11"
-
+python-version = "3.12"
+compression = "xz"

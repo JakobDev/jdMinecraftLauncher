@@ -35,14 +35,14 @@ class MainWindow(QWidget, Ui_MainWindow):
 
         self.setupUi(self)
 
-        self.env = env
+        self._env = env
         self.profileListRebuild = False
-        self.profileWindow = ProfileWindow(self.env,self)
+        self.profileWindow = ProfileWindow(self._env, self)
         self.windowIconProgress = createWindowIconProgress(self)
 
         self.tabWidget.clear()
 
-        QWebEngineProfile.defaultProfile().setHttpAcceptLanguage(QLocale.system().name())
+        QWebEngineProfile.defaultProfile().setHttpAcceptLanguage(env.locale.name())
         QWebEngineProfile.defaultProfile().setHttpUserAgent("jdMinecraftLauncher/" + env.launcherVersion)
         newsTab = QWebEngineView()
         newsTab.load(QUrl(env.settings.get("newsURL")))
@@ -61,7 +61,7 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.tabWidget.addTab(self._optionsTab, QCoreApplication.translate("MainWindow", "Options"))
         self.tabWidget.addTab(self._forgeTab, QCoreApplication.translate("MainWindow", "Forge"))
         self.tabWidget.addTab(self._fabricTab, QCoreApplication.translate("MainWindow", "Fabric"))
-        self.tabWidget.addTab(self._accountTab, QCoreApplication.translate("MainWindow", "Account"))
+        self.tabWidget.addTab(self._accountTab, QCoreApplication.translate("MainWindow", "Accounts"))
         self.tabWidget.addTab(self._aboutTab, QCoreApplication.translate("MainWindow", "About"))
 
         self.newProfileButton.clicked.connect(self.newProfileButtonClicked)
@@ -87,30 +87,30 @@ class MainWindow(QWidget, Ui_MainWindow):
 
         if platform.system() == "Linux":
             from jdMinecraftLauncher.DBusService import DBusService
-            DBusService(self.env, self.env.app)
+            DBusService(self._env, self._env.app)
 
-        if self.env.args.launch_profile:
-            profile = self.env.profileCollection.getProfileByName(self.env.args.launch_profile)
+        if self._env.args.launch_profile:
+            profile = self._env.profileCollection.getProfileByName(self._env.args.launch_profile)
             if profile:
-                self.env.mainWindow.launchProfile(profile)
+                self._env.mainWindow.launchProfile(profile)
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
-        elif self.env.args.url:
-            parse_results = urllib.parse.urlparse(self.env.args.url)
+        elif self._env.args.url:
+            parse_results = urllib.parse.urlparse(self._env.args.url)
             if parse_results.scheme == "jdminecraftlauncher":
                 self._handleCustomURL(parse_results.path)
 
         self._is_first_open = True
         self.show()
 
-        if (loadError := self.env.profileCollection.getLoadError()) is not None:
+        if (loadError := self._env.profileCollection.getLoadError()) is not None:
             msgBox = QMessageBox()
             msgBox.setWindowTitle(QCoreApplication.translate("MainWindow", "Unable to load Profiles"))
             msgBox.setText(QCoreApplication.translate("MainWindow", "jdMinecraft was unable to load your profiles due to an error. Apologies for any inconvenience. Please report this bug."))
             msgBox.setDetailedText(loadError)
             msgBox.exec()
 
-        if (loadError := self.env.settings.getLoadError()) is not None:
+        if (loadError := self._env.settings.getLoadError()) is not None:
             msgBox = QMessageBox()
             msgBox.setWindowTitle(QCoreApplication.translate("MainWindow", "Unable to load Settings"))
             msgBox.setText(QCoreApplication.translate("MainWindow", "jdMinecraft was unable to load your settings due to an error. Apologies for any inconvenience. Please report this bug."))
@@ -124,15 +124,15 @@ class MainWindow(QWidget, Ui_MainWindow):
             return
 
         if method == "LaunchProfileByID":
-            profile = self.env.profileCollection.getProfileByID(param)
+            profile = self._env.profileCollection.getProfileByID(param)
             if profile:
-                self.env.profileCollection.mainWindow.launchProfile(profile)
+                self._env.profileCollection.mainWindow.launchProfile(profile)
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
         elif method == "LaunchProfileByName":
             profile = self.profileCollection.env.getProfileByName(param)
             if profile:
-                self.env.mainWindow.launchProfile(profile)
+                self._env.mainWindow.launchProfile(profile)
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
 
@@ -141,9 +141,9 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.profileListRebuild = True
         self.profileComboBox.clear()
 
-        for count, i in enumerate(self.env.profileCollection.profileList):
+        for count, i in enumerate(self._env.profileCollection.profileList):
             self.profileComboBox.addItem(i.name)
-            if i.id == self.env.profileCollection.selectedProfile:
+            if i.id == self._env.profileCollection.selectedProfile:
                 currentIndex = count
 
         self._profileEditorTab.updateProfiles()
@@ -152,19 +152,19 @@ class MainWindow(QWidget, Ui_MainWindow):
 
     def profileComboBoxIndexChanged(self, index: int):
         if not self.profileListRebuild:
-            self.env.profileCollection.selectedProfile = self.env.profileCollection.profileList[index].id
+            self._env.profileCollection.selectedProfile = self._env.profileCollection.profileList[index].id
 
     def newProfileButtonClicked(self):
-        self.profileWindow.loadProfile(self.env.profileCollection.getSelectedProfile(), True, True)
+        self.profileWindow.loadProfile(self._env.profileCollection.getSelectedProfile(), True, True)
         self.profileWindow.open()
 
     def editProfileButtonClicked(self):
-        self.profileWindow.loadProfile(self.env.profileCollection.getSelectedProfile(), False)
+        self.profileWindow.loadProfile(self._env.profileCollection.getSelectedProfile(), False)
         self.profileWindow.open()
 
     def launchProfile(self, profile: "Profile") -> None:
-        if self.env.offlineMode:
-            if os.path.isdir(os.path.join(self.env.minecraftDir,"versions",profile.getVersionID())):
+        if self._env.offlineMode:
+            if os.path.isdir(os.path.join(self._env.minecraftDir,"versions",profile.getVersionID())):
                 self.startMinecraft(profile)
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "No Internet Connection"), QCoreApplication.translate("MainWindow", "You need a internet connection to install a new version, but you are still able to play already installed versions."))
@@ -172,18 +172,18 @@ class MainWindow(QWidget, Ui_MainWindow):
             self.installVersion(profile)
 
     def playButtonClicked(self):
-        self.launchProfile(self.env.profileCollection.getSelectedProfile())
+        self.launchProfile(self._env.profileCollection.getSelectedProfile())
 
     def logoutButtonClicked(self):
-        if self.env.offlineMode:
+        if self._env.offlineMode:
             QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "No Internet Connection"), QCoreApplication.translate("MainWindow", "This Feature needs a internet connection"))
             return
 
-        self.env.accountManager.removeAccount(self.env.accountManager.getSelectedAccount())
+        self._env.accountManager.removeAccount(self._env.accountManager.getSelectedAccount())
 
-        if self.env.accountManager.getSelectedAccount() is None:
+        if self._env.accountManager.getSelectedAccount() is None:
             self.hide()
-            if self.env.accountManager.addMicrosoftAccount(self) is None:
+            if self._env.accountManager.addMicrosoftAccount(self) is None:
                 self.close()
                 return
             self.show()
@@ -191,13 +191,13 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.updateAccountInformation()
 
     def startMinecraft(self, profile: "Profile"):
-        if self.env.settings.get("extractNatives"):
+        if self._env.settings.get("extractNatives"):
             natives_path = os.path.join(tempfile.gettempdir(), "minecraft_natives_" + str(random.randrange(0, 10000000)))
         else:
             natives_path = ""
 
-        args = getMinecraftCommand(self.env.profileCollection.getSelectedProfile(), self.env, natives_path)
-        outputTab = GameOutputTab(self.env)
+        args = getMinecraftCommand(self._env.profileCollection.getSelectedProfile(), self._env, natives_path)
+        outputTab = GameOutputTab(self._env)
         tabID = self.tabWidget.addTab(outputTab, QCoreApplication.translate("MainWindow", "Game Output"))
         self.tabWidget.setCurrentIndex(tabID)
         outputTab.executeCommand(profile, args, natives_path)
@@ -226,25 +226,25 @@ class MainWindow(QWidget, Ui_MainWindow):
             return
 
         if self.installThread.shouldStartMinecraft() and self.installThread.getError() is None:
-            self.env.updateInstalledVersions()
+            self._env.updateInstalledVersions()
             self._versionEditorTab.updateVersions()
-            self.startMinecraft(self.env.current_running_profile)
+            self.startMinecraft(self._env.current_running_profile)
         else:
-            self.env.loadVersions()
+            self._env.loadVersions()
             self.profileWindow.updateVersionsList()
             self.setInstallButtonsEnabled(True)
 
     def installVersion(self, profile: "Profile") -> None:
-        self.env.current_running_profile = profile
+        self._env.current_running_profile = profile
         self.playButton.setEnabled(False)
         self.installThread.setup(profile)
         self.installThread.start()
 
     def updateAccountInformation(self) -> None:
-        self.accountLabel.setText(QCoreApplication.translate("MainWindow", "Welcome, {{name}}").replace("{{name}}", self.env.accountManager.getSelectedAccount().getName()))
+        self.accountLabel.setText(QCoreApplication.translate("MainWindow", "Welcome, {{name}}").replace("{{name}}", self._env.accountManager.getSelectedAccount().getName()))
         self._profileEditorTab.updateProfiles()
 
-        if self.env.offlineMode:
+        if self._env.offlineMode:
             self.playButton.setText(QCoreApplication.translate("MainWindow", "Play Offline"))
         else:
             self.playButton.setText(QCoreApplication.translate("MainWindow", "Play"))
@@ -259,7 +259,7 @@ class MainWindow(QWidget, Ui_MainWindow):
     def updateProgress(self, progress: int) -> None:
         self.progressBar.setValue(progress)
 
-        if self.env.settings.get("windowIconProgress"):
+        if self._env.settings.get("windowIconProgress"):
             self.windowIconProgress.setProgress(progress / self.progressBar.maximum())
 
     def event(self, event: QEvent) -> bool:
@@ -269,11 +269,11 @@ class MainWindow(QWidget, Ui_MainWindow):
         return super().event(event)
 
     def closeEvent(self, event: QCloseEvent) -> None:
-        if self.env.args.dont_save_data:
+        if self._env.args.dont_save_data:
             event.accept()
             sys.exit(0)
 
-        self.env.profileCollection.save()
+        self._env.profileCollection.save()
         self._optionsTab.saveSettings()
 
         event.accept()

@@ -2,11 +2,12 @@ from PyQt6.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView, QAbstra
 from PyQt6.QtCore import Qt, QCoreApplication
 from typing import TYPE_CHECKING
 import minecraft_launcher_lib
+import sys
 
 
 if TYPE_CHECKING:
     from ...Environment import Environment
-    from ...Profile import Profile
+    from ..MainWindow import MainWindow
 
 
 class FabricTab(QTableWidget):

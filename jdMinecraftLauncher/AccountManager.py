@@ -136,10 +136,10 @@ class DummyAccount(AccountBase):
         return self._name
 
     def getMinecraftUUID(self) -> str:
-        raise NotImplementedError()
+        return self._uuid
 
     def getAccessToken(self) -> str:
-        raise NotImplementedError()
+        return ""
 
     def login(self, parent: QWidget | None) -> bool:
         name, ok = QInputDialog.getText(parent, "A", "B")

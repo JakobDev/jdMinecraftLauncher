@@ -44,7 +44,7 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         self.enableBeta.stateChanged.connect(self.updateVersionsList)
         self.enableAlpha.stateChanged.connect(self.updateVersionsList)
         self.cancelButton.clicked.connect(self.close)
-        self.createShortcutButton.clicked.connect(lambda: askCreateShortcut(self.env, self.profile))
+        self.createShortcutButton.clicked.connect(lambda: askCreateShortcut(self.env, self, self.profile))
         self.openGameDirectoryButton.clicked.connect(lambda: openFile(self.profile.getGameDirectoryPath()))
         self.saveProfileButton.clicked.connect(self.saveProfile)
         self.executableCheckbox.stateChanged.connect(lambda: self.executableEdit.setEnabled(self.executableCheckbox.isChecked()) or self.executableButton.setEnabled(self.executableCheckbox.isChecked()))
