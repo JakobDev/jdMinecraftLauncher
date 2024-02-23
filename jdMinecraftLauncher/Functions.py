@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QMessageBox, QTableWidget, QHeaderView
-from typing import Dict, List, TYPE_CHECKING
+from PyQt6.QtWidgets import QMessageBox, QTableWidget, QHeaderView, QComboBox, QApplication
+from typing import Dict, List, Any, TYPE_CHECKING
 import subprocess
 import platform
 import requests
@@ -104,3 +104,17 @@ def stretchTableWidgetColumnsSize(table: QTableWidget) -> None:
     """Stretch all Columns of a QTableWidget"""
     for i in range(table.columnCount()):
         table.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeMode.Stretch)
+
+
+def selectComboBoxData(box: QComboBox, data: Any, default_index: int = 0) -> None:
+    """Set the index to the item with the given data"""
+    index = box.findData(data)
+    if index == -1:
+        box.setCurrentIndex(default_index)
+    else:
+        box.setCurrentIndex(index)
+
+
+def isWayland() -> bool:
+    """Returns if the Program is running in a Wayland session"""
+    return QApplication.platformName() == "wayland"

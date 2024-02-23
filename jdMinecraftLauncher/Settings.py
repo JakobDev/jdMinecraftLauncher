@@ -1,3 +1,4 @@
+from .Constants import DisplayServerSetting
 from typing import Optional, Any
 import traceback
 import json
@@ -16,6 +17,7 @@ class Settings():
             "customMinecraftDir": None,
             "useFlatpakSubsandbox": False,
             "checkUpdatesStartup": True,
+            "displayServer": DisplayServerSetting.AUTO,
         }
 
         self._user_settings = {}

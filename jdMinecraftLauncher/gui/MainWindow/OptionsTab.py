@@ -1,8 +1,9 @@
+from ...Functions import isFlatpak, selectComboBoxData, isWayland
 from PyQt6.QtWidgets import QWidget, QMessageBox, QFileDialog
 from ...ui_compiled.OptionsTab import Ui_OptionsTab
 from PyQt6.QtCore import Qt, QCoreApplication
+from ...Constants import DisplayServerSetting
 from ...Languages import getLanguageNames
-from ...Functions import isFlatpak
 from typing import TYPE_CHECKING
 import minecraft_launcher_lib
 import os
@@ -33,6 +34,10 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.languageComboBox.model().sort(0, Qt.SortOrder.AscendingOrder)
         self.languageComboBox.insertItem(0, QCoreApplication.translate("OptionsTab", "Use System Language"), "default")
 
+        self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "Auto"),DisplayServerSetting.AUTO)
+        self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "Wayland"),DisplayServerSetting.WAYLAND)
+        self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "XWayland"),DisplayServerSetting.XWAYLAND)
+
         for i in range(self.languageComboBox.count()):
             if self.languageComboBox.itemData(i) == env.settings.get("language"):
                 self.languageComboBox.setCurrentIndex(i)
@@ -43,22 +48,26 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.windowIconProgressCheckBox.setChecked(self._env.settings.get("windowIconProgress"))
         self.windowIconProgressCheckBox.setChecked(self._env.settings.get("useFlatpakSubsandbox"))
         self.checkUpdatesStartupCheckBox.setChecked(self._env.settings.get("checkUpdatesStartup"))
+        selectComboBoxData(self.displayServerBox, self._env.settings.get("displayServer"))
 
         self.windowIconProgressCheckBox.setVisible(parent.windowIconProgress.isSupported())
-
-        self.allowMultiLaunchCheckBox.stateChanged.connect(self._multiLaunchCheckBoxChanged)
-        self.extractNativesCheckBox.stateChanged.connect(self._extractNativesCheckBoxChanged)
-        self.windowIconProgressCheckBox.stateChanged.connect(self._windowIconProgressCheckBoxChanged)
-        self.minecraftDirChangeButton.clicked.connect(self._minecraftDirChangeButtonClicked)
-        self.minecraftDirResetButton.clicked.connect(self._minecraftDirResetButtonClicked)
-        self.flatpakSubsandboxCheckBox.stateChanged.connect(self._flatpakSubsandboxCheckBoxChanged)
-
-        self._updateMinecraftDirWidgets()
 
         if not isFlatpak():
             self.flatpakSubsandboxCheckBox.setVisible(False)
 
         self.checkUpdatesStartupCheckBox.setVisible(env.enableUpdater)
+        self.displayServerLabel.setVisible(isWayland())
+        self.displayServerBox.setVisible(isWayland())
+
+        self.allowMultiLaunchCheckBox.stateChanged.connect(self._multiLaunchCheckBoxChanged)
+        self.extractNativesCheckBox.stateChanged.connect(self._extractNativesCheckBoxChanged)
+        self.windowIconProgressCheckBox.stateChanged.connect(self._windowIconProgressCheckBoxChanged)
+        self.flatpakSubsandboxCheckBox.stateChanged.connect(self._flatpakSubsandboxCheckBoxChanged)
+        self.minecraftDirChangeButton.clicked.connect(self._minecraftDirChangeButtonClicked)
+        self.minecraftDirResetButton.clicked.connect(self._minecraftDirResetButtonClicked)
+        self.displayServerBox.currentIndexChanged.connect(self._displayServerBoxChanged)
+
+        self._updateMinecraftDirWidgets()
 
     def _multiLaunchCheckBoxChanged(self):
         self._env.settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
@@ -74,6 +83,9 @@ class OptionsTab(QWidget, Ui_OptionsTab):
 
     def _flatpakSubsandboxCheckBoxChanged(self) -> None:
         self._env.settings.set("useFlatpakSubsandbox", self.flatpakSubsandboxCheckBox.isChecked())
+
+    def _displayServerBoxChanged(self) -> None:
+        self._env.settings.set("displayServer", self.displayServerBox.currentData())
 
     def _updateMinecraftDirWidgets(self) -> None:
         if (customMinecraftDir := self._env.settings.get("customMinecraftDir")) is not None:
@@ -118,3 +130,13 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self._env.settings.save(os.path.join(self._env.dataDir, "settings.json"))
 
         self._updateMinecraftDirWidgets()
+
+    def saveSettings(self) -> None:
+        self._env.settings.set("language", self.languageComboBox.currentData())
+        self._env.settings.set("newsURL", self.urlEdit.text())
+        self._env.settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
+        self._env.settings.set("extractNatives", self.extractNativesCheckBox.isChecked())
+        self._env.settings.set("useFlatpakSubsandbox", self.flatpakSubsandboxCheckBox.isChecked())
+        self._env.settings.set("checkUpdatesStartup", self.checkUpdatesStartupCheckBox.isChecked())
+        self._env.settings.set("displayServer", self.displayServerBox.currentData())
+        self._env.settings.save(os.path.join(self._env.dataDir, "settings.json"))

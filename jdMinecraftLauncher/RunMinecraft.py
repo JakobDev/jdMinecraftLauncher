@@ -1,5 +1,6 @@
+from .Functions import isFlatpak, isWayland
+from .Constants import DisplayServerSetting
 from typing import List, TYPE_CHECKING
-from .Functions import isFlatpak
 import minecraft_launcher_lib
 import pathlib
 import shutil
@@ -92,5 +93,12 @@ def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: st
 
     if isFlatpak() and env.settings.get("useFlatpakSubsandbox"):
         command = _getFlatpakSpawnCommand(profile, env) + command
+
+    if isWayland():
+        match env.settings.get("displayServer"):
+            case DisplayServerSetting.WAYLAND:
+                command = ["env", "-u", "DISPLAY"] + command
+            case DisplayServerSetting.XWAYLAND:
+                command = ["env", "-u", "WAYLAND_DISPLAY"] + command
 
     return command
