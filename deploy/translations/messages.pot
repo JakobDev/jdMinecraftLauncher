@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-13 18:41+0100\n"
+"POT-Creation-Date: 2024-02-28 19:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:6
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:6
-msgid "An classic styled Minecraft Launcher"
+msgid "Unofficial classic styled Minecraft Launcher"
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:12
@@ -37,7 +37,7 @@ msgid "All Minecraft versions are supported"
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:16
-msgid "Offline mode is aviable after your first login"
+msgid "Offline mode is available after your first login"
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:17
@@ -55,7 +55,7 @@ msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:20
 msgid ""
-"For Developers commandline argumnets and a D-Bus Interface are provided"
+"For Developers commandline arguments and a D-Bus Interface are provided"
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:21
@@ -72,13 +72,13 @@ msgid ""
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:28
-msgid "The MainWindow"
+msgid "The main window"
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:32
-msgid "The ProfileWindow"
+msgid "The profile editor"
 msgstr ""
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:17
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:18
 msgid "Offline Mode"
 msgstr ""

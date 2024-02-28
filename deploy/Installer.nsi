@@ -48,6 +48,9 @@ SetCompressor /SOLID lzma
 ;Languages
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "German"
+!insertmacro MUI_LANGUAGE "Dutch"
+!insertmacro MUI_LANGUAGE "Spanish"
+!insertmacro MUI_LANGUAGE "Russian"
 
 ;Get the current version
 !define /file VERSION "..\${APPNAME}\version.txt"

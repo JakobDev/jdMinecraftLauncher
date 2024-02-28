@@ -90,6 +90,8 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         else:
             self.minecraftDirPathButton.setText(minecraft_launcher_lib.utils.get_minecraft_directory())
 
+        self.minecraftDirResetButton.setEnabled(self._env.settings.get("customMinecraftDir") is not None)
+
     def _minecraftDirChangeButtonClicked(self) -> None:
         text = QCoreApplication.translate("OptionsTab", "This will change your Minecraft directory.") + "<br><br>"
         text += QCoreApplication.translate("OptionsTab", "This is the directory where Minecraft is installed.") + "<br><br>"

@@ -6,8 +6,9 @@ import os
 if TYPE_CHECKING:
     from jdMinecraftLauncher.Environment import Environment
 
+
 class MicrosoftSecrets:
-    def __init__(self, env: "Environment"):
+    def __init__(self, env: "Environment") -> None:
         # In my opinion, it is not possible to hide the credentials from a person who really want it
         # This little "encryption" ist just to hide it from Bots
 
@@ -24,7 +25,7 @@ class MicrosoftSecrets:
         self._decrypt("secret", "secret")
         self._decrypt("redirectURL", "redirect_url")
 
-    def _decrypt(self, json_key: str, obj_key: str):
+    def _decrypt(self, json_key: str, obj_key: str) -> None:
         if self._json_data[json_key] is None:
             setattr(self, obj_key, None)
             return

@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QInputDialog
+from PyQt6.QtCore import QCoreApplication
 from .gui.LoginWindow import LoginWindow
 from typing import Type, TYPE_CHECKING
 import minecraft_launcher_lib
@@ -75,7 +76,7 @@ class MicrosoftAccount(AccountBase):
         return self._accessToken
 
     def login(self, parent: QWidget | None) -> bool:
-        loginWindow = LoginWindow(self._env)
+        loginWindow = LoginWindow(self._env, parent)
         loginWindow.exec()
         accountData = loginWindow.getAccountData()
 
@@ -100,6 +101,9 @@ class MicrosoftAccount(AccountBase):
 
             return True
         except minecraft_launcher_lib.exceptions.InvalidRefreshToken:
+            return False
+        except Exception:
+            print(traceback.format_exc(), file=sys.stderr)
             return False
 
     def getJsonData(self) -> dict:
@@ -142,7 +146,7 @@ class DummyAccount(AccountBase):
         return ""
 
     def login(self, parent: QWidget | None) -> bool:
-        name, ok = QInputDialog.getText(parent, "A", "B")
+        name, ok = QInputDialog.getText(parent, QCoreApplication.translate("AccountManager", "Enter name"), QCoreApplication.translate("AccountManager", "Please enter a name for the dummy account"))
 
         if not ok:
             return False
@@ -222,6 +226,12 @@ class AccountManager:
     def getAccountByID(self, uuid: str) -> AccountBase | None:
         for currentAccount in self._accountList:
             if currentAccount.id == uuid:
+                return currentAccount
+        return None
+
+    def getAccountByName(self, name: str) -> AccountBase | None:
+        for currentAccount in self._accountList:
+            if currentAccount.getName().lower() == name.lower():
                 return currentAccount
         return None
 

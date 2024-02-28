@@ -40,6 +40,8 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.profileWindow = ProfileWindow(self._env, self)
         self.windowIconProgress = createWindowIconProgress(self)
 
+        self.windowIconProgress.hide()
+
         self.tabWidget.clear()
 
         QWebEngineProfile.defaultProfile().setHttpAcceptLanguage(env.locale.name())

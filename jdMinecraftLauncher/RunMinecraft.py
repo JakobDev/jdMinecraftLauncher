@@ -4,6 +4,7 @@ from typing import List, TYPE_CHECKING
 import minecraft_launcher_lib
 import pathlib
 import shutil
+import shlex
 import os
 
 
@@ -56,9 +57,7 @@ def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: st
         options["executablePath"] = profile.executable
 
     if profile.customArguments:
-        options["jvmArguments"] = []
-        for i in profile.arguments.split(" "):
-            options["jvmArguments"].append(i)
+        options["jvmArguments"] = shlex.split(profile.arguments)
 
     if profile.customResolution:
         options["customResolution"] = True
@@ -86,7 +85,7 @@ def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: st
     command = minecraft_launcher_lib.command.get_minecraft_command(version, env.minecraftDir, options)
 
     if profile.hasMinecraftOptions:
-        command += profile.minecraftOptions.strip().split(" ")
+        command += shlex.split(profile.minecraftOptions)
 
     if profile.useGameMode and shutil.which("gamemoderun"):
         command.insert(0, "gamemoderun")

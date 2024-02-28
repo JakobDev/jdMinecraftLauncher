@@ -2,13 +2,14 @@
 [Desktop Entry]
 Type=Application
 Name=jdMinecraftLauncher
-Comment=An classic styled Minecraft Launcher
+Comment=Unofficial classic styled Minecraft Launcher
 Icon=page.codeberg.JakobDev.jdMinecraftLauncher
 TryExec=jdMinecraftLauncher
 Exec=jdMinecraftLauncher %u
 MimeType=x-scheme-handler/jdMinecraftLauncher;
 Categories=Game;
 Keywords=Minecraft;Sandbox;
+PrefersNonDefaultGPU=true
 SingleMainWindow=true
 Actions=offline-mode;
 

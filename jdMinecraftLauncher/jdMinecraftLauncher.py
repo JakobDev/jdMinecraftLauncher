@@ -69,6 +69,7 @@ def main() -> None:
     env = Environment(app)
 
     app.setWindowIcon(env.icon)
+    app.setOrganizationName("JakobDev")
     app.setApplicationName("jdMinecraftLauncher")
     app.setDesktopFileName("page.codeberg.JakobDev.jdMinecraftLauncher")
 
@@ -91,6 +92,13 @@ def main() -> None:
     if env.args.offline_mode or not hasInternetConnection():
         env.offlineMode = True
 
+    if env.firstLaunch:
+        welcomeText = QCoreApplication.translate("jdMinecraftLauncher", "It appears to be your first time using jdMinecraftLauncher.") + " "
+        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "This is a custom Minecraft Launcher designed to resemble the old official launcher in appearance and feel, but with modern features like Microsoft account support.") + "<br><br>"
+        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "If you encounter any issues, please report them so that they can be addressed and resolved.") +" <br><br>"
+        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "This launcher is not an official product of Mojang/Microsoft.")
+        QMessageBox.information(None,  QCoreApplication.translate("jdMinecraftLauncher", "Welcome"), welcomeText)
+
     if env.enableUpdater and not env.offlineMode and env.settings.get("checkUpdatesStartup"):
         checkUpdates(env)
 
@@ -112,6 +120,13 @@ def main() -> None:
 
     if not _handleAccount(env, splashScreen):
         sys.exit(0)
+
+    if env.args.account:
+        account = env.accountManager.getAccountByName(env.args.account)
+        if account is not None:
+            env.accountManager.setSelectedAccount(account)
+        else:
+            print(QCoreApplication.translate("jdMinecraftLauncher", "Account {{name}} does not exist").replace("{{name}}", env.args.account), file=sys.stderr)
 
     if env.firstLaunch:
         askProfileImport(env)

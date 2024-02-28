@@ -1,23 +1,24 @@
 <?xml version='1.0' encoding='utf-8'?>
-<component type="desktop">
+<component type="desktop-application">
   <!--Created with jdAppStreamEdit 8.0-->
   <id>page.codeberg.JakobDev.jdMinecraftLauncher</id>
   <name>jdMinecraftLauncher</name>
-  <summary>An classic styled Minecraft Launcher</summary>
-  <developer_name>JakobDev</developer_name>
-  <launchable type="desktop-id">page.codeberg.JakobDev.jdMinecraftLauncher.desktop</launchable>
+  <summary>Unofficial classic styled Minecraft Launcher</summary>
+  <developer id="page.codeberg.jakobdev">
+    <name>JakobDev</name>
+  </developer>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-3.0</project_license>
+  <project_license>GPL-3.0-only</project_license>
   <description>
     <p>jdMinecraftLauncher is a Minecraft launcher which Look and Feel is close to the the good old official Launcher</p>
     <p>Features:</p>
     <ul>
       <li>All Minecraft versions are supported</li>
-      <li>Offline mode is aviable after your first login</li>
+      <li>Offline mode is available after your first login</li>
       <li>One click install of Forge and Fabric</li>
       <li>FeralInteractive GameMode is supported</li>
       <li>Create Shortcuts in the Menu and on the Desktop to directly launch Minecraft</li>
-      <li>For Developers commandline argumnets and a D-Bus Interface are provided</li>
+      <li>For Developers commandline arguments and a D-Bus Interface are provided</li>
       <li>Profiles can be imported from the vanilla launcher</li>
     </ul>
     <p>You need a Microsoft Account which owns Minecraft to use this Launcher</p>
@@ -25,11 +26,11 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <caption>The MainWindow</caption>
+      <caption>The main window</caption>
       <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/91805dc106431030b5d02a7b6006441cad5883b1/Screenshots/MainWindow.png</image>
     </screenshot>
     <screenshot>
-      <caption>The ProfileWindow</caption>
+      <caption>The profile editor</caption>
       <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/91805dc106431030b5d02a7b6006441cad5883b1/Screenshots/ProfileWindow.png</image>
     </screenshot>
   </screenshots>
@@ -221,10 +222,11 @@
       </description>
     </release>
   </releases>
-  <url type="homepage">https://codeberg.org/JakobDev/jdMinecraftLauncher</url>
+  <url type="homepage">https://jakobdev.codeberg.page/work/app/jdMinecraftLauncher/</url>
   <url type="bugtracker">https://codeberg.org/JakobDev/jdMinecraftLauncher/issues</url>
   <url type="donation">https://ko-fi.com/jakobdev</url>
   <url type="translate">https://translate.codeberg.org/projects/jdMinecraftLauncher</url>
+  <url type="vcs-browser">https://codeberg.org/JakobDev/jdMinecraftLauncher</url>
   <categories>
     <category>Game</category>
     <category>Qt</category>
@@ -237,6 +239,7 @@
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">moderate</content_attribute>
   </content_rating>
+  <launchable type="desktop-id">page.codeberg.JakobDev.jdMinecraftLauncher.desktop</launchable>
   <provides>
     <binary>jdMinecraftLauncher</binary>
     <python3>jdMinecraftLauncher</python3>

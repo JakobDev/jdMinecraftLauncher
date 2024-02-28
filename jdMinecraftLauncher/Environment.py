@@ -68,15 +68,6 @@ class Environment:
 
         self.accountManager = AccountManager(self)
 
-        if self.args.account:
-            for count, account in enumerate(self.accountList):
-                if self.args.account == account["name"]:
-                    self.account = copy.copy(account)
-                    self.selectedAccount = count
-                    break
-            else:
-                print(f"Account {self.args.account} was not found", file=sys.stderr)
-
         self.profileCollection = ProfileCollection(self)
         self.profileCollection.loadProfiles()
 

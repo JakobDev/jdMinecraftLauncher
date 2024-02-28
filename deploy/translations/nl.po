@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-13 18:41+0100\n"
+"POT-Creation-Date: 2024-02-28 19:32+0100\n"
 "PO-Revision-Date: 2024-02-14 15:18+0000\n"
 "Last-Translator: Vistaus <vistausss@fastmail.com>\n"
 "Language-Team: Dutch <https://translate.codeberg.org/projects/"
@@ -21,7 +21,8 @@ msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:6
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:6
-msgid "An classic styled Minecraft Launcher"
+#, fuzzy
+msgid "Unofficial classic styled Minecraft Launcher"
 msgstr "Een klassieke Minecraftstarter"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:12
@@ -41,7 +42,7 @@ msgid "All Minecraft versions are supported"
 msgstr "Ondersteuning voor alle Minecraftversies"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:16
-msgid "Offline mode is aviable after your first login"
+msgid "Offline mode is available after your first login"
 msgstr "Offlinemodus na de eerste keer inloggen"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:17
@@ -58,7 +59,7 @@ msgid ""
 msgstr "Maak snelkoppelingen in het menu en op het bureaublad"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:20
-msgid "For Developers commandline argumnets and a D-Bus Interface are provided"
+msgid "For Developers commandline arguments and a D-Bus Interface are provided"
 msgstr "Voor ontwikkelaars: opdrachtregelopties en een D-Bus-interface"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:21
@@ -78,13 +79,15 @@ msgstr ""
 "Let op: deze starter is gemaakt door fans en niet door Mojang/Microsoft"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:28
-msgid "The MainWindow"
+#, fuzzy
+msgid "The main window"
 msgstr "Het hoofdvenster"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:32
-msgid "The ProfileWindow"
+#, fuzzy
+msgid "The profile editor"
 msgstr "Het profielvenster"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:17
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:18
 msgid "Offline Mode"
 msgstr "Offline-modus"
