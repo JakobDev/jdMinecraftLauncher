@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-28 19:32+0100\n"
-"PO-Revision-Date: 2024-02-14 15:18+0000\n"
+"PO-Revision-Date: 2024-03-01 09:56+0000\n"
 "Last-Translator: Vistaus <vistausss@fastmail.com>\n"
 "Language-Team: Dutch <https://translate.codeberg.org/projects/"
 "jdMinecraftLauncher/UnixMetadata/nl/>\n"
@@ -17,13 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.4\n"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:6
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:6
-#, fuzzy
 msgid "Unofficial classic styled Minecraft Launcher"
-msgstr "Een klassieke Minecraftstarter"
+msgstr "Een onofficiële klassieke Minecraftstarter"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:12
 msgid ""
@@ -79,12 +78,10 @@ msgstr ""
 "Let op: deze starter is gemaakt door fans en niet door Mojang/Microsoft"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:28
-#, fuzzy
 msgid "The main window"
 msgstr "Het hoofdvenster"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:32
-#, fuzzy
 msgid "The profile editor"
 msgstr "Het profielvenster"
 
