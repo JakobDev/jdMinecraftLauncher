@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <component type="desktop-application">
-  <!--Created with jdAppStreamEdit 8.0-->
+  <!--Created with jdAppStreamEdit 9.0-->
   <id>page.codeberg.JakobDev.jdMinecraftLauncher</id>
   <name>jdMinecraftLauncher</name>
   <summary>Unofficial classic styled Minecraft Launcher</summary>
@@ -27,14 +27,33 @@
   <screenshots>
     <screenshot type="default">
       <caption>The main window</caption>
-      <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/91805dc106431030b5d02a7b6006441cad5883b1/Screenshots/MainWindow.png</image>
+      <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/en/MainWindow.png</image>
+      <image type="source" xml:lang="de">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/de/MainWindow.png</image>
+      <image type="source" xml:lang="nl">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/nl/MainWindow.png</image>
+      <image type="source" xml:lang="ru">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/ru/MainWindow.png</image>
+      <image type="source" xml:lang="es">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/es/MainWindow.png</image>
     </screenshot>
     <screenshot>
       <caption>The profile editor</caption>
-      <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/91805dc106431030b5d02a7b6006441cad5883b1/Screenshots/ProfileWindow.png</image>
+      <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/en/ProfileWindow.png</image>
+      <image type="source" xml:lang="de">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/de/ProfileWindow.png</image>
+      <image type="source" xml:lang="nl">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/nl/ProfileWindow.png</image>
+      <image type="source" xml:lang="ru">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/ru/ProfileWindow.png</image>
+      <image type="source" xml:lang="es">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/es/ProfileWindow.png</image>
     </screenshot>
   </screenshots>
   <releases>
+    <release version="6.0" date="2024-03-08" type="stable">
+      <url>https://jakobdev.codeberg.page/blog/2024-03-08-jdminecraftlauncher-6-0</url>
+      <description>
+        <ul>
+          <li>Lots of internal rewrites</li>
+          <li>Allow running Minecraft in a Subsandbox</li>
+          <li>Better Wayland experience</li>
+          <li>Added Update checker</li>
+        </ul>
+      </description>
+    </release>
     <release version="5.4" date="2024-01-06" type="stable">
       <description>
         <ul>
@@ -222,7 +241,7 @@
       </description>
     </release>
   </releases>
-  <url type="homepage">https://jakobdev.codeberg.page/work/app/jdMinecraftLauncher/</url>
+  <url type="homepage">https://jakobdev.codeberg.page/work/app/jdMinecraftLauncher</url>
   <url type="bugtracker">https://codeberg.org/JakobDev/jdMinecraftLauncher/issues</url>
   <url type="donation">https://ko-fi.com/jakobdev</url>
   <url type="translate">https://translate.codeberg.org/projects/jdMinecraftLauncher</url>
@@ -231,13 +250,18 @@
     <category>Game</category>
     <category>Qt</category>
   </categories>
+  <requires>
+    <internet>first-run</internet>
+  </requires>
   <recommends>
     <control>pointing</control>
     <control>keyboard</control>
     <display_length compare="ge">760</display_length>
+    <internet>always</internet>
   </recommends>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">moderate</content_attribute>
+    <content_attribute id="social-chat">intense</content_attribute>
   </content_rating>
   <launchable type="desktop-id">page.codeberg.JakobDev.jdMinecraftLauncher.desktop</launchable>
   <provides>
