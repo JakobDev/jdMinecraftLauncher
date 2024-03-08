@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-28 19:32+0100\n"
-"PO-Revision-Date: 2024-02-22 12:56+0000\n"
+"PO-Revision-Date: 2024-03-08 11:13+0000\n"
 "Last-Translator: 0ko <0ko@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Russian <https://translate.codeberg.org/projects/"
 "jdMinecraftLauncher/UnixMetadata/ru/>\n"
@@ -22,9 +22,8 @@ msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:6
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:6
-#, fuzzy
 msgid "Unofficial classic styled Minecraft Launcher"
-msgstr "Лаунчер Minecraft в классическом стиле"
+msgstr "Неофициальный лаунчер Minecraft в классическом стиле"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:12
 msgid ""
@@ -80,14 +79,12 @@ msgid ""
 msgstr "Этот лаунчер создан сообществом и не связан с Microsoft или Mojang"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:28
-#, fuzzy
 msgid "The main window"
 msgstr "Главное окно"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:32
-#, fuzzy
 msgid "The profile editor"
-msgstr "Окно профилей"
+msgstr "Редактор профилей"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:18
 msgid "Offline Mode"
