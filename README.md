@@ -92,4 +92,4 @@ This regenerates the translation files in `deploy/translations`. these files con
 It uses gettext, as it is hard to translate this using Qt.
 These files just exists to integrate the translation with Weblate, because Weblate can't translate the Desktop Entry and the AppStream file.
 Make sure you run this when you edited one of these files.
-YOu need to have gettext installed to use it.
+You need to have gettext installed to use it.
