@@ -72,3 +72,4 @@ gettext-appstream = true
 gettext-directory = "deploy/translations"
 python-version = "3.12"
 compression = "xz"
+additional-packages = ["desktop-entry-lib"]
