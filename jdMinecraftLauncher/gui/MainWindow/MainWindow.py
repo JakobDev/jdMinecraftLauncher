@@ -18,8 +18,8 @@ from .FabricTab import FabricTab
 from .ForgeTab import ForgeTab
 from .AboutTab import AboutTab
 import urllib.parse
+import tempfile
 import platform
-import json
 import sys
 import os
 
@@ -194,7 +194,7 @@ class MainWindow(QWidget, Ui_MainWindow):
 
     def startMinecraft(self, profile: "Profile"):
         if self._env.settings.get("extractNatives"):
-            natives_path = os.path.join(tempfile.gettempdir(), "minecraft_natives_" + str(random.randrange(0, 10000000)))
+            natives_path = tempfile.mktemp(prefix="minecraft_natives_")
         else:
             natives_path = ""
 
