@@ -7,30 +7,23 @@
     <x>0</x>
     <y>0</y>
     <width>503</width>
-    <height>369</height>
+    <height>492</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true">OptionsTab</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Language:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>News URL:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
+     <item>
       <widget class="QComboBox" name="languageComboBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -40,10 +33,65 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="urlEdit"/>
-     </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>News Tab</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QRadioButton" name="newsRssFeedButton">
+        <property name="text">
+         <string>RSS Feed</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="newsFeedUrlLabel">
+          <property name="text">
+           <string>URL:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="newsFeedUrlEdit"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="newsFeedDefaultBrowserCheckBox">
+        <property name="text">
+         <string>Open links in default browser</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="newsWebsiteButton">
+        <property name="text">
+         <string>Website</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="newsUrlLabel">
+          <property name="text">
+           <string>URL:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="newsUrlEdit"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="allowMultiLaunchCheckBox">

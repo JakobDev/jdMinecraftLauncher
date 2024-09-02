@@ -1,8 +1,8 @@
 from ...Functions import isFlatpak, selectComboBoxData, isWayland
+from ...Constants import DisplayServerSetting, NewsTypeSetting
 from PyQt6.QtWidgets import QWidget, QMessageBox, QFileDialog
 from ...ui_compiled.OptionsTab import Ui_OptionsTab
 from PyQt6.QtCore import Qt, QCoreApplication
-from ...Constants import DisplayServerSetting
 from ...Languages import getLanguageNames
 from typing import TYPE_CHECKING
 import minecraft_launcher_lib
@@ -39,7 +39,17 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "XWayland"),DisplayServerSetting.XWAYLAND)
 
         selectComboBoxData(self.languageComboBox, env.settings.get("language"))
-        self.urlEdit.setText(env.settings.get("newsURL"))
+
+        match env.settings.get("newsType"):
+            case NewsTypeSetting.RSS:
+                self.newsRssFeedButton.setChecked(True)
+            case NewsTypeSetting.WEBSITE:
+                self.newsWebsiteButton.setChecked(True)
+
+        self._updateNewsEnabled()
+        self.newsFeedUrlEdit.setText(env.settings.get("newsFeedURL"))
+        self.newsFeedDefaultBrowserCheckBox.setChecked(env.settings.get("newsFeedDefaultBrowser"))
+        self.newsUrlEdit.setText(env.settings.get("newsURL"))
         self.allowMultiLaunchCheckBox.setChecked(self._env.settings.get("enableMultiLaunch"))
         self.extractNativesCheckBox.setChecked(self._env.settings.get("extractNatives"))
         self.windowIconProgressCheckBox.setChecked(self._env.settings.get("windowIconProgress"))
@@ -56,6 +66,10 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.displayServerLabel.setVisible(isWayland())
         self.displayServerBox.setVisible(isWayland())
 
+        self.newsRssFeedButton.toggled.connect(self._newsTypeChanged)
+        self.newsFeedUrlEdit.editingFinished.connect(self._newsFeedUrlChanged)
+        self.newsFeedDefaultBrowserCheckBox.stateChanged.connect(self._newsFeedDefaultBrowserCheckBoxChanged)
+        self.newsUrlEdit.editingFinished.connect(self._newsUrlChanged)
         self.allowMultiLaunchCheckBox.stateChanged.connect(self._multiLaunchCheckBoxChanged)
         self.extractNativesCheckBox.stateChanged.connect(self._extractNativesCheckBoxChanged)
         self.windowIconProgressCheckBox.stateChanged.connect(self._windowIconProgressCheckBoxChanged)
@@ -65,6 +79,38 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.displayServerBox.currentIndexChanged.connect(self._displayServerBoxChanged)
 
         self._updateMinecraftDirWidgets()
+
+    def _updateNewsEnabled(self) -> None:
+        if self.newsRssFeedButton.isChecked():
+            feedEnabled = True
+        else:
+            feedEnabled = False
+
+        self.newsFeedUrlLabel.setEnabled(feedEnabled)
+        self.newsFeedUrlEdit.setEnabled(feedEnabled)
+        self.newsFeedDefaultBrowserCheckBox.setEnabled(feedEnabled)
+        self.newsUrlLabel.setEnabled(not feedEnabled)
+        self.newsUrlEdit.setEnabled(not feedEnabled)
+
+    def _newsTypeChanged(self) -> None:
+        if self.newsRssFeedButton.isChecked():
+            self._env.settings.set("newsType", NewsTypeSetting.RSS)
+        else:
+            self._env.settings.set("newsType", NewsTypeSetting.WEBSITE)
+
+        self._updateNewsEnabled()
+        self._parent.updateNewsTab()
+
+    def _newsFeedUrlChanged(self) -> None:
+        self._env.settings.set("newsFeedURL", self.newsFeedUrlEdit.text())
+        self._parent.updateNewsTab()
+
+    def _newsFeedDefaultBrowserCheckBoxChanged(self) -> None:
+        self._env.settings.set("newsFeedDefaultBrowser", self.newsFeedDefaultBrowserCheckBox.isChecked())
+
+    def _newsUrlChanged(self) -> None:
+        self._env.settings.set("newsURL", self.newsUrlEdit.text())
+        self._parent.updateNewsTab()
 
     def _multiLaunchCheckBoxChanged(self):
         self._env.settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
@@ -136,7 +182,15 @@ class OptionsTab(QWidget, Ui_OptionsTab):
 
     def saveSettings(self) -> None:
         self._env.settings.set("language", self.languageComboBox.currentData())
-        self._env.settings.set("newsURL", self.urlEdit.text())
+
+        if self.newsRssFeedButton.isChecked():
+            self._env.settings.set("newsType", NewsTypeSetting.RSS)
+        else:
+            self._env.settings.set("newsType", NewsTypeSetting.WEBSITE)
+
+        self._env.settings.set("newsFeedURL", self.newsFeedUrlEdit.text())
+        self._env.settings.set("newsURL", self.newsUrlEdit.text())
+        self._env.settings.set("newsFeedDefaultBrowser", self.newsFeedDefaultBrowserCheckBox.isChecked())
         self._env.settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
         self._env.settings.set("extractNatives", self.extractNativesCheckBox.isChecked())
         self._env.settings.set("useFlatpakSubsandbox", self.flatpakSubsandboxCheckBox.isChecked())

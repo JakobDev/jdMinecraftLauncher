@@ -37,7 +37,8 @@ dependencies = [
     "PyQt6",
     "PyQt6-WebEngine",
     "minecraft-launcher-lib",
-    "requests"
+    "requests",
+    "feedparser"
 ]
 dynamic = ["version"]
 

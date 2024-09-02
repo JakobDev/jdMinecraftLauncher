@@ -3,3 +3,4 @@ PyQt6-WebEngine
 requests
 minecraft-launcher-lib
 PyTaskbarProgress
+feedparser

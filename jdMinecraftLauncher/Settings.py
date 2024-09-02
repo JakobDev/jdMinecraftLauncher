@@ -1,4 +1,4 @@
-from .Constants import DisplayServerSetting
+from .Constants import NewsTypeSetting, DisplayServerSetting
 from typing import Optional, Any
 import traceback
 import json
@@ -10,6 +10,9 @@ class Settings():
     def __init__(self):
         self._default_settings = {
             "language": "default",
+            "newsType": NewsTypeSetting.RSS,
+            "newsFeedURL": "https://www.minecraft.net/en-us/feeds/community-content/rss",
+            "newsFeedDefaultBrowser": True,
             "newsURL": "https://www.minecraft.net",
             "enableMultiLaunch": False,
             "extractNatives": False,

@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING
 from .FabricTab import FabricTab
 from .ForgeTab import ForgeTab
 from .AboutTab import AboutTab
+from .NewsTab import NewsTab
 import urllib.parse
 import tempfile
 import platform
@@ -46,8 +47,9 @@ class MainWindow(QWidget, Ui_MainWindow):
 
         QWebEngineProfile.defaultProfile().setHttpAcceptLanguage(env.locale.name())
         QWebEngineProfile.defaultProfile().setHttpUserAgent("jdMinecraftLauncher/" + env.launcherVersion)
-        newsTab = QWebEngineView()
-        newsTab.load(QUrl(env.settings.get("newsURL")))
+
+        self._newsTab = NewsTab(env)
+        self._newsTab.updateNews()
 
         self._profileEditorTab = ProfileEditorTab(env, self)
         self._versionEditorTab = VersionEditorTab(env)
@@ -57,7 +59,7 @@ class MainWindow(QWidget, Ui_MainWindow):
         self._accountTab = AccountTab(env, self)
         self._aboutTab = AboutTab(env)
 
-        self.tabWidget.addTab(newsTab, QCoreApplication.translate("MainWindow", "News"))
+        self.tabWidget.addTab(self._newsTab, QCoreApplication.translate("MainWindow", "News"))
         self.tabWidget.addTab(self._profileEditorTab, QCoreApplication.translate("MainWindow", "Profile Editor"))
         self.tabWidget.addTab(self._versionEditorTab, QCoreApplication.translate("MainWindow", "Version Editor"))
         self.tabWidget.addTab(self._optionsTab, QCoreApplication.translate("MainWindow", "Options"))
@@ -118,6 +120,9 @@ class MainWindow(QWidget, Ui_MainWindow):
             msgBox.setText(QCoreApplication.translate("MainWindow", "jdMinecraft was unable to load your settings due to an error. Apologies for any inconvenience. Please report this bug."))
             msgBox.setDetailedText(loadError)
             msgBox.exec()
+
+    def updateNewsTab(self) -> None:
+        self._newsTab.updateNews()
 
     def _handleCustomURL(self, args: str) -> None:
         try:
