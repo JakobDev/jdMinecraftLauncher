@@ -18,6 +18,7 @@ class ProfileEditorTab(QTableWidget):
 
         self._env = env
         self._mainWindow = mainWindow
+        self._profileList: list["Profile"] = []
 
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.setHorizontalHeaderLabels((QCoreApplication.translate("ProfileEditorTab", "Profile Name"), QCoreApplication.translate("ProfileEditorTab", "Minecraft Version")))
@@ -30,6 +31,7 @@ class ProfileEditorTab(QTableWidget):
         self.updateProfiles()
 
     def updateProfiles(self) -> None:
+        self._profileList.clear()
         while self.rowCount() > 0:
             self.removeRow(0)
 
@@ -47,6 +49,7 @@ class ProfileEditorTab(QTableWidget):
             self.insertRow(count)
             self.setItem(count, 0, nameItem)
             self.setItem(count, 1, versionItem)
+            self._profileList.append(i)
             count += 1
 
     def contextMenuEvent(self, event: QContextMenuEvent) -> None:
@@ -95,6 +98,5 @@ class ProfileEditorTab(QTableWidget):
         if len(self._env.profileCollection.profileList) == 1:
             QMessageBox.critical(self._mainWindow, QCoreApplication.translate("ProfileEditorTab", "Can't delete Profile"), QCoreApplication.translate("ProfileEditorTab", "You can't delete all Profiles. At least one Profile must stay."))
         else:
-            del self._env.profileCollection.profileList[self.currentRow()]
-            self._env.selectedProfile = self._env.profileCollection.profileList[0].id
+            self._env.profileCollection.removeProfileById(self._profileList[self.currentRow()].id)
             self._mainWindow.updateProfileList()

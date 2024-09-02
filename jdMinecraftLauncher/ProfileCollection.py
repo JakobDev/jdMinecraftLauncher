@@ -75,7 +75,20 @@ class ProfileCollection:
         return None
 
     def getSelectedProfile(self) -> Profile:
-        return self.getProfileByID(self.selectedProfile)
+        profile = self.getProfileByID(self.selectedProfile)
+        if profile is not None:
+            return profile
+        else:
+            return self.profileList[0]
 
     def getLoadError(self) -> Optional[str]:
         return self._loadError
+
+    def removeProfileById(self, profileId: str) -> None:
+        for pos, profile in enumerate(self.profileList):
+            if profile.id == profileId:
+                del self.profileList[pos]
+                break
+
+        if self.selectedProfile == profileId:
+            self.selectedProfile = self.profileList[0].id
