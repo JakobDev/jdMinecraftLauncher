@@ -1,9 +1,10 @@
-from PyQt6.QtWidgets import QTableWidget, QAbstractItemView, QHeaderView, QTableWidgetItem, QMenu
+from PyQt6.QtWidgets import QTableWidget, QAbstractItemView, QHeaderView, QTableWidgetItem, QMenu, QMessageBox
 from ...Shortcut import canCreateShortcuts, askCreateShortcut
 from PyQt6.QtGui import QContextMenuEvent, QAction
 from PyQt6.QtCore import Qt, QCoreApplication
 from ...Functions import openFile
 from typing import TYPE_CHECKING
+from ...Profile import Profile
 
 
 if TYPE_CHECKING:
