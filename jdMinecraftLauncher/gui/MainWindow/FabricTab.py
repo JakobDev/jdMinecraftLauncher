@@ -11,8 +11,8 @@ if TYPE_CHECKING:
 
 
 class FabricTab(QTableWidget):
-    def __init__(self, env: "Environment", mainWindow: "MainWindow"):
-        super().__init__(0,2)
+    def __init__(self, env: "Environment", mainWindow: "MainWindow") -> None:
+        super().__init__(0, 2)
 
         self._env = env
         self._mainWindow = mainWindow
@@ -47,18 +47,18 @@ class FabricTab(QTableWidget):
 
             count += 1
 
-    def _installFabricVersion(self, fabricVersion: str):
+    def _installFabricVersion(self, fabricVersion: str) -> None:
         self._mainWindow.installThread.setupFabricInstallation(fabricVersion)
         self._mainWindow.installThread.start()
 
         self._mainWindow.setInstallButtonsEnabled(False)
 
-    def _installButtonClicked(self):
+    def _installButtonClicked(self) -> None:
         for i in range(self.rowCount()):
             if self.cellWidget(i, 1) == self.sender():
                 self._installFabricVersion(self.item(i, 0).text())
                 return
 
-    def setButtonsEnabled(self, enabled: bool):
+    def setButtonsEnabled(self, enabled: bool) -> None:
         for i in range(self.rowCount()):
             self.cellWidget(i, 1).setEnabled(enabled)

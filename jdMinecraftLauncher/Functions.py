@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMessageBox, QTableWidget, QHeaderView, QComboBox, QApplication
+from PyQt6.QtWidgets import QTableWidget, QHeaderView, QComboBox, QApplication
 from typing import Dict, List, Any, TYPE_CHECKING
 import subprocess
 import platform
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from jdMinecraftLauncher.Environment import Environment
 
 
-def openFile(path: str):
+def openFile(path: str) -> None:
     if platform.system() == "Windows":
         os.startfile(path)
     elif platform.system() == "Darwin":
@@ -23,7 +23,7 @@ def openFile(path: str):
         subprocess.Popen(["xdg-open", path])
 
 
-def saveProfiles(env: "Environment"):
+def saveProfiles(env: "Environment") -> None:
     if env.args.dont_save_data:
         return
 
@@ -36,7 +36,7 @@ def saveProfiles(env: "Environment"):
                 c[key] = value
         profileList.append(c)
     with open(os.path.join(env.dataDir, "profiles.json"), 'w', encoding='utf-8') as f:
-        json.dump({"selectedProfile":env.selectedProfile,"profileList":profileList}, f, ensure_ascii=False, indent=4)
+        json.dump({"selectedProfile": env.selectedProfile, "profileList": profileList}, f, ensure_ascii=False, indent=4)
 
 
 def hasInternetConnection() -> bool:
@@ -47,7 +47,7 @@ def hasInternetConnection() -> bool:
         return False
 
 
-def downloadFile(url: str, path: str):
+def downloadFile(url: str, path: str) -> None:
     if os.path.isfile(path):
         return
     try:
@@ -69,7 +69,7 @@ def getAccountDict(information_dict: Dict) -> Dict[str, str]:
     }
 
 
-def _addJavaRuntimeDir(path: str, runtimeList: List[str]):
+def _addJavaRuntimeDir(path: str, runtimeList: List[str]) -> None:
     if not os.path.isdir(path):
         return
     for i in os.listdir(path):

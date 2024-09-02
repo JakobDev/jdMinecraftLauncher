@@ -67,7 +67,7 @@ def askProfileImport(env: "Environment") -> None:
 
     try:
         profiles = _importProfiles(env)
-    except Exception as ex:
+    except Exception:
         msgBox = QMessageBox()
         msgBox.setWindowTitle(QCoreApplication.translate("ProfileImporter", "Error"))
         msgBox.setText(QCoreApplication.translate("ProfileImporter", "Due to an error, the profiles could not be imported. Sorry for that."))

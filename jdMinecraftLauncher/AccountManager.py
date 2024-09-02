@@ -52,7 +52,7 @@ class MicrosoftAccount(AccountBase):
         self._refreshToken = ""
 
     @classmethod
-    def fromJsonData(cls: Type["MicrosoftAccount"], env:"Environment", data: dict) -> "MicrosoftAccount":
+    def fromJsonData(cls: Type["MicrosoftAccount"], env: "Environment", data: dict) -> "MicrosoftAccount":
         account = cls(env)
 
         account.id = data["id"]
@@ -160,7 +160,7 @@ class DummyAccount(AccountBase):
         return True
 
     def getJsonData(self) -> dict:
-       return {
+        return {
             "type": "dummy",
             "id": self.id,
             "name": self._name,
@@ -259,7 +259,7 @@ class AccountManager:
 
         self._saveData()
 
-    def _addAccount(self, account: AccountBase, parent: QWidget | None)  -> AccountBase | None:
+    def _addAccount(self, account: AccountBase, parent: QWidget | None) -> AccountBase | None:
         if account.login(parent) is False:
             return None
 

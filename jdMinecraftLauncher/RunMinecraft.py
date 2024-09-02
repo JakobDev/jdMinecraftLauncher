@@ -9,20 +9,20 @@ import os
 
 
 if TYPE_CHECKING:
-    from jdMinecraftLauncher.Environment import Environment
-    from jdMinecraftLauncher.Profile import Profile
+    from .Environment import Environment
+    from .Profile import Profile
 
 
 def _getFlatpakSpawnCommand(profile: "Profile", env: "Environment") -> List[str]:
     command = [
-                "flatpak-spawn",
-                "--sandbox",
-                "--sandbox-flag=share-display",
-                "--sandbox-flag=share-sound",
-                "--sandbox-flag=share-gpu",
-                "--sandbox-flag=allow-dbus",
-                "--sandbox-flag=allow-a11y"
-            ]
+        "flatpak-spawn",
+        "--sandbox",
+        "--sandbox-flag=share-display",
+        "--sandbox-flag=share-sound",
+        "--sandbox-flag=share-gpu",
+        "--sandbox-flag=allow-dbus",
+        "--sandbox-flag=allow-a11y"
+    ]
 
     if profile.customGameDirectory:
         command += [

@@ -1,13 +1,12 @@
-from jdMinecraftLauncher.Functions import hasInternetConnection, getAccountDict
 from PyQt6.QtCore import QCoreApplication, QTranslator, QLibraryInfo
 from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
 from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
+from jdMinecraftLauncher.Functions import hasInternetConnection
 from jdMinecraftLauncher.Environment import Environment
 from .utils.UpdateChecker import checkUpdates
 from .ProfileImporter import askProfileImport
 import minecraft_launcher_lib
 import traceback
-import copy
 import sys
 import os
 
@@ -95,9 +94,9 @@ def main() -> None:
     if env.firstLaunch:
         welcomeText = QCoreApplication.translate("jdMinecraftLauncher", "It appears to be your first time using jdMinecraftLauncher.") + " "
         welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "This is a custom Minecraft Launcher designed to resemble the old official launcher in appearance and feel, but with modern features like Microsoft account support.") + "<br><br>"
-        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "If you encounter any issues, please report them so that they can be addressed and resolved.") +" <br><br>"
+        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "If you encounter any issues, please report them so that they can be addressed and resolved.") + "<br><br>"
         welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "This launcher is not an official product of Mojang/Microsoft.")
-        QMessageBox.information(None,  QCoreApplication.translate("jdMinecraftLauncher", "Welcome"), welcomeText)
+        QMessageBox.information(None, QCoreApplication.translate("jdMinecraftLauncher", "Welcome"), welcomeText)
 
     if env.enableUpdater and not env.offlineMode and env.settings.get("checkUpdatesStartup"):
         checkUpdates(env)

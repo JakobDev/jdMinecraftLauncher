@@ -13,8 +13,9 @@ if TYPE_CHECKING:
 
 
 class ProfileEditorTab(QTableWidget):
-    def __init__(self, env: "Environment", mainWindow: "MainWindow"):
-        super().__init__(0,2)
+    def __init__(self, env: "Environment", mainWindow: "MainWindow") -> None:
+        super().__init__(0, 2)
+
         self._env = env
         self._mainWindow = mainWindow
 
@@ -28,7 +29,7 @@ class ProfileEditorTab(QTableWidget):
 
         self.updateProfiles()
 
-    def updateProfiles(self):
+    def updateProfiles(self) -> None:
         while self.rowCount() > 0:
             self.removeRow(0)
 
@@ -48,7 +49,7 @@ class ProfileEditorTab(QTableWidget):
             self.setItem(count, 1, versionItem)
             count += 1
 
-    def contextMenuEvent(self, event: QContextMenuEvent):
+    def contextMenuEvent(self, event: QContextMenuEvent) -> None:
         self.menu = QMenu(self)
 
         addProfile = QAction(QCoreApplication.translate("ProfileEditorTab", "Add Profile"), self)
@@ -78,19 +79,19 @@ class ProfileEditorTab(QTableWidget):
 
         self.menu.popup(event.globalPos())
 
-    def _addProfile(self):
+    def _addProfile(self) -> None:
         self._mainWindow.profileWindow.loadProfile(Profile(QCoreApplication.translate("ProfileEditorTab", "New Profile"), self._env), True)
         self._mainWindow.profileWindow.open()
 
-    def _editProfile(self):
-        self._mainWindow.profileWindow.loadProfile(self._env.profileCollection.profileList[self.currentRow()],False)
+    def _editProfile(self) -> None:
+        self._mainWindow.profileWindow.loadProfile(self._env.profileCollection.profileList[self.currentRow()], False)
         self._mainWindow.profileWindow.open()
 
-    def _copyProfile(self):
+    def _copyProfile(self) -> None:
         self._mainWindow.profileWindow.loadProfile(self._env.profileCollection.profileList[self.currentRow()], True, True)
         self._mainWindow.profileWindow.open()
 
-    def _removeProfile(self):
+    def _removeProfile(self) -> None:
         if len(self._env.profileCollection.profileList) == 1:
             QMessageBox.critical(self._mainWindow, QCoreApplication.translate("ProfileEditorTab", "Can't delete Profile"), QCoreApplication.translate("ProfileEditorTab", "You can't delete all Profiles. At least one Profile must stay."))
         else:

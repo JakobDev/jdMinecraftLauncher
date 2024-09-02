@@ -36,17 +36,17 @@ def _createLinuxShortcut(env: "Environment", parent: QWidget | None, path: str, 
     entry.Comment.default_text = f"Start the {profile.name} profile in jdMinecraftLauncher"
 
     for langFile in os.listdir(os.path.join(env.currentDir, "translations")):
-            if not langFile.endswith(".qm"):
-                continue
+        if not langFile.endswith(".qm"):
+            continue
 
-            lang = langFile.removeprefix("jdMinecraftLauncher_").removesuffix(".qm")
-            fullPath = os.path.join(env.currentDir, "translations", langFile)
-            translator = QTranslator()
-            translator.load(fullPath)
-            comment = translator.translate("Shortcut", "Start the {{name}} profile in jdMinecraftLauncher").replace("{{name}}", profile.name)
+        lang = langFile.removeprefix("jdMinecraftLauncher_").removesuffix(".qm")
+        fullPath = os.path.join(env.currentDir, "translations", langFile)
+        translator = QTranslator()
+        translator.load(fullPath)
+        comment = translator.translate("Shortcut", "Start the {{name}} profile in jdMinecraftLauncher").replace("{{name}}", profile.name)
 
-            if comment != "":
-                entry.Comment.translations[lang] = comment
+        if comment != "":
+            entry.Comment.translations[lang] = comment
 
     entry.write_file(os.path.join(path, f"page.codeberg.JakobDev.Profile.{profile.name}.desktop"))
 

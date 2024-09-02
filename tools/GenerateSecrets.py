@@ -14,7 +14,7 @@ def encrypt(text: Optional[str]) -> Optional[str]:
     return output
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--clientID", required=True, help="Your clientID")
     parser.add_argument("--secret", help="Your clientSecret")

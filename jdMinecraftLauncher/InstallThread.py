@@ -1,7 +1,12 @@
 from PyQt6.QtCore import QThread, pyqtSignal
+from typing import Optional, TYPE_CHECKING
 import minecraft_launcher_lib
-from typing import Optional
 import traceback
+
+
+if TYPE_CHECKING:
+    from .Environment import Environment
+    from .Profile import Profile
 
 
 class InstallThread(QThread):
@@ -9,7 +14,7 @@ class InstallThread(QThread):
     progress = pyqtSignal("int")
     text = pyqtSignal("QString")
 
-    def __init__(self, env):
+    def __init__(self, env: "Environment") -> None:
         QThread.__init__(self)
         self.callback = {
             "setStatus": lambda text: self.text.emit(text),
@@ -22,7 +27,7 @@ class InstallThread(QThread):
         self._versionNotFound = False
         self.env = env
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.wait()
 
     def _setupAll(self) -> None:
@@ -31,7 +36,7 @@ class InstallThread(QThread):
         self._currentError = None
         self._versionNotFound = False
 
-    def setup(self, profile) -> None:
+    def setup(self, profile: "Profile") -> None:
         self._setupAll()
         self.profile = profile
         self.startMinecraft = True
@@ -62,7 +67,7 @@ class InstallThread(QThread):
             elif self.fabricVersion:
                 minecraft_launcher_lib.fabric.install_fabric(self.fabricVersion, self.env.minecraftDir, callback=self.callback)
             else:
-                minecraft_launcher_lib.install.install_minecraft_version(self.profile.getVersionID(),self.env.minecraftDir,callback=self.callback)
+                minecraft_launcher_lib.install.install_minecraft_version(self.profile.getVersionID(), self.env.minecraftDir, callback=self.callback)
         except minecraft_launcher_lib.exceptions.VersionNotFound:
             self._versionNotFound = True
         except Exception:

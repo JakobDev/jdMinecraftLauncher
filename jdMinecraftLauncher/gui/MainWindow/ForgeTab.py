@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 class ForgeTab(QTableWidget):
     def __init__(self, env: "Environment", mainWindow: "MainWindow") -> None:
-        super().__init__(0,2)
+        super().__init__(0, 2)
 
         self._env = env
         self._mainWindow = mainWindow
@@ -65,6 +65,6 @@ class ForgeTab(QTableWidget):
                 self._installForgeVersion(self.item(i, 0).text())
                 return
 
-    def setButtonsEnabled(self, enabled: bool):
+    def setButtonsEnabled(self, enabled: bool) -> None:
         for i in range(self.rowCount()):
             self.cellWidget(i, 1).setEnabled(enabled)

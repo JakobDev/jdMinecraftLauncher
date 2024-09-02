@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QDialog, QLabel, QLineEdit, QCheckBox, QComboBox, QPushButton, QFileDialog, QMessageBox, QHBoxLayout, QVBoxLayout, QGridLayout, QLayout
-from jdMinecraftLauncher.Functions import saveProfiles, openFile, findJavaRuntimes, isFlatpak
+from jdMinecraftLauncher.Functions import openFile, findJavaRuntimes, isFlatpak
 from jdMinecraftLauncher.Shortcut import canCreateShortcuts, askCreateShortcut
+from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from ..ui_compiled.ProfileWindow import Ui_ProfileWindow
 from jdMinecraftLauncher.Profile import Profile
 from PyQt6.QtCore import QCoreApplication
@@ -14,11 +14,10 @@ import os
 if TYPE_CHECKING:
     from jdMinecraftLauncher.gui.MainWindow import MainWindow
     from jdMinecraftLauncher.Environment import Environment
-    from jdMinecraftLauncher.Profile import Profile
 
 
 class ProfileWindow(QDialog, Ui_ProfileWindow):
-    def __init__(self, env: "Environment", parent: "MainWindow"):
+    def __init__(self, env: "Environment", parent: "MainWindow") -> None:
         super().__init__(parent)
 
         self.setupUi(self)
@@ -67,27 +66,27 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
 
         self.resize(self.minimumSize())
 
-    def changeCustomResolution(self):
+    def changeCustomResolution(self) -> None:
         state = self.resolutionCheckbox.isChecked()
         self.resolutionLabel.setEnabled(state)
         self.resolutionEditX.setEnabled(state)
         self.resolutionEditY.setEnabled(state)
 
-    def changeServerConnect(self):
+    def changeServerConnect(self) -> None:
         state = self.serverCheckbox.isChecked()
         self.serverLabel.setEnabled(state)
         self.serverEdit.setEnabled(state)
         self.portLabel.setEnabled(state)
         self.portEdit.setEnabled(state)
 
-    def browseGameDirectoryClicked(self):
-        path = QFileDialog.getExistingDirectory(directory = self.executableEdit.currentText())
+    def browseGameDirectoryClicked(self) -> None:
+        path = QFileDialog.getExistingDirectory(directory=self.executableEdit.currentText())
         if path != "":
             self.gameDirectoryEdit.setText(path)
 
-    def browseExecutableClicked(self):
+    def browseExecutableClicked(self) -> None:
         if isFlatpak():
-            QMessageBox.information(self, QCoreApplication.translate("ProfileWindow", "Note for Flatpak users"),  QCoreApplication.translate("ProfileWindow", "Please select in the following dialog the directory which contains bin/java"))
+            QMessageBox.information(self, QCoreApplication.translate("ProfileWindow", "Note for Flatpak users"), QCoreApplication.translate("ProfileWindow", "Please select in the following dialog the directory which contains bin/java"))
             path = QFileDialog.getExistingDirectory()
             if path == "":
                 return
@@ -97,11 +96,11 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("ProfileWindow", "Invalid directory"), QCoreApplication.translate("ProfileWindow", "This directory does not contain bin/java"))
         else:
-            path = QFileDialog.getOpenFileName(directory = self.executableEdit.currentText())
+            path = QFileDialog.getOpenFileName(directory=self.executableEdit.currentText())
             if path[0] != "":
                 self.executableEdit.lineEdit().setText(path[0])
 
-    def loadProfile(self, profile: "Profile", isNew: bool, copyText: bool = False):
+    def loadProfile(self, profile: "Profile", isNew: bool, copyText: bool = False) -> None:
         if isNew:
             if copyText:
                 self.profileNameEdit.setText(QCoreApplication.translate("ProfileWindow", "Copy of {{name}}").replace("{{name}}", profile.name))
@@ -152,7 +151,7 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         self.profile = profile
         self.isNew = isNew
 
-    def saveProfile(self):
+    def saveProfile(self) -> None:
         profile = self.profile
 
         if self.isNew:
@@ -204,7 +203,7 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         self.env.profileCollection.save()
         self.close()
 
-    def updateVersionsList(self):
+    def updateVersionsList(self) -> None:
         self.versionSelectCombobox.clear()
         self.versionSelectCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Use latest Version"), "latestRelease")
 

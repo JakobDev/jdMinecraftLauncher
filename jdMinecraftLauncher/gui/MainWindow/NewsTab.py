@@ -30,12 +30,12 @@ class _NewsPage(QWebEnginePage):
             url = self._env.settings.get("newsFeedURL")
             link = f'<a href="{url}">{url}</a>'
             errorText = "<h1>" + QCoreApplication.translate("NewsTab", "Error") + "</h1>"
-            errorText += "<p>" + QCoreApplication.translate("NewsTab", "Unable to render RSS feed {{url}}").replace("{{url}}", link) +  "<p>"
+            errorText += "<p>" + QCoreApplication.translate("NewsTab", "Unable to render RSS feed {{url}}").replace("{{url}}", link) + "<p>"
             self.setHtml(errorText, QUrl("localhost"))
             print(traceback.format_exc(), file=sys.stderr)
 
     def updateNews(self) -> None:
-         match self._env.settings.get("newsType"):
+        match self._env.settings.get("newsType"):
             case NewsTypeSetting.RSS:
                 self._renderRssFeed()
             case NewsTypeSetting.WEBSITE:

@@ -2,6 +2,7 @@ from PyQt6.QtCore import QCoreApplication
 from PyQt6.QtWidgets import QMessageBox
 from typing import TYPE_CHECKING
 import webbrowser
+import traceback
 import requests
 import sys
 

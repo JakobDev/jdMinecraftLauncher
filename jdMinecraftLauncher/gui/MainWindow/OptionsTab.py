@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class OptionsTab(QWidget, Ui_OptionsTab):
-    def __init__(self, env: "Environment", parent: "MainWindow"):
+    def __init__(self, env: "Environment", parent: "MainWindow") -> None:
         super().__init__()
 
         self.setupUi(self)
@@ -25,7 +25,7 @@ class OptionsTab(QWidget, Ui_OptionsTab):
 
         languageNames = getLanguageNames()
         self.languageComboBox.addItem(languageNames.get("en", "en"), "en")
-        for i in os.listdir(os.path.join(env.currentDir,"translations")):
+        for i in os.listdir(os.path.join(env.currentDir, "translations")):
             if not i.endswith(".qm"):
                 continue
 
@@ -34,9 +34,9 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.languageComboBox.model().sort(0, Qt.SortOrder.AscendingOrder)
         self.languageComboBox.insertItem(0, QCoreApplication.translate("OptionsTab", "Use System Language"), "default")
 
-        self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "Auto"),DisplayServerSetting.AUTO)
-        self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "Wayland"),DisplayServerSetting.WAYLAND)
-        self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "XWayland"),DisplayServerSetting.XWAYLAND)
+        self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "Auto"), DisplayServerSetting.AUTO)
+        self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "Wayland"), DisplayServerSetting.WAYLAND)
+        self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "XWayland"), DisplayServerSetting.XWAYLAND)
 
         selectComboBoxData(self.languageComboBox, env.settings.get("language"))
 
@@ -112,10 +112,10 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self._env.settings.set("newsURL", self.newsUrlEdit.text())
         self._parent.updateNewsTab()
 
-    def _multiLaunchCheckBoxChanged(self):
+    def _multiLaunchCheckBoxChanged(self) -> None:
         self._env.settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
 
-    def _extractNativesCheckBoxChanged(self):
+    def _extractNativesCheckBoxChanged(self) -> None:
         self._env.settings.set("extractNatives", self.extractNativesCheckBox.isChecked())
 
     def _windowIconProgressCheckBoxChanged(self) -> None:

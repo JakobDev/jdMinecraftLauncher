@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class AboutTab(QWidget, Ui_AboutTab):
-    def __init__(self, env: "Environment"):
+    def __init__(self, env: "Environment") -> None:
         super().__init__()
 
         self.setupUi(self)

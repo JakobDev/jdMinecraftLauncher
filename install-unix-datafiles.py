@@ -44,13 +44,13 @@ def main() -> None:
     project_root = os.path.dirname(__file__)
 
     install_data_file(os.path.join(project_root, "jdMinecraftLauncher", "Icon.svg"), os.path.join(args.prefix, "share", "icons", "hicolor", "scalable", "apps", "page.codeberg.JakobDev.jdMinecraftLauncher.svg"))
-    install_data_file(os.path.join(project_root, "deploy", "page.codeberg.JakobDev.jdMinecraftLauncher.service"), os.path.join(args.prefix, "share", "dbus-1" ,"services", "page.codeberg.JakobDev.jdMinecraftLauncher.service"))
+    install_data_file(os.path.join(project_root, "deploy", "page.codeberg.JakobDev.jdMinecraftLauncher.service"), os.path.join(args.prefix, "share", "dbus-1", "services", "page.codeberg.JakobDev.jdMinecraftLauncher.service"))
 
     create_directory(os.path.join(args.prefix, "share", "applications"))
     create_directory(os.path.join(args.prefix, "share", "metainfo"))
 
-    subprocess.run(["msgfmt", "--desktop", "--template", os.path.join(project_root, "deploy", "page.codeberg.JakobDev.jdMinecraftLauncher.desktop"), "-d", os.path.join(project_root, "deploy", "translations"), "-o",  os.path.join(args.prefix, "share", "applications", "page.codeberg.JakobDev.jdMinecraftLauncher.desktop")], check=True)
-    subprocess.run(["msgfmt", "--xml", "--template", os.path.join(project_root, "deploy", "page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml"), "-d", os.path.join(project_root, "deploy", "translations"), "-o",  os.path.join(args.prefix, "share", "metainfo", "page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml")], check=True)
+    subprocess.run(["msgfmt", "--desktop", "--template", os.path.join(project_root, "deploy", "page.codeberg.JakobDev.jdMinecraftLauncher.desktop"), "-d", os.path.join(project_root, "deploy", "translations"), "-o", os.path.join(args.prefix, "share", "applications", "page.codeberg.JakobDev.jdMinecraftLauncher.desktop")], check=True)
+    subprocess.run(["msgfmt", "--xml", "--template", os.path.join(project_root, "deploy", "page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml"), "-d", os.path.join(project_root, "deploy", "translations"), "-o", os.path.join(args.prefix, "share", "metainfo", "page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml")], check=True)
 
 
 if __name__ == "__main__":

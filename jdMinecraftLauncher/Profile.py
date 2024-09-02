@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import Type, TYPE_CHECKING
 import minecraft_launcher_lib
 import uuid
 
@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 class Profile:
-    def __init__(self, name: str, env: "Environment"):
+    def __init__(self, name: str, env: "Environment") -> None:
         self.env: "Environment" = env
 
         self.id = self._generateProfileID()
@@ -70,7 +70,7 @@ class Profile:
             return "java"
 
     @classmethod
-    def load(cls, env: "Environment", objects: dict, profileVersion: int):
+    def load(cls: Type["Profile"], env: "Environment", objects: dict, profileVersion: int) -> "Profile":
         profile = Profile(objects["name"], env)
 
         if "id" in objects:

@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QPlainTextEdit, QMessageBox
 from PyQt6.QtCore import QProcess, QCoreApplication
 from typing import TYPE_CHECKING
+import shutil
 import sys
 
 
@@ -19,7 +20,7 @@ class GameOutputTab(QPlainTextEdit):
     def dataReady(self) -> None:
         cursor = self.textCursor()
         cursor.movePosition(cursor.MoveOperation.End)
-        cursor.insertText(bytes(self.process.readAll()).decode(encoding=sys.stdout.encoding,errors="replace"))
+        cursor.insertText(bytes(self.process.readAll()).decode(encoding=sys.stdout.encoding, errors="replace"))
         self.moveCursor(cursor.MoveOperation.End)
 
     def procStarted(self) -> None:
@@ -42,7 +43,7 @@ class GameOutputTab(QPlainTextEdit):
             except Exception:
                 pass
 
-    def executeCommand(self,profile: "Profile", command: list[str], natives_path: str) -> None:
+    def executeCommand(self, profile: "Profile", command: list[str], natives_path: str) -> None:
         self.profile = profile
         self.natives_path = natives_path
         self.process = QProcess(self)

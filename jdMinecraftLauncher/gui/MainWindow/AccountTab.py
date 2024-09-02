@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QPushButton, QMenu, QTableWidgetItem
+from PyQt6.QtWidgets import QWidget, QPushButton, QMenu, QTableWidgetItem, QMessageBox
 from ...Functions import clearTableWidget, stretchTableWidgetColumnsSize
 from PyQt6.QtCore import Qt, QCoreApplication, QPoint
 from ...ui_compiled.AccountTab import Ui_AccountTab
@@ -20,7 +20,7 @@ class _TableColumns:
 
 
 class _SwitchAccountButton(QPushButton):
-    def __init__(self, env: "Environment", account: "AccountBase",  mainWindow: "MainWindow") -> None:
+    def __init__(self, env: "Environment", account: "AccountBase", mainWindow: "MainWindow") -> None:
         super().__init__(QCoreApplication.translate("AccountTab", "Switch"))
 
         self._env = env
@@ -39,7 +39,7 @@ class _SwitchAccountButton(QPushButton):
 
 
 class _RemoveAccountButton(QPushButton):
-    def __init__(self, env: "Environment", account: "AccountBase",  mainWindow: "MainWindow") -> None:
+    def __init__(self, env: "Environment", account: "AccountBase", mainWindow: "MainWindow") -> None:
         super().__init__(QCoreApplication.translate("AccountTab", "Remove"))
 
         self._env = env

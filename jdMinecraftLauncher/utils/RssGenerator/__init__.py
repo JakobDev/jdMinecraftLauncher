@@ -31,7 +31,7 @@ def _getFeedHtml(entry: dict[str, Any]) -> str:
 def _parseRssFeed(env: "Environment") -> str:
     import feedparser
 
-    header = { "user-agent": f"jdMinecraftLauncher/{env.launcherVersion}"}
+    header = {"user-agent": f"jdMinecraftLauncher/{env.launcherVersion}"}
     r = requests.get(env.settings.get("newsFeedURL"), headers=header)
     feed = feedparser.parse(r.text)
     html_code = ""

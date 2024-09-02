@@ -8,11 +8,10 @@ import os
 
 if TYPE_CHECKING:
     from ...Environment import Environment
-    from .MainWindow import MainWindow
 
 
 class VersionEditorTab(QTableWidget):
-    def __init__(self, env: "Environment"):
+    def __init__(self, env: "Environment") -> None:
         super().__init__(0, 2)
         self._env = env
 
@@ -29,7 +28,7 @@ class VersionEditorTab(QTableWidget):
 
         self.updateVersions()
 
-    def updateVersions(self):
+    def updateVersions(self) -> None:
         if len(self._env.installedVersion) == 0:
             self._uninstallVersion.setEnabled(False)
         else:
@@ -49,13 +48,13 @@ class VersionEditorTab(QTableWidget):
             self.setItem(count, 1, typeItem)
             count += 1
 
-    def _uninstallVersionClicked(self):
+    def _uninstallVersionClicked(self) -> None:
         shutil.rmtree(os.path.join(self._env.minecraftDir, "versions", self._env.installedVersion[self.currentRow()]["id"]))
         del self._env.installedVersion[self.currentRow()]
         self._env.updateInstalledVersions()
         self.updateVersions()
 
-    def contextMenuEvent(self, event: QContextMenuEvent):
+    def contextMenuEvent(self, event: QContextMenuEvent) -> None:
         self.menu = QMenu(self)
 
         self.menu.addAction(self._uninstallVersion)

@@ -8,28 +8,24 @@ from .Functions import isFlatpak
 from PyQt6.QtCore import QLocale
 from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
-from typing import Optional
 from pathlib import Path
-import traceback
 import argparse
 import platform
 import requests
 import tomllib
 import json
-import copy
-import sys
 import os
 
 
 class Environment:
-    def __init__(self, app: QApplication):
+    def __init__(self, app: QApplication) -> None:
         self.offlineMode = False
         self.currentDir = os.path.dirname(os.path.realpath(__file__))
 
         with open(os.path.join(self.currentDir, "version.txt"), "r", encoding="utf-8") as f:
             self.launcherVersion = f.read().strip()
 
-        self.icon = QIcon(os.path.join(self.currentDir , "Icon.svg"))
+        self.icon = QIcon(os.path.join(self.currentDir, "Icon.svg"))
         self.app = app
 
         parser = argparse.ArgumentParser()
@@ -94,7 +90,7 @@ class Environment:
             case "Windows":
                 return os.getenv("APPDATA")
             case "Darwin":
-                 return os.path.join(Path.home(), "Library", "Application Support")
+                return os.path.join(Path.home(), "Library", "Application Support")
             case "Haiku":
                 return os.path.join(Path.home(), "config", "settings")
             case _:
@@ -113,7 +109,7 @@ class Environment:
 
         return os.path.join(dataPath, "JakobDev", "jdMinecraftLauncher")
 
-    def loadVersions(self):
+    def loadVersions(self) -> None:
         if not self.offlineMode:
             try:
                 r = requests.get("https://launchermeta.mojang.com/mc/game/version_manifest_v2.json")
@@ -127,15 +123,15 @@ class Environment:
             self.versions = json.load(f)
         self.updateInstalledVersions()
 
-    def updateInstalledVersions(self):
+    def updateInstalledVersions(self) -> None:
         versioncheck = {}
         for v in self.versions["versions"]:
             versioncheck[v["id"]] = True
 
         self.installedVersion = []
-        if os.path.isdir(os.path.join(self.minecraftDir,"versions")):
-            for v in os.listdir(os.path.join(self.minecraftDir,"versions")):
-                json_path = os.path.join(self.minecraftDir,"versions",v,v + ".json")
+        if os.path.isdir(os.path.join(self.minecraftDir, "versions")):
+            for v in os.listdir(os.path.join(self.minecraftDir, "versions")):
+                json_path = os.path.join(self.minecraftDir, "versions", v, v + ".json")
                 if os.path.isfile(json_path):
                     with open(json_path) as f:
                         try:

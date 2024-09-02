@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class ProfileCollection:
-    def __init__(self, env: "Environment"):
+    def __init__(self, env: "Environment") -> None:
         self.profileList: list[Profile] = []
         self.selectedProfile = ""
         self._loadError = None

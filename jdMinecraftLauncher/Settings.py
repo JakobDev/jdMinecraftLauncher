@@ -7,7 +7,7 @@ import os
 
 
 class Settings():
-    def __init__(self):
+    def __init__(self) -> None:
         self._default_settings = {
             "language": "default",
             "newsType": NewsTypeSetting.RSS,
@@ -35,11 +35,11 @@ class Settings():
         else:
             return None
 
-    def set(self, key: str, value: Any):
+    def set(self, key: str, value: Any) -> None:
         """Set the value of a setting"""
         self._user_settings[key] = value
 
-    def save(self, path: str):
+    def save(self, path: str) -> None:
         """Save settings into file"""
         if len(self._user_settings) == 0 and not os.path.isfile(path):
             return
@@ -50,7 +50,7 @@ class Settings():
         except Exception:
             print(traceback.format_exc(), file=sys.stderr)
 
-    def load(self, path: str):
+    def load(self, path: str) -> None:
         """Load settings from file"""
         if not os.path.isfile(path):
             return
@@ -62,7 +62,7 @@ class Settings():
             self._loadError = traceback.format_exc()
             print(self._loadError, file=sys.stderr)
 
-    def reset(self):
+    def reset(self) -> None:
         """Resets all settings to the default values"""
         self._user_settings.clear()
 

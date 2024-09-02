@@ -1,8 +1,7 @@
 from jdMinecraftLauncher.utils.WindowIconProgress import createWindowIconProgress
-from PyQt6.QtCore import QCoreApplication, QEvent, QUrl, QLocale
 from ...ui_compiled.MainWindow import Ui_MainWindow
-from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebEngineCore import QWebEngineProfile
+from PyQt6.QtCore import QCoreApplication, QEvent
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from ...RunMinecraft import getMinecraftCommand
 from .ProfileEditorTab import ProfileEditorTab
@@ -31,7 +30,7 @@ if TYPE_CHECKING:
 
 
 class MainWindow(QWidget, Ui_MainWindow):
-    def __init__(self, env: "Environment"):
+    def __init__(self, env: "Environment") -> None:
         super().__init__()
 
         self.setupUi(self)
@@ -84,7 +83,7 @@ class MainWindow(QWidget, Ui_MainWindow):
 
         self._is_first_open = False
 
-    def openMainWindow(self):
+    def openMainWindow(self) -> None:
         if self._is_first_open:
             self.show()
             return
@@ -143,7 +142,7 @@ class MainWindow(QWidget, Ui_MainWindow):
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
 
-    def updateProfileList(self):
+    def updateProfileList(self) -> None:
         currentIndex = 0
         self.profileListRebuild = True
         self.profileComboBox.clear()
@@ -157,31 +156,31 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.profileComboBox.setCurrentIndex(currentIndex)
         self.profileListRebuild = False
 
-    def profileComboBoxIndexChanged(self, index: int):
+    def profileComboBoxIndexChanged(self, index: int) -> None:
         if not self.profileListRebuild:
             self._env.profileCollection.selectedProfile = self._env.profileCollection.profileList[index].id
 
-    def newProfileButtonClicked(self):
+    def newProfileButtonClicked(self) -> None:
         self.profileWindow.loadProfile(self._env.profileCollection.getSelectedProfile(), True, True)
         self.profileWindow.open()
 
-    def editProfileButtonClicked(self):
+    def editProfileButtonClicked(self) -> None:
         self.profileWindow.loadProfile(self._env.profileCollection.getSelectedProfile(), False)
         self.profileWindow.open()
 
     def launchProfile(self, profile: "Profile") -> None:
         if self._env.offlineMode:
-            if os.path.isdir(os.path.join(self._env.minecraftDir,"versions",profile.getVersionID())):
+            if os.path.isdir(os.path.join(self._env.minecraftDir, "versions", profile.getVersionID())):
                 self.startMinecraft(profile)
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "No Internet Connection"), QCoreApplication.translate("MainWindow", "You need a internet connection to install a new version, but you are still able to play already installed versions."))
         else:
             self.installVersion(profile)
 
-    def playButtonClicked(self):
+    def playButtonClicked(self) -> None:
         self.launchProfile(self._env.profileCollection.getSelectedProfile())
 
-    def logoutButtonClicked(self):
+    def logoutButtonClicked(self) -> None:
         if self._env.offlineMode:
             QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "No Internet Connection"), QCoreApplication.translate("MainWindow", "This Feature needs a internet connection"))
             return
@@ -197,7 +196,7 @@ class MainWindow(QWidget, Ui_MainWindow):
 
         self.updateAccountInformation()
 
-    def startMinecraft(self, profile: "Profile"):
+    def startMinecraft(self, profile: "Profile") -> None:
         if self._env.settings.get("extractNatives"):
             natives_path = tempfile.mktemp(prefix="minecraft_natives_")
         else:
