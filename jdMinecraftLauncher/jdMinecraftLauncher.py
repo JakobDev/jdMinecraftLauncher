@@ -1,6 +1,5 @@
 from PyQt6.QtCore import QCoreApplication, QTranslator, QLibraryInfo
 from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
-from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
 from jdMinecraftLauncher.Functions import hasInternetConnection
 from jdMinecraftLauncher.Environment import Environment
 from .utils.UpdateChecker import checkUpdates
@@ -64,6 +63,10 @@ def _handleAccount(env: Environment, splashScreen: QSplashScreen) -> None:
 
 
 def main() -> None:
+    if not os.path.isdir(os.path.join(os.path.dirname(__file__), "ui_compiled")):
+        print("Could not find compiled ui files. Please run tools/CompileUI.py first.", file=sys.stderr)
+        sys.exit(1)
+
     app = QApplication(sys.argv)
     env = Environment(app)
 
@@ -114,6 +117,9 @@ def main() -> None:
         pass
 
     env.loadVersions()
+
+    # We import it here, so jdMinecraftLauncher doen't crash if the compiled ui files and missing and is able to show the error message
+    from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
 
     env.mainWindow = MainWindow(env)
 
