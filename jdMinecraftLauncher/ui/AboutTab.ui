@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,6 +85,24 @@
       <string>View Source</string>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="openMinecraftDirectoryButton">
+       <property name="text">
+        <string>Open Minecraft directory</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="openDataDirectoryButton">
+       <property name="text">
+        <string>Open data directory</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
