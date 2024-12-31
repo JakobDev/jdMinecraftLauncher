@@ -69,7 +69,7 @@
     <message>
         <location filename="../gui/MainWindow/AccountTab.py" line="53"/>
         <source>No Internet Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>אין חיבור לאינטרנט</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/AccountTab.py" line="53"/>
@@ -108,12 +108,12 @@
     <message>
         <location filename="../gui/MainWindow/GameOutputTab.py" line="56"/>
         <source>Failed to start Minecraft</source>
-        <translation type="unfinished"></translation>
+        <translation>הפעלת Minecraft נכשלה</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/GameOutputTab.py" line="57"/>
         <source>Failed to start</source>
-        <translation type="unfinished"></translation>
+        <translation>ההפעלה נכשלה</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/GameOutputTab.py" line="57"/>
@@ -248,14 +248,14 @@
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="67"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>מידע כללי</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="139"/>
         <location filename="../gui/MainWindow/MainWindow.py" line="133"/>
         <location filename="../gui/MainWindow/MainWindow.py" line="99"/>
         <source>Profile not found</source>
-        <translation type="unfinished"></translation>
+        <translation>הפרופיל לא נמצא</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="139"/>
@@ -333,12 +333,12 @@
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="246"/>
         <source>Welcome, {{name}}</source>
-        <translation type="unfinished"></translation>
+        <translation>ברוך בואך, {{name}}</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="250"/>
         <source>Play Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>משחק ללא חיבור לאינטרנט</translation>
     </message>
 </context>
 <context>
@@ -346,7 +346,7 @@
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Language:</source>
-        <translation type="unfinished"></translation>
+        <translation>שפה:</translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
@@ -401,7 +401,7 @@
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="35"/>
         <source>Use System Language</source>
-        <translation type="unfinished"></translation>
+        <translation>שימוש בשפת המערכת</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="37"/>
@@ -436,7 +436,7 @@
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="99"/>
         <source>Would you like to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>להמשיך?</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="101"/>
@@ -459,7 +459,7 @@
     <message>
         <location filename="../ProfileCollection.py" line="25"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>ברירת מחדל</translation>
     </message>
 </context>
 <context>
@@ -472,37 +472,37 @@
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="21"/>
         <source>Minecraft Version</source>
-        <translation type="unfinished"></translation>
+        <translation>גרסת Minecraft</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="39"/>
         <source>(Latest version)</source>
-        <translation type="unfinished"></translation>
+        <translation>(הגרסה העדכנית)</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="41"/>
         <source>(Latest snapshot)</source>
-        <translation type="unfinished"></translation>
+        <translation>(הסנאפשוט העדכני)</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="53"/>
         <source>Add Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>הוספת פרופיל</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="57"/>
         <source>Edit Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>עריכת פרופיל</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="61"/>
         <source>Copy Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>העתקת פרופיל</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="65"/>
         <source>Remove Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>הסרת פרופיל</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="69"/>
@@ -517,7 +517,7 @@
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="81"/>
         <source>New Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>פרופיל חדש</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="94"/>
@@ -545,7 +545,7 @@
     <message>
         <location filename="../ProfileImporter.py" line="72"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>שגיאה</translation>
     </message>
     <message>
         <location filename="../ProfileImporter.py" line="73"/>
@@ -579,12 +579,12 @@
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>עיון</translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Resolution:</source>
-        <translation type="unfinished"></translation>
+        <translation>רזולוציה:</translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
@@ -644,7 +644,7 @@
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Server IP:</source>
-        <translation type="unfinished"></translation>
+        <translation>כתובת ה־IP של השרת:</translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
@@ -654,7 +654,7 @@
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Start in demo mode</source>
-        <translation type="unfinished"></translation>
+        <translation>הפעלה במצב ניסיון</translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
@@ -669,7 +669,7 @@
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Additional Options:</source>
-        <translation type="unfinished"></translation>
+        <translation>אפשרויות נוספות:</translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
@@ -684,7 +684,7 @@
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Create Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>יצירת קיצור דרך</translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
@@ -694,7 +694,7 @@
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Save Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>שמירת הפרופיל</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="32"/>
@@ -714,7 +714,7 @@
     <message>
         <location filename="../gui/ProfileWindow.py" line="90"/>
         <source>Note for Flatpak users</source>
-        <translation type="unfinished"></translation>
+        <translation>הערה למשתמשי Flatpak</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="90"/>
@@ -739,12 +739,12 @@
     <message>
         <location filename="../gui/ProfileWindow.py" line="209"/>
         <source>Use latest Version</source>
-        <translation type="unfinished"></translation>
+        <translation>שימוש בגרסה העדכנית</translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="212"/>
         <source>Use latest Snapshot</source>
-        <translation type="unfinished"></translation>
+        <translation>שימוש בסנאפשוט העדכני</translation>
     </message>
 </context>
 <context>
@@ -787,12 +787,12 @@
     <message>
         <location filename="../Shortcut.py" line="115"/>
         <source>Desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>שולחן העבודה</translation>
     </message>
     <message>
         <location filename="../Shortcut.py" line="119"/>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>תפריט</translation>
     </message>
     <message>
         <location filename="../Shortcut.py" line="123"/>
@@ -815,12 +815,12 @@
     <message>
         <location filename="../utils/UpdateChecker.py" line="26"/>
         <source>Do you want to download the latest version?</source>
-        <translation type="unfinished"></translation>
+        <translation>להוריד את הגרסה העדכנית?</translation>
     </message>
     <message>
         <location filename="../utils/UpdateChecker.py" line="28"/>
         <source>New version available</source>
-        <translation type="unfinished"></translation>
+        <translation>יש גרסה חדשה זמינה</translation>
     </message>
 </context>
 <context>
@@ -828,7 +828,7 @@
     <message>
         <location filename="../gui/MainWindow/VersionEditorTab.py" line="19"/>
         <source>Uninstall Version</source>
-        <translation type="unfinished"></translation>
+        <translation>הסרת הגרסה</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/VersionEditorTab.py" line="23"/>
@@ -902,7 +902,7 @@
     <message>
         <location filename="../jdMinecraftLauncher.py" line="100"/>
         <source>Welcome</source>
-        <translation type="unfinished"></translation>
+        <translation>ברוך בואך</translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="129"/>
