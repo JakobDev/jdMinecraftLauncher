@@ -63,3 +63,9 @@ class GameOutputTab(QPlainTextEdit):
             QMessageBox.critical(self, QCoreApplication.translate("GameOutputTab", "Failed to start"), QCoreApplication.translate("GameOutputTab", "Minecraft could not be started. Maybe you use a invalid Java executable."))
             self._mainWindow.playButton.setEnabled(True)
             return
+
+        # There are some cases e.g. when failing to init a window where Minecraft uses tinyfiledialogs to output an error message
+        # When DISPLAY is not set (e.g. on Wayland mode) it writes to the terminal and waits for the user to press enter
+        # So we simulate a enter press here, so it does not hang, as this is not a TTY which supports a key press
+        self.process.write(b"\n")
+        self.process.closeWriteChannel()
