@@ -53,7 +53,7 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.allowMultiLaunchCheckBox.setChecked(self._env.settings.get("enableMultiLaunch"))
         self.extractNativesCheckBox.setChecked(self._env.settings.get("extractNatives"))
         self.windowIconProgressCheckBox.setChecked(self._env.settings.get("windowIconProgress"))
-        self.windowIconProgressCheckBox.setChecked(self._env.settings.get("useFlatpakSubsandbox"))
+        self.flatpakSubsandboxCheckBox.setChecked(self._env.settings.get("useFlatpakSubsandbox"))
         self.checkUpdatesStartupCheckBox.setChecked(self._env.settings.get("checkUpdatesStartup"))
         selectComboBoxData(self.displayServerBox, self._env.settings.get("displayServer"))
 
