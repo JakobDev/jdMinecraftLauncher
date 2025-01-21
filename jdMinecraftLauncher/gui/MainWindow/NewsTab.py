@@ -3,7 +3,7 @@ from ...utils.RssGenerator import GenerateNewsPage
 from PyQt6.QtWebEngineCore import QWebEnginePage
 from PyQt6.QtCore import QUrl, QCoreApplication
 from ...Constants import NewsTypeSetting
-from typing import TYPE_CHECKING
+from typing import cast, TYPE_CHECKING
 import webbrowser
 import traceback
 import sys
@@ -23,8 +23,8 @@ class _NewsPage(QWebEnginePage):
         try:
             self.setHtml(GenerateNewsPage(self._env), QUrl("localhost"))
         except ModuleNotFoundError as ex:
-            errorText = QCoreApplication.translate("NewsTab", "{{name}} not installed").replace("{{name}}", ex.name) + "<br>"
-            errorText += QCoreApplication.translate("NewsTab", "You need the {{name}} Python package installed to use this feature").replace("{{name}}", ex.name)
+            errorText = QCoreApplication.translate("NewsTab", "{{name}} not installed").replace("{{name}}", cast(str, ex.name)) + "<br>"
+            errorText += QCoreApplication.translate("NewsTab", "You need the {{name}} Python package installed to use this feature").replace("{{name}}", cast(str, ex.name))
             self.setHtml(errorText, QUrl("localhost"))
         except Exception:
             url = self._env.settings.get("newsFeedURL")
@@ -41,7 +41,7 @@ class _NewsPage(QWebEnginePage):
             case NewsTypeSetting.WEBSITE:
                 self.setUrl(QUrl(self._env.settings.get("newsURL")))
 
-    def acceptNavigationRequest(self, url: QUrl, navigationType: QWebEnginePage.NavigationType, isMainFrame: bool) -> None:
+    def acceptNavigationRequest(self, url: QUrl, navigationType: QWebEnginePage.NavigationType, isMainFrame: bool) -> bool:
         if navigationType == QWebEnginePage.NavigationType.NavigationTypeLinkClicked:
             if self._env.settings.get("newsType") == NewsTypeSetting.RSS and self._env.settings.get("newsFeedDefaultBrowser"):
                 webbrowser.open(url.toString())

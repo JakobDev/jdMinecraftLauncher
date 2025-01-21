@@ -1,5 +1,5 @@
+from typing import cast, Optional, TYPE_CHECKING
 from jdMinecraftLauncher.Profile import Profile
-from typing import Optional, TYPE_CHECKING
 from PyQt6.QtCore import QCoreApplication
 import traceback
 import json
@@ -14,8 +14,8 @@ if TYPE_CHECKING:
 class ProfileCollection:
     def __init__(self, env: "Environment") -> None:
         self.profileList: list[Profile] = []
+        self._loadError: str | None = None
         self.selectedProfile = ""
-        self._loadError = None
         self._env = env
 
     def loadProfiles(self) -> None:
@@ -56,8 +56,8 @@ class ProfileCollection:
 
         data = {"selectedProfile": self.selectedProfile, "profileList": []}
         for i in self.profileList:
-            data["profileList"].append(i.toDict())
-        data["version"] = 1
+            cast(list[dict], data["profileList"]).append(i.toDict())
+        data["version"] = 1  # type: ignore
 
         with open(os.path.join(self._env.dataDir, "profiles.json"), "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)

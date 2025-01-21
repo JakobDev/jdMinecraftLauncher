@@ -7,35 +7,39 @@ import sys
 
 if TYPE_CHECKING:
     from ...Environment import Environment
+    from .MainWindow import MainWindow
     from ...Profile import Profile
 
 
 class GameOutputTab(QPlainTextEdit):
-    def __init__(self, env: "Environment") -> None:
+    def __init__(self, env: "Environment", mainWindow: "MainWindow") -> None:
         super().__init__()
+
         self._env = env
+        self._mainWindow = mainWindow
+
         self.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
         self.setReadOnly(True)
 
     def dataReady(self) -> None:
         cursor = self.textCursor()
         cursor.movePosition(cursor.MoveOperation.End)
-        cursor.insertText(bytes(self.process.readAll()).decode(encoding=sys.stdout.encoding, errors="replace"))
+        cursor.insertText(bytes(self.process.readAll()).decode(encoding=sys.stdout.encoding, errors="replace"))  # type: ignore
         self.moveCursor(cursor.MoveOperation.End)
 
     def procStarted(self) -> None:
         if self.profile.launcherVisibility != 2:
-            self._env.mainWindow.hide()
-        self._env.mainWindow.playButton.setEnabled(self._env.settings.get("enableMultiLaunch"))
+            self._mainWindow.hide()
+        self._mainWindow.playButton.setEnabled(self._env.settings.get("enableMultiLaunch"))
 
     def procFinish(self) -> None:
         if self.profile.launcherVisibility == 0:
-            self._env.mainWindow.show()
-            self._env.mainWindow.setFocus()
+            self._mainWindow.show()
+            self._mainWindow.setFocus()
         elif self.profile.launcherVisibility == 1:
-            self._env.mainWindow.close()
+            self._mainWindow.close()
 
-        self._env.mainWindow.playButton.setEnabled(True)
+        self._mainWindow.playButton.setEnabled(True)
 
         if self.natives_path != "":
             try:
@@ -57,5 +61,5 @@ class GameOutputTab(QPlainTextEdit):
         if not self.process.waitForStarted():
             self.setPlainText(QCoreApplication.translate("GameOutputTab", "Failed to start Minecraft"))
             QMessageBox.critical(self, QCoreApplication.translate("GameOutputTab", "Failed to start"), QCoreApplication.translate("GameOutputTab", "Minecraft could not be started. Maybe you use a invalid Java executable."))
-            self._env.mainWindow.playButton.setEnabled(True)
+            self._mainWindow.playButton.setEnabled(True)
             return

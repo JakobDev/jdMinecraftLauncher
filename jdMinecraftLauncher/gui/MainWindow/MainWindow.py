@@ -7,12 +7,13 @@ from ...RunMinecraft import getMinecraftCommand
 from .ProfileEditorTab import ProfileEditorTab
 from .VersionEditorTab import VersionEditorTab
 from ...InstallThread import InstallThread
+from ...AccountManager import AccountBase
 from ..ProfileWindow import ProfileWindow
 from .GameOutputTab import GameOutputTab
+from typing import cast, TYPE_CHECKING
 from PyQt6.QtGui import QCloseEvent
 from .OptionsTab import OptionsTab
 from .AccountTab import AccountTab
-from typing import TYPE_CHECKING
 from .FabricTab import FabricTab
 from .ForgeTab import ForgeTab
 from .AboutTab import AboutTab
@@ -90,12 +91,12 @@ class MainWindow(QWidget, Ui_MainWindow):
 
         if platform.system() == "Linux":
             from jdMinecraftLauncher.DBusService import DBusService
-            DBusService(self._env, self._env.app)
+            DBusService(self._env, self._env.app, self)
 
         if self._env.args.launch_profile:
             profile = self._env.profileCollection.getProfileByName(self._env.args.launch_profile)
             if profile:
-                self._env.mainWindow.launchProfile(profile)
+                self.launchProfile(profile)
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
         elif self._env.args.url:
@@ -132,13 +133,13 @@ class MainWindow(QWidget, Ui_MainWindow):
         if method == "LaunchProfileByID":
             profile = self._env.profileCollection.getProfileByID(param)
             if profile:
-                self._env.profileCollection.mainWindow.launchProfile(profile)
+                self.launchProfile(profile)
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
         elif method == "LaunchProfileByName":
-            profile = self.profileCollection.env.getProfileByName(param)
+            profile = self._env.profileCollection.getProfileByName(param)
             if profile:
-                self._env.mainWindow.launchProfile(profile)
+                self.launchProfile(profile)
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
 
@@ -185,7 +186,7 @@ class MainWindow(QWidget, Ui_MainWindow):
             QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "No Internet Connection"), QCoreApplication.translate("MainWindow", "This Feature needs a internet connection"))
             return
 
-        self._env.accountManager.removeAccount(self._env.accountManager.getSelectedAccount())
+        self._env.accountManager.removeAccount(cast(AccountBase, self._env.accountManager.getSelectedAccount()))
 
         if self._env.accountManager.getSelectedAccount() is None:
             self.hide()
@@ -203,7 +204,7 @@ class MainWindow(QWidget, Ui_MainWindow):
             natives_path = ""
 
         args = getMinecraftCommand(self._env.profileCollection.getSelectedProfile(), self._env, natives_path)
-        outputTab = GameOutputTab(self._env)
+        outputTab = GameOutputTab(self._env, self)
         tabID = self.tabWidget.addTab(outputTab, QCoreApplication.translate("MainWindow", "Game Output"))
         self.tabWidget.setCurrentIndex(tabID)
         outputTab.executeCommand(profile, args, natives_path)
@@ -234,14 +235,14 @@ class MainWindow(QWidget, Ui_MainWindow):
         if self.installThread.shouldStartMinecraft() and self.installThread.getError() is None:
             self._env.updateInstalledVersions()
             self._versionEditorTab.updateVersions()
-            self.startMinecraft(self._env.current_running_profile)
+            self.startMinecraft(self._current_running_profile)
         else:
             self._env.loadVersions()
             self.profileWindow.updateVersionsList()
             self.setInstallButtonsEnabled(True)
 
     def installVersion(self, profile: "Profile") -> None:
-        self._env.current_running_profile = profile
+        self._current_running_profile = profile
         self.playButton.setEnabled(False)
         self.installThread.setup(profile)
         self.installThread.start()
@@ -268,13 +269,13 @@ class MainWindow(QWidget, Ui_MainWindow):
         if self._env.settings.get("windowIconProgress"):
             self.windowIconProgress.setProgress(progress / self.progressBar.maximum())
 
-    def event(self, event: QEvent) -> bool:
+    def event(self, event: QEvent) -> bool:  # type: ignore
         if event.type() == QEvent.Type.WinIdChange:
             self.windowIconProgress = createWindowIconProgress(self)
 
         return super().event(event)
 
-    def closeEvent(self, event: QCloseEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:  # type: ignore
         if self._env.args.dont_save_data:
             event.accept()
             sys.exit(0)

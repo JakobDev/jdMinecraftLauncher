@@ -7,6 +7,7 @@ import traceback
 
 
 if TYPE_CHECKING:
+    from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
     from jdMinecraftLauncher.Environment import Environment
 
 
@@ -20,7 +21,7 @@ def _convertProfile(env: "Environment", vanilla_profile: minecraft_launcher_lib.
         profile.useLatestSnapshot = True
         profile.enableSnapshots = True
     else:
-        profile.version = vanilla_profile["version"]
+        profile.version = vanilla_profile["version"]  # type: ignore
         for i in env.versions["versions"]:
             if i["id"] == vanilla_profile["version"]:
                 if i["type"] == "old_alpha":
@@ -35,16 +36,16 @@ def _convertProfile(env: "Environment", vanilla_profile: minecraft_launcher_lib.
         profile.customGameDirectory = True
 
     if vanilla_profile.get("customResolution") is not None:
-        profile.resolutionY = str(vanilla_profile["customResolution"]["height"])
-        profile.resolutionY = str(vanilla_profile["customResolution"]["width"])
+        profile.resolutionY = str(vanilla_profile["customResolution"]["height"])  # type: ignore
+        profile.resolutionY = str(vanilla_profile["customResolution"]["width"])  # type: ignore
         profile.customResolution = True
 
     if vanilla_profile.get("javaExecutable") is not None:
-        profile.executable = vanilla_profile["javaExecutable"]
+        profile.executable = vanilla_profile["javaExecutable"]  # type: ignore
         profile.customExecutable = True
 
     if vanilla_profile.get("javaArguments") is not None:
-        profile.arguments = " ".join(vanilla_profile["javaArguments"])
+        profile.arguments = " ".join(vanilla_profile["javaArguments"])  # type: ignore
         profile.customArguments = True
 
     return profile
@@ -58,11 +59,11 @@ def _importProfiles(env: "Environment") -> list[Profile]:
     return profileList
 
 
-def askProfileImport(env: "Environment") -> None:
+def askProfileImport(env: "Environment", mainWindow: "MainWindow") -> None:
     if not minecraft_launcher_lib.vanilla_launcher.do_vanilla_launcher_profiles_exists(env.minecraftDir):
         return
 
-    if QMessageBox.question(env.mainWindow, QCoreApplication.translate("ProfileImporter", "Import Profiles"), QCoreApplication.translate("ProfileImporter", "jdMinecraftLauncher can import Profiles from the vanilla Launcher. Do you want to import your Profiles?"), QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
+    if QMessageBox.question(mainWindow, QCoreApplication.translate("ProfileImporter", "Import Profiles"), QCoreApplication.translate("ProfileImporter", "jdMinecraftLauncher can import Profiles from the vanilla Launcher. Do you want to import your Profiles?"), QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
         return
 
     try:
@@ -78,4 +79,4 @@ def askProfileImport(env: "Environment") -> None:
     for i in profiles:
         env.profileCollection.profileList.append(i)
 
-    env.mainWindow.updateProfileList()
+    mainWindow.updateProfileList()

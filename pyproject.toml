@@ -74,3 +74,6 @@ gettext-directory = "deploy/translations"
 python-version = "3.12"
 compression = "xz"
 additional-packages = ["desktop-entry-lib"]
+
+[tool.mypy]
+disable_error_code = ["union-attr"]

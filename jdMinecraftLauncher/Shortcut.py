@@ -1,7 +1,7 @@
 from jdMinecraftLauncher.Functions import isFrozen
 from PyQt6.QtCore import QCoreApplication, QTranslator
 from PyQt6.QtWidgets import QWidget, QMessageBox
-from typing import TYPE_CHECKING
+from typing import cast, TYPE_CHECKING
 from PyQt6.QtGui import QIcon
 from enum import Enum
 import subprocess
@@ -54,6 +54,8 @@ def _createLinuxShortcut(env: "Environment", parent: QWidget | None, path: str, 
 
 
 def _ensureWindowsUrlSchema(env: "Environment", parent: QWidget | None) -> None:
+    if sys.platform != "win32":
+        return
     import winreg
 
     # Check if the Schema already exists
@@ -102,7 +104,7 @@ def createShortcut(env: "Environment", parent: QWidget | None, profile: "Profile
         if location == ShortcutLocation.DESKTOP:
             _createWindowsShortcut(str(pathlib.Path.home() / "Desktop"), profile)
         elif location == ShortcutLocation.MENU:
-            _createWindowsShortcut(os.path.join(os.getenv("APPDATA"), "Microsoft", "Windows", "Start Menu", "Programs"), profile)
+            _createWindowsShortcut(os.path.join(cast(str, os.getenv("APPDATA")), "Microsoft", "Windows", "Start Menu", "Programs"), profile)
 
 
 def askCreateShortcut(env: "Environment", parent: QWidget | None, profile: "Profile") -> None:

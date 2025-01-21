@@ -5,7 +5,7 @@ import sys
 
 
 if TYPE_CHECKING:
-    from jdMinecraftLauncher.gui.MainWindow import MainWindow
+    from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
 
 
 class WindowIconProgressBase:
@@ -21,7 +21,7 @@ class WindowIconProgressBase:
 
 class WindowIconProgressWindows(WindowIconProgressBase):
     def __init__(self, windowID: int) -> None:
-        import PyTaskbar
+        import PyTaskbar  # type:ignore[import-not-found]
 
         self._progress = PyTaskbar.Progress(windowID)
         self._progress.init()

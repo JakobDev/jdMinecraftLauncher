@@ -7,7 +7,7 @@ import sys
 
 if TYPE_CHECKING:
     from ...Environment import Environment
-    from ..MainWindow import MainWindow
+    from .MainWindow import MainWindow
 
 
 class FabricTab(QTableWidget):

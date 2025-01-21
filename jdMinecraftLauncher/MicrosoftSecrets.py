@@ -8,9 +8,15 @@ if TYPE_CHECKING:
 
 
 class MicrosoftSecrets:
+    _instance: "MicrosoftSecrets" | None = None
+
     def __init__(self, env: "Environment") -> None:
         # In my opinion, it is not possible to hide the credentials from a person who really want it
         # This little "encryption" ist just to hide it from Bots
+
+        self.client_id = ""
+        self.secret = ""
+        self.redirect_url = ""
 
         if os.path.isfile(os.path.join(env.dataDir, "secrets.json")):
             with open(os.path.join(env.dataDir, "secrets.json"), "r", encoding="utf-8") as f:
@@ -37,3 +43,9 @@ class MicrosoftSecrets:
         for c in text:
             result += chr(ord(c) - 5)
         setattr(self, obj_key, result)
+
+    @classmethod
+    def get_secrets(cls) -> "MicrosoftSecrets":
+        if cls._instance is None:
+            cls._instance = cls.__new__(cls)
+        return cls._instance

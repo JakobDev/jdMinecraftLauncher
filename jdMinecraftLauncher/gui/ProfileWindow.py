@@ -12,7 +12,7 @@ import os
 
 
 if TYPE_CHECKING:
-    from jdMinecraftLauncher.gui.MainWindow import MainWindow
+    from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
     from jdMinecraftLauncher.Environment import Environment
 
 
@@ -43,8 +43,8 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         self.enableBeta.stateChanged.connect(self.updateVersionsList)
         self.enableAlpha.stateChanged.connect(self.updateVersionsList)
         self.cancelButton.clicked.connect(self.close)
-        self.createShortcutButton.clicked.connect(lambda: askCreateShortcut(self.env, self, self.profile))
-        self.openGameDirectoryButton.clicked.connect(lambda: openFile(self.profile.getGameDirectoryPath()))
+        self.createShortcutButton.clicked.connect(lambda: askCreateShortcut(self.env, self, self.profile))  # type: ignore
+        self.openGameDirectoryButton.clicked.connect(lambda: openFile(self.profile.getGameDirectoryPath()))  # type: ignore
         self.saveProfileButton.clicked.connect(self.saveProfile)
         self.executableCheckbox.stateChanged.connect(lambda: self.executableEdit.setEnabled(self.executableCheckbox.isChecked()) or self.executableButton.setEnabled(self.executableCheckbox.isChecked()))
         self.executableButton.clicked.connect(self.browseExecutableClicked)
@@ -96,8 +96,8 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("ProfileWindow", "Invalid directory"), QCoreApplication.translate("ProfileWindow", "This directory does not contain bin/java"))
         else:
-            path = QFileDialog.getOpenFileName(directory=self.executableEdit.currentText())
-            if path[0] != "":
+            path = QFileDialog.getOpenFileName(directory=self.executableEdit.currentText())[0]
+            if path != "":
                 self.executableEdit.lineEdit().setText(path[0])
 
     def loadProfile(self, profile: "Profile", isNew: bool, copyText: bool = False) -> None:

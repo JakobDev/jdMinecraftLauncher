@@ -1,7 +1,8 @@
 from PyQt6.QtWidgets import QWidget, QInputDialog
+from .MicrosoftSecrets import MicrosoftSecrets
 from PyQt6.QtCore import QCoreApplication
 from .gui.LoginWindow import LoginWindow
-from typing import Type, TYPE_CHECKING
+from typing import cast, TYPE_CHECKING
 import minecraft_launcher_lib
 import traceback
 import uuid
@@ -41,10 +42,8 @@ class AccountBase:
 
 
 class MicrosoftAccount(AccountBase):
-    def __init__(self, env: "Environment") -> None:
+    def __init__(self) -> None:
         super().__init__()
-
-        self._env = env
 
         self._name = ""
         self._uuid = ""
@@ -52,8 +51,8 @@ class MicrosoftAccount(AccountBase):
         self._refreshToken = ""
 
     @classmethod
-    def fromJsonData(cls: Type["MicrosoftAccount"], env: "Environment", data: dict) -> "MicrosoftAccount":
-        account = cls(env)
+    def fromJsonData(cls, data: dict) -> "MicrosoftAccount":
+        account = cls()
 
         account.id = data["id"]
         account._name = data["name"]
@@ -76,7 +75,7 @@ class MicrosoftAccount(AccountBase):
         return self._accessToken
 
     def login(self, parent: QWidget | None) -> bool:
-        loginWindow = LoginWindow(self._env, parent)
+        loginWindow = LoginWindow(parent)
         loginWindow.exec()
         accountData = loginWindow.getAccountData()
 
@@ -91,8 +90,10 @@ class MicrosoftAccount(AccountBase):
         return True
 
     def reload(self) -> bool:
+        secrets = MicrosoftSecrets.get_secrets()
+
         try:
-            data = minecraft_launcher_lib.microsoft_account.complete_refresh(self._env.secrets.client_id, self._env.secrets.secret, self._env.secrets.redirect_url, self._refreshToken)
+            data = minecraft_launcher_lib.microsoft_account.complete_refresh(secrets.client_id, secrets.secret, secrets.redirect_url, self._refreshToken)
 
             self._name = data["name"]
             self._uuid = data["id"]
@@ -124,7 +125,7 @@ class DummyAccount(AccountBase):
         self._name = ""
 
     @classmethod
-    def fromJsonData(cls: Type["MicrosoftAccount"], data: dict) -> "MicrosoftAccount":
+    def fromJsonData(cls, data: dict) -> "DummyAccount":
         account = cls()
 
         account.id = data["id"]
@@ -190,7 +191,7 @@ class AccountManager:
             for accountData in data["accounts"]:
                 match accountData["type"]:
                     case "microsoft":
-                        self._accountList.append(MicrosoftAccount.fromJsonData(self._env, accountData))
+                        self._accountList.append(MicrosoftAccount.fromJsonData(accountData))
                     case "dummy":
                         self._accountList.append(DummyAccount.fromJsonData(accountData))
 
@@ -205,7 +206,7 @@ class AccountManager:
             data = {"selectedAccount": self._currentID, "accounts": []}
 
             for account in self._accountList:
-                data["accounts"].append(account.getJsonData())
+                cast(list[dict], data["accounts"]).append(account.getJsonData())
 
             try:
                 os.makedirs(self._env.dataDir)
@@ -275,7 +276,7 @@ class AccountManager:
         return account
 
     def addMicrosoftAccount(self, parent: QWidget | None) -> AccountBase | None:
-        account = MicrosoftAccount(self._env)
+        account = MicrosoftAccount()
         return self._addAccount(account, parent)
 
     def addDummyAccount(self, parent: QWidget | None) -> AccountBase | None:

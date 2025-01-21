@@ -31,7 +31,7 @@ class _SwitchAccountButton(QPushButton):
 
     def _buttonClicked(self) -> None:
         if not self._account.reload():
-            if not self._account.login():
+            if not self._account.login(self._mainWindow):
                 return
 
         self._env.accountManager.setSelectedAccount(self._account)

@@ -16,14 +16,14 @@ class InstallThread(QThread):
 
     def __init__(self, env: "Environment") -> None:
         QThread.__init__(self)
-        self.callback = {
+        self.callback: minecraft_launcher_lib.types.CallbackDict = {
             "setStatus": lambda text: self.text.emit(text),
             "setMax": lambda max_progress: self.progress_max.emit(max_progress),
             "setProgress": lambda progress: self.progress.emit(progress),
         }
-        self.forgeVersion = None
-        self.fabricVersion = None
-        self._currentError = None
+        self.forgeVersion: str | None = None
+        self.fabricVersion: str | None = None
+        self._currentError: str | None = None
         self._versionNotFound = False
         self.env = env
 

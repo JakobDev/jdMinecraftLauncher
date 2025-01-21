@@ -1,5 +1,4 @@
 from jdMinecraftLauncher.ProfileCollection import ProfileCollection
-from jdMinecraftLauncher.MicrosoftSecrets import MicrosoftSecrets
 from jdMinecraftLauncher.Settings import Settings
 from jdMinecraftLauncher.Profile import Profile
 from .AccountManager import AccountManager
@@ -9,6 +8,7 @@ from PyQt6.QtCore import QLocale
 from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
 from pathlib import Path
+from typing import cast
 import argparse
 import platform
 import requests
@@ -50,8 +50,6 @@ class Environment:
 
         self.debugMode = bool(self.args.debug)
 
-        self.secrets = MicrosoftSecrets(self)
-
         self.settings = Settings()
         self.settings.load(os.path.join(self.dataDir, "settings.json"))
 
@@ -88,14 +86,14 @@ class Environment:
     def _getSystemDataDir(self) -> str:
         match platform.system():
             case "Windows":
-                return os.getenv("APPDATA")
+                return cast(str, os.getenv("APPDATA"))
             case "Darwin":
                 return os.path.join(Path.home(), "Library", "Application Support")
             case "Haiku":
                 return os.path.join(Path.home(), "config", "settings")
             case _:
                 if os.getenv("XDG_DATA_HOME"):
-                    return os.getenv("XDG_DATA_HOME")
+                    return cast(str, os.getenv("XDG_DATA_HOME"))
                 else:
                     return os.path.join(Path.home(), ".local", "share")
 

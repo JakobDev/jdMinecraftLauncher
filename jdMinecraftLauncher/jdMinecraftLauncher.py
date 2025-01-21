@@ -38,7 +38,7 @@ def _ensureMinecraftDirectoryExists(env: Environment) -> None:
             _ensureMinecraftDirectoryExists(env)
 
 
-def _handleAccount(env: Environment, splashScreen: QSplashScreen) -> None:
+def _handleAccount(env: Environment, splashScreen: QSplashScreen) -> bool:
     account = env.accountManager.getSelectedAccount()
 
     if account is None:
@@ -121,7 +121,7 @@ def main() -> None:
     # We import it here, so jdMinecraftLauncher doen't crash if the compiled ui files and missing and is able to show the error message
     from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
 
-    env.mainWindow = MainWindow(env)
+    mainWindow = MainWindow(env)
 
     if not _handleAccount(env, splashScreen):
         sys.exit(0)
@@ -134,9 +134,9 @@ def main() -> None:
             print(QCoreApplication.translate("jdMinecraftLauncher", "Account {{name}} does not exist").replace("{{name}}", env.args.account), file=sys.stderr)
 
     if env.firstLaunch:
-        askProfileImport(env)
+        askProfileImport(env, mainWindow)
 
-    env.mainWindow.updateAccountInformation()
-    env.mainWindow.openMainWindow()
+    mainWindow.updateAccountInformation()
+    mainWindow.openMainWindow()
 
     sys.exit(app.exec())

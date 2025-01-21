@@ -34,7 +34,7 @@ def _getFlatpakSpawnCommand(profile: "Profile", env: "Environment") -> List[str]
         command += [f"--sandbox-expose-path={env.minecraftDir}"]
 
     if profile.customExecutable:
-        command += ["--sandbox-expose-path=" + pathlib.Path(profile.executable).parent.parent]
+        command += ["--sandbox-expose-path=" + str(pathlib.Path(profile.executable).parent.parent)]
 
     return command
 
@@ -44,7 +44,7 @@ def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: st
 
     account = env.accountManager.getSelectedAccount()
 
-    options = {
+    options: minecraft_launcher_lib.types.MinecraftOptions = {
         "username": account.getName(),
         "uuid": account.getMinecraftUUID(),
         "token": account.getAccessToken(),

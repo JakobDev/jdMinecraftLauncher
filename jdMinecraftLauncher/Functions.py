@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 def openFile(path: str) -> None:
     if platform.system() == "Windows":
-        os.startfile(path)
+        os.startfile(path)  # type: ignore
     elif platform.system() == "Darwin":
         subprocess.Popen(["open", path])
     else:
@@ -78,7 +78,7 @@ def _addJavaRuntimeDir(path: str, runtimeList: List[str]) -> None:
 
 
 def findJavaRuntimes() -> List[str]:
-    runtimeList = []
+    runtimeList: list[str] = []
     _addJavaRuntimeDir("/usr/lib/jvm", runtimeList)
     _addJavaRuntimeDir("/usr/lib/sdk", runtimeList)
     _addJavaRuntimeDir("/app/jvm", runtimeList)

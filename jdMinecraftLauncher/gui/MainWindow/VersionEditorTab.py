@@ -54,7 +54,7 @@ class VersionEditorTab(QTableWidget):
         self._env.updateInstalledVersions()
         self.updateVersions()
 
-    def contextMenuEvent(self, event: QContextMenuEvent) -> None:
+    def contextMenuEvent(self, event: QContextMenuEvent) -> None:  # type: ignore
         self.menu = QMenu(self)
 
         self.menu.addAction(self._uninstallVersion)

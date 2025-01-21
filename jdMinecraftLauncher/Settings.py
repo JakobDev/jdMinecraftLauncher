@@ -8,7 +8,7 @@ import os
 
 class Settings():
     def __init__(self) -> None:
-        self._default_settings = {
+        self._default_settings: dict[str, Any] = {
             "language": "default",
             "newsType": NewsTypeSetting.RSS,
             "newsFeedURL": "https://www.minecraft.net/en-us/feeds/community-content/rss",
@@ -23,8 +23,8 @@ class Settings():
             "displayServer": DisplayServerSetting.AUTO,
         }
 
-        self._user_settings = {}
-        self._loadError = None
+        self._user_settings: dict[str, Any] = {}
+        self._loadError: str | None = None
 
     def get(self, key: str) -> Any:
         """Returns the given setting"""

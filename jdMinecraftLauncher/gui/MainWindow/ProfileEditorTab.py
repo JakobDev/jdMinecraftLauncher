@@ -52,7 +52,7 @@ class ProfileEditorTab(QTableWidget):
             self._profileList.append(i)
             count += 1
 
-    def contextMenuEvent(self, event: QContextMenuEvent) -> None:
+    def contextMenuEvent(self, event: QContextMenuEvent) -> None:  # type: ignore
         self.menu = QMenu(self)
 
         addProfile = QAction(QCoreApplication.translate("ProfileEditorTab", "Add Profile"), self)
