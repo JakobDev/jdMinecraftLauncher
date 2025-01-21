@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 import json
 import os
 
@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 class MicrosoftSecrets:
-    _instance: "MicrosoftSecrets" | None = None
+    _instance: Optional["MicrosoftSecrets"] = None
 
     def __init__(self, env: "Environment") -> None:
         # In my opinion, it is not possible to hide the credentials from a person who really want it
