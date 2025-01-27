@@ -41,6 +41,8 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         selectComboBoxData(self.languageComboBox, env.settings.get("language"))
 
         match env.settings.get("newsType"):
+            case NewsTypeSetting.MINECRAFT:
+                self.newsMinecraftButton.setChecked(True)
             case NewsTypeSetting.RSS:
                 self.newsRssFeedButton.setChecked(True)
             case NewsTypeSetting.WEBSITE:
@@ -66,6 +68,7 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.displayServerLabel.setVisible(isWayland())
         self.displayServerBox.setVisible(isWayland())
 
+        self.newsMinecraftButton.toggled.connect(self._newsTypeChanged)
         self.newsRssFeedButton.toggled.connect(self._newsTypeChanged)
         self.newsFeedUrlEdit.editingFinished.connect(self._newsFeedUrlChanged)
         self.newsFeedDefaultBrowserCheckBox.stateChanged.connect(self._newsFeedDefaultBrowserCheckBoxChanged)
@@ -80,23 +83,26 @@ class OptionsTab(QWidget, Ui_OptionsTab):
 
         self._updateMinecraftDirWidgets()
 
-    def _updateNewsEnabled(self) -> None:
-        if self.newsRssFeedButton.isChecked():
-            feedEnabled = True
+    def _getSelectedNewsType(self) -> str:
+        if self.newsMinecraftButton.isChecked():
+            return NewsTypeSetting.MINECRAFT
+        elif self.newsRssFeedButton.isChecked():
+            return NewsTypeSetting.RSS
+        elif self.newsWebsiteButton.isChecked():
+            return NewsTypeSetting.WEBSITE
         else:
-            feedEnabled = False
+            raise Exception("unknown news type")
 
-        self.newsFeedUrlLabel.setEnabled(feedEnabled)
-        self.newsFeedUrlEdit.setEnabled(feedEnabled)
-        self.newsFeedDefaultBrowserCheckBox.setEnabled(feedEnabled)
-        self.newsUrlLabel.setEnabled(not feedEnabled)
-        self.newsUrlEdit.setEnabled(not feedEnabled)
+    def _updateNewsEnabled(self) -> None:
+        newsType = self._getSelectedNewsType()
+
+        self.newsFeedUrlLabel.setEnabled(newsType == NewsTypeSetting.RSS)
+        self.newsFeedUrlEdit.setEnabled(newsType == NewsTypeSetting.RSS)
+        self.newsUrlLabel.setEnabled(newsType == NewsTypeSetting.WEBSITE)
+        self.newsUrlEdit.setEnabled(newsType == NewsTypeSetting.WEBSITE)
 
     def _newsTypeChanged(self) -> None:
-        if self.newsRssFeedButton.isChecked():
-            self._env.settings.set("newsType", NewsTypeSetting.RSS)
-        else:
-            self._env.settings.set("newsType", NewsTypeSetting.WEBSITE)
+        self._env.settings.set("newsType", self._getSelectedNewsType())
 
         self._updateNewsEnabled()
         self._parent.updateNewsTab()
@@ -183,9 +189,11 @@ class OptionsTab(QWidget, Ui_OptionsTab):
     def saveSettings(self) -> None:
         self._env.settings.set("language", self.languageComboBox.currentData())
 
-        if self.newsRssFeedButton.isChecked():
+        if self.newsMinecraftButton.isChecked():
+            self._env.settings.set("newsType", NewsTypeSetting.MINECRAFT)
+        elif self.newsRssFeedButton.isChecked():
             self._env.settings.set("newsType", NewsTypeSetting.RSS)
-        else:
+        elif self.newsWebsiteButton.isChecked():
             self._env.settings.set("newsType", NewsTypeSetting.WEBSITE)
 
         self._env.settings.set("newsFeedURL", self.newsFeedUrlEdit.text())

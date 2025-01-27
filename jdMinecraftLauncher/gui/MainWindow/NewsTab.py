@@ -1,5 +1,5 @@
 from PyQt6.QtWebEngineWidgets import QWebEngineView
-from ...utils.RssGenerator import GenerateNewsPage
+from ...utils.NewsGenerator import GenerateNewsPage
 from PyQt6.QtWebEngineCore import QWebEnginePage
 from PyQt6.QtCore import QUrl, QCoreApplication
 from ...Constants import NewsTypeSetting
@@ -19,7 +19,7 @@ class _NewsPage(QWebEnginePage):
 
         self._env = env
 
-    def _renderRssFeed(self) -> None:
+    def _renderNewsPage(self) -> None:
         try:
             self.setHtml(GenerateNewsPage(self._env), QUrl("localhost"))
         except ModuleNotFoundError as ex:
@@ -36,14 +36,14 @@ class _NewsPage(QWebEnginePage):
 
     def updateNews(self) -> None:
         match self._env.settings.get("newsType"):
-            case NewsTypeSetting.RSS:
-                self._renderRssFeed()
+            case NewsTypeSetting.MINECRAFT | NewsTypeSetting.RSS:
+                self._renderNewsPage()
             case NewsTypeSetting.WEBSITE:
                 self.setUrl(QUrl(self._env.settings.get("newsURL")))
 
     def acceptNavigationRequest(self, url: QUrl, navigationType: QWebEnginePage.NavigationType, isMainFrame: bool) -> bool:
         if navigationType == QWebEnginePage.NavigationType.NavigationTypeLinkClicked:
-            if self._env.settings.get("newsType") == NewsTypeSetting.RSS and self._env.settings.get("newsFeedDefaultBrowser"):
+            if self._env.settings.get("newsFeedDefaultBrowser"):
                 webbrowser.open(url.toString())
                 return False
             else:

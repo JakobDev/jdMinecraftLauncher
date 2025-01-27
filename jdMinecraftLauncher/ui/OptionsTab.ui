@@ -42,6 +42,13 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <widget class="QRadioButton" name="newsMinecraftButton">
+        <property name="text">
+         <string>Mine&amp;craft News</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QRadioButton" name="newsRssFeedButton">
         <property name="text">
          <string>RSS Feed</string>
@@ -63,13 +70,6 @@
        </layout>
       </item>
       <item>
-       <widget class="QCheckBox" name="newsFeedDefaultBrowserCheckBox">
-        <property name="text">
-         <string>Open links in default browser</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QRadioButton" name="newsWebsiteButton">
         <property name="text">
          <string>Website</string>
@@ -89,6 +89,13 @@
          <widget class="QLineEdit" name="newsUrlEdit"/>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="newsFeedDefaultBrowserCheckBox">
+        <property name="text">
+         <string>Open links in default browser</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -177,7 +184,7 @@
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>

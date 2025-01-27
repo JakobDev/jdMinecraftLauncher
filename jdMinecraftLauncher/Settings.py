@@ -10,8 +10,8 @@ class Settings():
     def __init__(self) -> None:
         self._default_settings: dict[str, Any] = {
             "language": "default",
-            "newsType": NewsTypeSetting.RSS,
-            "newsFeedURL": "https://www.minecraft.net/en-us/feeds/community-content/rss",
+            "newsType": NewsTypeSetting.MINECRAFT,
+            "newsFeedURL": "https://jakobdev.codeberg.page/blog/rss.xml",
             "newsFeedDefaultBrowser": True,
             "newsURL": "https://www.minecraft.net",
             "enableMultiLaunch": False,

@@ -1,4 +1,5 @@
 class NewsTypeSetting:
+    MINECRAFT = "minecraft"
     RSS = "rss"
     WEBSITE = "Website"
 
