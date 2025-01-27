@@ -198,7 +198,7 @@ class AccountManager:
         except Exception:
             print(traceback.format_exc(), file=sys.stderr)
 
-    def _saveData(self) -> None:
+    def saveData(self) -> None:
         if self._env.args.dont_save_data:
             return
 
@@ -244,7 +244,7 @@ class AccountManager:
 
     def setSelectedAccount(self, account: AccountBase) -> None:
         self._currentID = account.id
-        self._saveData()
+        self.saveData()
 
     def removeAccount(self, account: AccountBase) -> None:
         for count, currentAccount in enumerate(self._accountList):
@@ -258,7 +258,7 @@ class AccountManager:
             else:
                 self._currentID = self._accountList[0].id
 
-        self._saveData()
+        self.saveData()
 
     def _addAccount(self, account: AccountBase, parent: QWidget | None) -> AccountBase | None:
         if account.login(parent) is False:
@@ -271,7 +271,7 @@ class AccountManager:
         if self.getSelectedAccount() is None:
             self._currentID = account.id
 
-        self._saveData()
+        self.saveData()
 
         return account
 

@@ -129,6 +129,8 @@ def main() -> None:
     if not _handleAccount(env, splashScreen):
         sys.exit(0)
 
+    env.accountManager.saveData()
+
     if env.args.account:
         account = env.accountManager.getAccountByName(env.args.account)
         if account is not None:
