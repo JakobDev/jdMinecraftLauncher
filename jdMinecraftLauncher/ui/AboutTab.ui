@@ -20,7 +20,7 @@
       <string notr="true">jdMinecraftLauncher {{version}}</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -33,7 +33,7 @@
       <string>This Launcher is fanmade and not from Mojang/Microsoft</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -46,7 +46,7 @@
       <string>This Program uses minecraft-launcher-lib {{version}}</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -59,7 +59,7 @@
       <string>This Program is licensed under GPL 3.0</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -69,10 +69,10 @@
    <item>
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string notr="true">Copyright © 2019-2024 JakobDev</string>
+      <string notr="true">Copyright © 2019-2025 JakobDev</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
