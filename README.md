@@ -8,7 +8,7 @@
 <h3 align="center">Unofficial classic styled Minecraft Launcher</h3>
 
 <p align="center">
-    <img alt="jdMinecraftLauncher" src="Screenshots/en/MainWindow.png"/>
+    <img alt="jdMinecraftLauncher" src="Screenshots/en/MainWindow.webp"/>
 </p>
 
 jdMinecraftLauncher is a Minecraft launcher which Look and Feel is close to the the good old official Launcher
