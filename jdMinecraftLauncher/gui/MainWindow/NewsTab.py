@@ -27,10 +27,14 @@ class _NewsPage(QWebEnginePage):
             errorText += QCoreApplication.translate("NewsTab", "You need the {{name}} Python package installed to use this feature").replace("{{name}}", cast(str, ex.name))
             self.setHtml(errorText, QUrl("localhost"))
         except Exception:
-            url = self._env.settings.get("newsFeedURL")
-            link = f'<a href="{url}">{url}</a>'
             errorText = "<h1>" + QCoreApplication.translate("NewsTab", "Error") + "</h1>"
-            errorText += "<p>" + QCoreApplication.translate("NewsTab", "Unable to render RSS feed {{url}}").replace("{{url}}", link) + "<p>"
+            match self._env.settings.get("newsType"):
+                case NewsTypeSetting.MINECRAFT:
+                    errorText += "<p>" + QCoreApplication.translate("NewsTab", "Unable to render Minecraft News") + "<p>"
+                case NewsTypeSetting.RSS:
+                    url = self._env.settings.get("newsFeedURL")
+                    link = f'<a href="{url}">{url}</a>'
+                    errorText += "<p>" + QCoreApplication.translate("NewsTab", "Unable to render RSS feed {{url}}").replace("{{url}}", link) + "<p>"
             self.setHtml(errorText, QUrl("localhost"))
             print(traceback.format_exc(), file=sys.stderr)
 
