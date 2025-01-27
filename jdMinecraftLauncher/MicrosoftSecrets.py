@@ -45,6 +45,10 @@ class MicrosoftSecrets:
         setattr(self, obj_key, result)
 
     @classmethod
+    def setup(cls, env: "Environment") -> None:
+        cls._instance = cls(env)
+
+    @classmethod
     def get_secrets(cls) -> "MicrosoftSecrets":
         if cls._instance is None:
             cls._instance = cls.__new__(cls)

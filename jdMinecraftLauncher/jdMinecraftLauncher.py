@@ -2,6 +2,7 @@ from PyQt6.QtCore import QCoreApplication, QTranslator, QLibraryInfo
 from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
 from jdMinecraftLauncher.Functions import hasInternetConnection
 from jdMinecraftLauncher.Environment import Environment
+from .MicrosoftSecrets import MicrosoftSecrets
 from .utils.UpdateChecker import checkUpdates
 from .ProfileImporter import askProfileImport
 import minecraft_launcher_lib
@@ -74,6 +75,8 @@ def main() -> None:
     app.setOrganizationName("JakobDev")
     app.setApplicationName("jdMinecraftLauncher")
     app.setDesktopFileName("page.codeberg.JakobDev.jdMinecraftLauncher")
+
+    MicrosoftSecrets.setup(env)
 
     qtTranslator = QTranslator()
     if qtTranslator.load(env.locale, "qt", "_", QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)):
