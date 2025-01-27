@@ -27,19 +27,19 @@
   <screenshots>
     <screenshot type="default">
       <caption>The main window</caption>
-      <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/en/MainWindow.png</image>
-      <image type="source" xml:lang="de">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/de/MainWindow.png</image>
-      <image type="source" xml:lang="nl">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/nl/MainWindow.png</image>
-      <image type="source" xml:lang="ru">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/ru/MainWindow.png</image>
-      <image type="source" xml:lang="es">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/es/MainWindow.png</image>
+      <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/bd51d2f917276780caa246afd574a9f5a083a912/Screenshots/en/MainWindow.webp</image>
+      <image type="source" xml:lang="de">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/bd51d2f917276780caa246afd574a9f5a083a912/Screenshots/de/MainWindow.webp</image>
+      <image type="source" xml:lang="nl">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/bd51d2f917276780caa246afd574a9f5a083a912/Screenshots/nl/MainWindow.webp</image>
+      <image type="source" xml:lang="ru">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/bd51d2f917276780caa246afd574a9f5a083a912/Screenshots/ru/MainWindow.webp</image>
+      <image type="source" xml:lang="es">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/bd51d2f917276780caa246afd574a9f5a083a912/Screenshots/es/MainWindow.webp</image>
     </screenshot>
     <screenshot>
       <caption>The profile editor</caption>
-      <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/en/ProfileWindow.png</image>
-      <image type="source" xml:lang="de">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/de/ProfileWindow.png</image>
-      <image type="source" xml:lang="nl">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/nl/ProfileWindow.png</image>
-      <image type="source" xml:lang="ru">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/ru/ProfileWindow.png</image>
-      <image type="source" xml:lang="es">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/f3c0cd1f98643555c50e7a3adc82356cc270872c/Screenshots/es/ProfileWindow.png</image>
+      <image type="source">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/bd51d2f917276780caa246afd574a9f5a083a912/Screenshots/en/ProfileWindow.webp</image>
+      <image type="source" xml:lang="de">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/bd51d2f917276780caa246afd574a9f5a083a912/Screenshots/de/ProfileWindow.webp</image>
+      <image type="source" xml:lang="nl">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/bd51d2f917276780caa246afd574a9f5a083a912/Screenshots/nl/ProfileWindow.webp</image>
+      <image type="source" xml:lang="ru">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/bd51d2f917276780caa246afd574a9f5a083a912/Screenshots/ru/ProfileWindow.webp</image>
+      <image type="source" xml:lang="es">https://codeberg.org/JakobDev/jdMinecraftLauncher/raw/commit/bd51d2f917276780caa246afd574a9f5a083a912/Screenshots/es/ProfileWindow.webp</image>
     </screenshot>
   </screenshots>
   <releases>
