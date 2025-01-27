@@ -1,3 +1,3 @@
 [flake8]
-ignore = E501 ANN101 ANN401
+ignore = E501 ANN101 ANN102 ANN401
 exclude = jdMinecraftLauncher/ui_compiled
