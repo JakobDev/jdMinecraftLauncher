@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <component type="desktop-application">
-  <!--Created with jdAppStreamEdit 9.0-->
+  <!--Created with jdAppStreamEdit 9.2-->
   <id>page.codeberg.JakobDev.jdMinecraftLauncher</id>
   <name>jdMinecraftLauncher</name>
   <summary>Unofficial classic styled Minecraft Launcher</summary>
@@ -43,6 +43,15 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="6.1" date="2025-02-01" type="stable">
+      <description>
+        <ul>
+          <li>The News are now shown in the style of the old launcher</li>
+          <li>Running Minecraft in a Subsandbox is now enabled by default in a Flatpak</li>
+          <li>Some Bugs were fixed</li>
+        </ul>
+      </description>
+    </release>
     <release version="6.0" date="2024-03-08" type="stable">
       <url>https://jakobdev.codeberg.page/blog/2024-03-08-jdminecraftlauncher-6-0</url>
       <description>
