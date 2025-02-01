@@ -18,7 +18,7 @@ class Settings():
             "extractNatives": False,
             "windowIconProgress": True,
             "customMinecraftDir": None,
-            "useFlatpakSubsandbox": False,
+            "useFlatpakSubsandbox": True,
             "checkUpdatesStartup": True,
             "displayServer": DisplayServerSetting.AUTO,
         }
