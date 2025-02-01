@@ -1,4 +1,4 @@
-include jdMinecraftLauncher/utils/RssGenerator/files/*
+include jdMinecraftLauncher/utils/NewsGenerator/files/*
 include jdMinecraftLauncher/DBusInterface.xml
 include jdMinecraftLauncher/translations/*.ts
 include jdMinecraftLauncher/Distribution.toml
