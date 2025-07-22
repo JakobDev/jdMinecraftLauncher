@@ -10,12 +10,11 @@ from ...InstallThread import InstallThread
 from ...AccountManager import AccountBase
 from ..ProfileWindow import ProfileWindow
 from .GameOutputTab import GameOutputTab
+from .ModLoaderTab import ModLoaderTab
 from typing import cast, TYPE_CHECKING
 from PyQt6.QtGui import QCloseEvent
 from .OptionsTab import OptionsTab
 from .AccountTab import AccountTab
-from .FabricTab import FabricTab
-from .ForgeTab import ForgeTab
 from .AboutTab import AboutTab
 from .NewsTab import NewsTab
 import urllib.parse
@@ -51,11 +50,12 @@ class MainWindow(QWidget, Ui_MainWindow):
         self._newsTab = NewsTab(env)
         self._newsTab.updateNews()
 
+        self.installThread = InstallThread(env)
+
         self._profileEditorTab = ProfileEditorTab(env, self)
         self._versionEditorTab = VersionEditorTab(env)
         self._optionsTab = OptionsTab(env, self)
-        self._forgeTab = ForgeTab(env, self)
-        self._fabricTab = FabricTab(env, self)
+        self._mod_loader_tab = ModLoaderTab(self)
         self._accountTab = AccountTab(env, self)
         self._aboutTab = AboutTab(env)
 
@@ -63,10 +63,11 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.tabWidget.addTab(self._profileEditorTab, QCoreApplication.translate("MainWindow", "Profile Editor"))
         self.tabWidget.addTab(self._versionEditorTab, QCoreApplication.translate("MainWindow", "Version Editor"))
         self.tabWidget.addTab(self._optionsTab, QCoreApplication.translate("MainWindow", "Options"))
-        self.tabWidget.addTab(self._forgeTab, QCoreApplication.translate("MainWindow", "Forge"))
-        self.tabWidget.addTab(self._fabricTab, QCoreApplication.translate("MainWindow", "Fabric"))
+        self.tabWidget.addTab(self._mod_loader_tab, QCoreApplication.translate("MainWindow", "Install mod loader"))
         self.tabWidget.addTab(self._accountTab, QCoreApplication.translate("MainWindow", "Accounts"))
         self.tabWidget.addTab(self._aboutTab, QCoreApplication.translate("MainWindow", "About"))
+
+        self.updateProfileList()
 
         self.newProfileButton.clicked.connect(self.newProfileButtonClicked)
         self.editProfileButton.clicked.connect(self.editProfileButtonClicked)
@@ -74,12 +75,10 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.accountButton.clicked.connect(self.logoutButtonClicked)
         self.profileComboBox.currentIndexChanged.connect(self.profileComboBoxIndexChanged)
 
-        self.updateProfileList()
-
-        self.installThread = InstallThread(env)
         self.installThread.text.connect(lambda text: self.progressBar.setFormat(text))
         self.installThread.progress.connect(self.updateProgress)
         self.installThread.progress_max.connect(lambda progress_max: self.progressBar.setMaximum(progress_max))
+        self.installThread.started.connect(lambda: self.playButton.setEnabled(False))
         self.installThread.finished.connect(self.installFinish)
 
         self._is_first_open = False
@@ -228,7 +227,7 @@ class MainWindow(QWidget, Ui_MainWindow):
 
             self.progressBar.setValue(0)
             self.progressBar.setFormat("")
-            self.setInstallButtonsEnabled(True)
+            self.playButton.setEnabled(True)
 
             return
 
@@ -239,12 +238,11 @@ class MainWindow(QWidget, Ui_MainWindow):
         else:
             self._env.loadVersions()
             self.profileWindow.updateVersionsList()
-            self.setInstallButtonsEnabled(True)
+            self.playButton.setEnabled(True)
 
     def installVersion(self, profile: "Profile") -> None:
         self._current_running_profile = profile
-        self.playButton.setEnabled(False)
-        self.installThread.setup(profile)
+        self.installThread.setupVanilla(profile)
         self.installThread.start()
 
     def updateAccountInformation(self) -> None:
@@ -257,11 +255,6 @@ class MainWindow(QWidget, Ui_MainWindow):
             self.playButton.setText(QCoreApplication.translate("MainWindow", "Play"))
 
         self._accountTab.updateAccountTable()
-
-    def setInstallButtonsEnabled(self, enabled: bool) -> None:
-        self.playButton.setEnabled(enabled)
-        self._forgeTab.setButtonsEnabled(enabled)
-        self._fabricTab.setButtonsEnabled(enabled)
 
     def updateProgress(self, progress: int) -> None:
         self.progressBar.setValue(progress)
