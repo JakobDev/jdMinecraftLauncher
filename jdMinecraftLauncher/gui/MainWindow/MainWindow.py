@@ -20,6 +20,7 @@ from .ModpackTab import ModpackTab
 from .AboutTab import AboutTab
 from .NewsTab import NewsTab
 import urllib.parse
+import traceback
 import tempfile
 import platform
 import sys
@@ -226,6 +227,20 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.updateAccountInformation()
 
     def startMinecraft(self, profile: "Profile") -> None:
+        try:
+            os.makedirs(profile.getGameDirectoryPath())
+        except FileExistsError:
+            pass
+        except Exception:
+            print(traceback.format_exc(), file=sys.stderr)
+            QMessageBox.critical(
+                self,
+                QCoreApplication.translate("MainWindow", "Could not create game directory"),
+                QCoreApplication.translate("MainWindow", "jdMinecraftLauncher was unable to create {{path}}").replace("{{path}}", profile.getGameDirectoryPath()),
+            )
+            self.playButton.setEnabled(True)
+            return
+
         if self._env.settings.get("extractNatives"):
             natives_path = tempfile.mktemp(prefix="minecraft_natives_")
         else:
