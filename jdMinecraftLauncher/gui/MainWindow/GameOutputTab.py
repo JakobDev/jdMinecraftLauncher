@@ -60,7 +60,7 @@ class GameOutputTab(QPlainTextEdit):
 
         if not self.process.waitForStarted():
             self.setPlainText(QCoreApplication.translate("GameOutputTab", "Failed to start Minecraft"))
-            QMessageBox.critical(self, QCoreApplication.translate("GameOutputTab", "Failed to start"), QCoreApplication.translate("GameOutputTab", "Minecraft could not be started. Maybe you use a invalid Java executable."))
+            QMessageBox.critical(self, QCoreApplication.translate("GameOutputTab", "Failed to start"), QCoreApplication.translate("GameOutputTab", "Minecraft could not be started. Maybe you're using an invalid Java executable."))
             self._mainWindow.playButton.setEnabled(True)
             return
 
