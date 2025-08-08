@@ -14,7 +14,24 @@ TRANSLATION_DIRS = [
 ]
 
 
+def get_lrelease_from_qmake() -> Optional[str]:
+    try:
+        result = subprocess.run(["qmake6", "-query", "QT_HOST_BINS"], capture_output=True, check=True)
+    except Exception:
+        return None
+
+    path = os.path.join(result.stdout.decode("utf-8").strip(), "lrelease")
+
+    if os.path.isfile(path):
+        return path
+    else:
+        return None
+
+
 def get_lrelease_command() -> Optional[str]:
+    if (lrelease_path := get_lrelease_from_qmake()) is not None:
+        return lrelease_path
+
     for i in ("lrelease", "lrelease6", "pyside6-lrelease", "pyside5-lrelease"):
         if shutil.which(i) is not None:
             return i
