@@ -21,7 +21,6 @@ class ModLoaderTable(QTableWidget):
         self.horizontalHeader().hide()
         self.verticalHeader().hide()
 
-
         for count, currentVersion in enumerate(modLoader.get_minecraft_versions(True)):
             versionItem = QTableWidgetItem(currentVersion)
             versionItem.setFlags(versionItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
