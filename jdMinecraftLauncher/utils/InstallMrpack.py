@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class OptionalFilesDialog(QDialog):
-    def __init__(self, parent: QWidget, optionalFiles: list[str]):
+    def __init__(self, parent: QWidget, optionalFiles: list[str]) -> None:
         super().__init__(parent)
 
         self._ok = False
