@@ -84,6 +84,12 @@ Section
 
     CreateShortcut "$SMPROGRAMS\${APPNAME}.lnk" "${APPBIN}"
 
+    ; Add file handler
+    WriteRegStr SHCTX "Software\Classes\jdMinecraftLauncher.Mrpack\shell\open" "FriendlyAppName" "jdMinecraftLauncher"
+    WriteRegStr SHCTX "Software\Classes\jdMinecraftLauncher.Mrpack\shell\open\command" "" "$\"${APPBIN}$\" file://$\"%1$\""
+
+    WriteRegStr SHCTX "Software\Classes\.mrpack\OpenWithProgids" "jdMinecraftLauncher.Mrpack" ""
+
     ; Write the installation path into the registry
     WriteRegStr SHCTX "Software\JakobDev\${APPNAME}" "${MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME}" "$INSTDIR"
     WriteRegStr SHCTX "Software\JakobDev\${APPNAME}" "${MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_VALUENAME}" "$MultiUser.InstallMode"
@@ -114,6 +120,9 @@ Section "Uninstall"
     RMDir /r "$INSTDIR"
 
     Delete "$SMPROGRAMS\${APPNAME}.lnk"
+
+    DeleteRegKey SHCTX "Software\Classes\jdMinecraftLauncher.Mrpack"
+    DeleteRegValue SHCTX "Software\Classes\.mrpack\OpenWithProgids" "jdMinecraftLauncher.Mrpack"
 
     DeleteRegKey SHCTX "Software\JakobDev\${APPNAME}"
     DeleteRegKey /ifempty SHCTX "Software\JakobDev"

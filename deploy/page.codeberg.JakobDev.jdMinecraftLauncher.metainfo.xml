@@ -285,6 +285,7 @@
     <python3>jdMinecraftLauncher</python3>
     <dbus type="user">page.codeberg.JakobDev.jdMinecraftLauncher</dbus>
     <mediatype>x-scheme-handler/jdMinecraftLauncher</mediatype>
+    <mediatype>application/x-modrinth-modpack+zip</mediatype>
   </provides>
   <keywords>
     <keyword>minecraft</keyword>

@@ -3,6 +3,7 @@ from ...ui_compiled.MainWindow import Ui_MainWindow
 from PyQt6.QtWebEngineCore import QWebEngineProfile
 from PyQt6.QtCore import QCoreApplication, QEvent
 from PyQt6.QtWidgets import QWidget, QMessageBox
+from ...utils.InstallMrpack import installMrpack
 from ...RunMinecraft import getMinecraftCommand
 from .ProfileEditorTab import ProfileEditorTab
 from .VersionEditorTab import VersionEditorTab
@@ -15,6 +16,7 @@ from typing import cast, TYPE_CHECKING
 from PyQt6.QtGui import QCloseEvent
 from .OptionsTab import OptionsTab
 from .AccountTab import AccountTab
+from .ModpackTab import ModpackTab
 from .AboutTab import AboutTab
 from .NewsTab import NewsTab
 import urllib.parse
@@ -55,7 +57,8 @@ class MainWindow(QWidget, Ui_MainWindow):
         self._profileEditorTab = ProfileEditorTab(env, self)
         self._versionEditorTab = VersionEditorTab(env)
         self._optionsTab = OptionsTab(env, self)
-        self._mod_loader_tab = ModLoaderTab(self)
+        self._modLoaderTab = ModLoaderTab(self)
+        self._modpackTab = ModpackTab(env, self)
         self._accountTab = AccountTab(env, self)
         self._aboutTab = AboutTab(env)
 
@@ -63,7 +66,8 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.tabWidget.addTab(self._profileEditorTab, QCoreApplication.translate("MainWindow", "Profile Editor"))
         self.tabWidget.addTab(self._versionEditorTab, QCoreApplication.translate("MainWindow", "Version Editor"))
         self.tabWidget.addTab(self._optionsTab, QCoreApplication.translate("MainWindow", "Options"))
-        self.tabWidget.addTab(self._mod_loader_tab, QCoreApplication.translate("MainWindow", "Install mod loader"))
+        self.tabWidget.addTab(self._modLoaderTab, QCoreApplication.translate("MainWindow", "Install mod loader"))
+        self.tabWidget.addTab(self._modpackTab, QCoreApplication.translate("MainWindow", "Install modpack"))
         self.tabWidget.addTab(self._accountTab, QCoreApplication.translate("MainWindow", "Accounts"))
         self.tabWidget.addTab(self._aboutTab, QCoreApplication.translate("MainWindow", "About"))
 
@@ -100,8 +104,13 @@ class MainWindow(QWidget, Ui_MainWindow):
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
         elif self._env.args.url:
             parse_results = urllib.parse.urlparse(self._env.args.url)
-            if parse_results.scheme == "jdminecraftlauncher":
-                self._handleCustomURL(parse_results.path)
+            match parse_results.scheme:
+                case "jdminecraftlauncher":
+                    self._handleCustomURL(parse_results.path)
+                case "file":
+                    self._handleOpenPath(parse_results.path)
+                case _:
+                    print(f"Unknown schema: {parse_results.scheme}", file=sys.stderr)
 
         self._is_first_open = True
         self.show()
@@ -141,6 +150,26 @@ class MainWindow(QWidget, Ui_MainWindow):
                 self.launchProfile(profile)
             else:
                 QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
+
+    def _handleOpenPath(self, path: str) -> None:
+        if not os.path.exists(path):
+            QMessageBox.critical(
+                self,
+                QCoreApplication.translate("MainWindow", "File not found"),
+                QCoreApplication.translate("MainWindow", "{{path}} was not found").replace("{{path}}", path),
+            )
+            return
+
+        _, ext = os.path.splitext(path)
+        if ext != ".mrpack":
+            QMessageBox.critical(
+                self,
+                QCoreApplication.translate("MainWindow", "Could not open file"),
+                QCoreApplication.translate("MainWindow", "{{path}} is not a supported file format").replace("{{path}}", path),
+            )
+            return
+
+        installMrpack(self, self._env, self.installThread, path)
 
     def updateProfileList(self) -> None:
         currentIndex = 0

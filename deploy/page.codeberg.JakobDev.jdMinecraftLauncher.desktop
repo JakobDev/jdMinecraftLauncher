@@ -1,4 +1,4 @@
-# Created with jdDesktopEntryEdit 1.4
+# Created with jdDesktopEntryEdit 1.7
 [Desktop Entry]
 Type=Application
 Name=jdMinecraftLauncher
@@ -6,7 +6,7 @@ Comment=Unofficial classic styled Minecraft Launcher
 Icon=page.codeberg.JakobDev.jdMinecraftLauncher
 TryExec=jdMinecraftLauncher
 Exec=jdMinecraftLauncher %u
-MimeType=x-scheme-handler/jdMinecraftLauncher;
+MimeType=x-scheme-handler/jdMinecraftLauncher;application/x-modrinth-modpack+zip;
 Categories=Game;
 Keywords=Minecraft;Sandbox;
 PrefersNonDefaultGPU=true

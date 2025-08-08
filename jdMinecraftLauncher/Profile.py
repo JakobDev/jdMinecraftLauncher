@@ -69,6 +69,11 @@ class Profile:
         else:
             return "java"
 
+    def setCustomVersion(self, version: str) -> None:
+        self.useLatestVersion = False
+        self.useLatestSnapshot = False
+        self.version = version
+
     @classmethod
     def load(cls: Type["Profile"], env: "Environment", objects: dict, profileVersion: int) -> "Profile":
         profile = Profile(objects["name"], env)
