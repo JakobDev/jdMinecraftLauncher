@@ -1,28 +1,34 @@
 from PyQt6.QtCore import QCoreApplication, QTranslator, QLibraryInfo
 from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
-from jdMinecraftLauncher.Functions import hasInternetConnection
-from jdMinecraftLauncher.Environment import Environment
-from .MicrosoftSecrets import MicrosoftSecrets
+from .Functions import hasInternetConnection, getDataPath, isFlatpak
+from .utils.ProfileImporter import askProfileImport
+from .core.AccountManager import AccountManager
 from .utils.UpdateChecker import checkUpdates
-from .ProfileImporter import askProfileImport
+from .Settings import Settings
+from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
+from .Globals import Globals
 import traceback
+import argparse
+import tomllib
 import sys
 import os
 
 
-def _ensureMinecraftDirectoryExists(env: Environment) -> None:
-    if os.path.isdir(env.minecraftDir):
+def _ensureMinecraftDirectoryExists() -> None:
+    if os.path.isdir(Globals.minecraftDir):
         return
 
     try:
-        os.makedirs(env.minecraftDir)
+        os.makedirs(Globals.minecraftDir)
     except Exception:
         print(traceback.format_exc(), file=sys.stderr)
 
+        settings = Settings.getInstance()
+
         text = QCoreApplication.translate("jdMinecraftLauncher", "The Minecraft directory was not found and could not be created.")
 
-        if env.settings.get("customMinecraftDir") is None:
+        if settings.get("customMinecraftDir") is None:
             QMessageBox.critical(None, QCoreApplication.translate("jdMinecraftLauncher", "Minecraft directory not found"), text)
             sys.exit(1)
         else:
@@ -31,34 +37,36 @@ def _ensureMinecraftDirectoryExists(env: Environment) -> None:
             if QMessageBox.question(None, QCoreApplication.translate("jdMinecraftLauncher", "Minecraft directory not found"), text, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
                 sys.exit(1)
 
-            env.minecraftDir = minecraft_launcher_lib.utils.get_minecraft_directory()
+            Globals.minecraftDir = minecraft_launcher_lib.utils.get_minecraft_directory()
 
-            env.settings.set("customMinecraftDir", None)
-            env.settings.save(os.path.join(env.dataDir, "settings.json"))
+            settings.set("customMinecraftDir", None)
+            settings.save()
 
-            _ensureMinecraftDirectoryExists(env)
+            _ensureMinecraftDirectoryExists()
 
 
-def _handleAccount(env: Environment, splashScreen: QSplashScreen) -> bool:
-    account = env.accountManager.getSelectedAccount()
+def _handleAccount(splashScreen: QSplashScreen) -> bool:
+    accountManager = AccountManager.getInstance()
+
+    account = accountManager.getSelectedAccount()
 
     if account is None:
         splashScreen.close()
-        if env.offlineMode:
-            QMessageBox.critical(None, QCoreApplication.translate("jdMinecraftLauncher", "No Internet Connection"), QCoreApplication.translate("jdMinecraftLauncher", "You have no Internet connection. If you start jdMinecraftLauncher for the first time, you have to login using the Internet before you can use the offline Mode."))
+        if Globals.offlineMode:
+            QMessageBox.critical(
+                None,
+                QCoreApplication.translate("jdMinecraftLauncher", "No Internet Connection"),
+                QCoreApplication.translate("jdMinecraftLauncher", "You have no Internet connection. If you start jdMinecraftLauncher for the first time, you have to login using the Internet before you can use the offline Mode.")
+            )
             return False
 
-        return env.accountManager.addMicrosoftAccount(None) is not None
+        return accountManager.addMicrosoftAccount(None) is not None
 
-    if env.offlineMode:
-        splashScreen.close()
+    if Globals.offlineMode:
         return True
 
     if account.reload():
-        splashScreen.close()
         return True
-
-    splashScreen.close()
 
     return account.login(None)
 
@@ -69,48 +77,98 @@ def main() -> None:
         sys.exit(1)
 
     app = QApplication(sys.argv)
-    env = Environment(app)
 
-    app.setWindowIcon(env.icon)
+    Globals.programDir = os.path.dirname(os.path.realpath(__file__))
+    icon = QIcon(os.path.join(Globals.programDir, "Icon.svg"))
+
+    with open(os.path.join(Globals.programDir, "version.txt"), "r", encoding="utf-8") as f:
+        Globals.launcherVersion = f.read().strip()
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("url", nargs="?")
+    parser.add_argument("--minecraft-dir", help="Set the Minecraft Directory")
+    parser.add_argument("--data-dir", help="Set the Data Directory")
+    parser.add_argument("--launch-profile", help="Launch a Profile")
+    parser.add_argument("--account", help="Launch with the selected Account")
+    parser.add_argument("--offline-mode", help="Force offline Mode", action="store_true")
+    parser.add_argument("--force-start", help="Forces the start on unsupported Platforms", action="store_true")
+    parser.add_argument("--dont-save-data", help="Don't save data to the disk (only for development usage)", action="store_true")
+    parser.add_argument("--debug", help="Start in Debug Mode", action="store_true")
+    args = parser.parse_known_args()[0]
+
+    if args.data_dir:
+        Globals.dataDir = args.data_dir
+    else:
+        Globals.dataDir = getDataPath()
+
+    if not os.path.exists(Globals.dataDir):
+        os.makedirs(Globals.dataDir)
+        Globals.firstLaunch = True
+
+    settings = Settings.getInstance()
+    settings.load()
+
+    if args.minecraft_dir:
+        Globals.minecraftDir = args.minecraft_dir
+    elif settings.get("customMinecraftDir") is not None:
+        Globals.minecraftDir = settings.get("customMinecraftDir")
+    else:
+        Globals.minecraftDir = minecraft_launcher_lib.utils.get_minecraft_directory()
+
+    if args.minecraft_dir:
+        Globals.defaultMinecraftDir = args.minecraft_dir
+    else:
+        Globals.defaultMinecraftDir = minecraft_launcher_lib.utils.get_minecraft_directory()
+
+    Globals.debugMode = bool(args.debug)
+    Globals.dontSaveData = bool(args.dont_save_data)
+
+    with open(os.path.join(Globals.programDir, "Distribution.toml"), "rb") as f:
+        distributionConfig = tomllib.load(f)
+
+    Globals.enableUpdater = not isFlatpak() and distributionConfig.get("EnableUpdater", True)
+
+    if (lang := settings.get("language")) != "default":
+        Globals.locale = lang
+
+    app.setWindowIcon(icon)
     app.setOrganizationName("JakobDev")
     app.setApplicationName("jdMinecraftLauncher")
     app.setDesktopFileName("page.codeberg.JakobDev.jdMinecraftLauncher")
 
-    MicrosoftSecrets.setup(env)
-
     qtTranslator = QTranslator()
-    if qtTranslator.load(env.locale, "qt", "_", QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)):
+    if qtTranslator.load(Globals.locale, "qt", "_", QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)):
         app.installTranslator(qtTranslator)
 
     webengineTranslator = QTranslator()
-    if webengineTranslator.load(env.locale, "qtwebengine", "_", QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)):
+    if webengineTranslator.load(Globals.locale, "qtwebengine", "_", QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)):
         app.installTranslator(webengineTranslator)
 
     appTranslator = QTranslator()
-    if appTranslator.load(env.locale, "jdMinecraftLauncher", "_", os.path.join(env.currentDir, "translations")):
+    if appTranslator.load(Globals.locale, "jdMinecraftLauncher", "_", os.path.join(Globals.programDir, "translations")):
         app.installTranslator(appTranslator)
 
-    if not minecraft_launcher_lib.utils.is_platform_supported() and not env.args.force_start:
+    if not minecraft_launcher_lib.utils.is_platform_supported() and not args.force_start:
         QMessageBox.critical(None, QCoreApplication.translate("jdMinecraftLauncher", "Unsupported Platform"), QCoreApplication.translate("jdMinecraftLauncher", "Your current Platform is not supported by jdMinecraftLauncher"))
         sys.exit(0)
 
-    if env.args.offline_mode or not hasInternetConnection():
-        env.offlineMode = True
+    if args.offline_mode or not hasInternetConnection():
+        Globals.offlineMode = True
 
-    if env.firstLaunch:
+    if Globals.firstLaunch:
         welcomeText = QCoreApplication.translate("jdMinecraftLauncher", "It appears to be your first time using jdMinecraftLauncher.") + " "
         welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "This is a custom Minecraft Launcher designed to resemble the old official launcher in appearance and feel, but with modern features like Microsoft account support.") + "<br><br>"
         welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "If you encounter any issues, please report them so that they can be addressed and resolved.") + "<br><br>"
         welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "This launcher is not an official product of Mojang/Microsoft.")
         QMessageBox.information(None, QCoreApplication.translate("jdMinecraftLauncher", "Welcome"), welcomeText)
 
-    if env.enableUpdater and not env.offlineMode and env.settings.get("checkUpdatesStartup"):
-        checkUpdates(env)
+    if Globals.enableUpdater and not Globals.offlineMode and settings.get("checkUpdatesStartup"):
+        checkUpdates()
 
-    _ensureMinecraftDirectoryExists(env)
+    _ensureMinecraftDirectoryExists()
 
     splashScreen = QSplashScreen()
-    splashScreen.setPixmap(env.icon.pixmap(128, 128))
+    splashScreen.setPixmap(icon.pixmap(128, 128))
     splashScreen.show()
 
     try:
@@ -119,29 +177,30 @@ def main() -> None:
     except ModuleNotFoundError:
         pass
 
-    env.loadVersions()
-
-    # We import it here, so jdMinecraftLauncher doen't crash if the compiled ui files and missing and is able to show the error message
+    # We import it here, so jdMinecraftLauncher doesn't crash if the compiled ui files and missing and is able to show the error message
     from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
 
-    mainWindow = MainWindow(env)
-
-    if not _handleAccount(env, splashScreen):
+    if not _handleAccount(splashScreen):
         sys.exit(0)
 
-    env.accountManager.saveData()
+    mainWindow = MainWindow()
 
-    if env.args.account:
-        account = env.accountManager.getAccountByName(env.args.account)
+    accountManager = AccountManager.getInstance()
+    accountManager.saveData()
+
+    if args.account:
+        account = accountManager.getAccountByName(args.account)
         if account is not None:
-            env.accountManager.setSelectedAccount(account)
+            accountManager.setSelectedAccount(account)
         else:
-            print(QCoreApplication.translate("jdMinecraftLauncher", "Account {{name}} does not exist").replace("{{name}}", env.args.account), file=sys.stderr)
+            print(QCoreApplication.translate("jdMinecraftLauncher", "Account {{name}} does not exist").replace("{{name}}", args.account), file=sys.stderr)
 
-    if env.firstLaunch:
-        askProfileImport(env, mainWindow)
+    if Globals.firstLaunch:
+        askProfileImport(mainWindow)
 
     mainWindow.updateAccountInformation()
-    mainWindow.openMainWindow()
+    mainWindow.openMainWindow(args.launch_profile, args.url)
+
+    splashScreen.close()
 
     sys.exit(app.exec())

@@ -1,17 +1,14 @@
 from PyQt6.QtWidgets import QTableWidget, QHeaderView, QComboBox, QApplication
-from typing import Dict, List, Any, TYPE_CHECKING
+from typing import cast, Dict, List, Any
+import minecraft_launcher_lib
+from pathlib import Path
 import subprocess
 import platform
 import requests
 import shutil
 import socket
-import json
 import sys
 import os
-
-
-if TYPE_CHECKING:
-    from jdMinecraftLauncher.Environment import Environment
 
 
 def openFile(path: str) -> None:
@@ -21,22 +18,6 @@ def openFile(path: str) -> None:
         subprocess.Popen(["open", path])
     else:
         subprocess.Popen(["xdg-open", path])
-
-
-def saveProfiles(env: "Environment") -> None:
-    if env.args.dont_save_data:
-        return
-
-    profileList = []
-    for a in env.profiles:
-        b = vars(a)
-        c = {}
-        for key, value in b.items():
-            if value != env:
-                c[key] = value
-        profileList.append(c)
-    with open(os.path.join(env.dataDir, "profiles.json"), 'w', encoding='utf-8') as f:
-        json.dump({"selectedProfile": env.selectedProfile, "profileList": profileList}, f, ensure_ascii=False, indent=4)
 
 
 def hasInternetConnection() -> bool:
@@ -118,3 +99,29 @@ def selectComboBoxData(box: QComboBox, data: Any, default_index: int = 0) -> Non
 def isWayland() -> bool:
     """Returns if the Program is running in a Wayland session"""
     return QApplication.platformName() == "wayland"
+
+
+def _getSystemDataDir() -> str:
+    match platform.system():
+        case "Windows":
+            return cast(str, os.getenv("APPDATA"))
+        case "Darwin":
+            return os.path.join(Path.home(), "Library", "Application Support")
+        case "Haiku":
+            return os.path.join(Path.home(), "config", "settings")
+        case _:
+            if os.getenv("XDG_DATA_HOME"):
+                return cast(str, os.getenv("XDG_DATA_HOME"))
+            else:
+                return os.path.join(Path.home(), ".local", "share")
+
+
+def getDataPath() -> str:
+    if os.path.isdir(os.path.join(minecraft_launcher_lib.utils.get_minecraft_directory(), "jdMinecraftLauncher")):
+        return os.path.join(minecraft_launcher_lib.utils.get_minecraft_directory(), "jdMinecraftLauncher")
+
+    dataPath = _getSystemDataDir()
+    if os.path.isdir(os.path.join(dataPath, "jdMinecraftLauncher")):
+        return os.path.join(dataPath, "jdMinecraftLauncher")
+
+    return os.path.join(dataPath, "JakobDev", "jdMinecraftLauncher")

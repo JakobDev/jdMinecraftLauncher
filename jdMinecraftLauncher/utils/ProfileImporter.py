@@ -1,18 +1,20 @@
-from jdMinecraftLauncher.Profile import Profile
+from ..core.ProfileCollection import ProfileCollection
+from ..core.VersionCollection import VersionCollection
 from PyQt6.QtCore import QCoreApplication
 from PyQt6.QtWidgets import QMessageBox
 from typing import TYPE_CHECKING
 import minecraft_launcher_lib
+from ..Globals import Globals
+from ..Profile import Profile
 import traceback
 
 
 if TYPE_CHECKING:
     from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
-    from jdMinecraftLauncher.Environment import Environment
 
 
-def _convertProfile(env: "Environment", vanilla_profile: minecraft_launcher_lib.types.VanillaLauncherProfile) -> Profile:
-    profile = Profile(vanilla_profile["name"], env)
+def _convertProfile(vanilla_profile: minecraft_launcher_lib.types.VanillaLauncherProfile) -> Profile:
+    profile = ProfileCollection.getInstance().createProfile(vanilla_profile["name"])
 
     profile.useLatestVersion = False
     if vanilla_profile["versionType"] == "latest-release":
@@ -22,17 +24,18 @@ def _convertProfile(env: "Environment", vanilla_profile: minecraft_launcher_lib.
         profile.enableSnapshots = True
     else:
         profile.version = vanilla_profile["version"]  # type: ignore
-        for i in env.versions["versions"]:
-            if i["id"] == vanilla_profile["version"]:
-                if i["type"] == "old_alpha":
-                    profile.enableAlpha = True
-                elif i["type"] == "old_beta":
-                    profile.enableBeta = True
-                elif i["type"] == "snapshot":
-                    profile.enableSnapshots = True
+        for version in VersionCollection.getInstance().getVersionList():
+            if version["id"] == vanilla_profile["version"]:
+                match version["type"]:
+                    case "old_alpha":
+                        profile.enableAlpha = True
+                    case "old_beta":
+                        profile.enableBeta = True
+                    case "snapshot":
+                        profile.enableSnapshots = True
 
     if vanilla_profile.get("gameDirectory") is not None:
-        profile.gameDirectoryPath = vanilla_profile["gameDirectory"]
+        profile.gameDirectoryPath = vanilla_profile["gameDirectory"]  # type: ignore
         profile.customGameDirectory = True
 
     if vanilla_profile.get("customResolution") is not None:
@@ -51,32 +54,31 @@ def _convertProfile(env: "Environment", vanilla_profile: minecraft_launcher_lib.
     return profile
 
 
-def _importProfiles(env: "Environment") -> list[Profile]:
+def _importProfiles() -> list[Profile]:
     profileList = []
-    for i in minecraft_launcher_lib.vanilla_launcher.load_vanilla_launcher_profiles(env.minecraftDir):
-        profileList.append(_convertProfile(env, i))
+    for i in minecraft_launcher_lib.vanilla_launcher.load_vanilla_launcher_profiles(Globals.minecraftDir):
+        profileList.append(_convertProfile(i))
 
     return profileList
 
 
-def askProfileImport(env: "Environment", mainWindow: "MainWindow") -> None:
-    if not minecraft_launcher_lib.vanilla_launcher.do_vanilla_launcher_profiles_exists(env.minecraftDir):
+def askProfileImport(mainWindow: "MainWindow") -> None:
+    if not minecraft_launcher_lib.vanilla_launcher.do_vanilla_launcher_profiles_exists(Globals.minecraftDir):
         return
 
     if QMessageBox.question(mainWindow, QCoreApplication.translate("ProfileImporter", "Import Profiles"), QCoreApplication.translate("ProfileImporter", "jdMinecraftLauncher can import Profiles from the vanilla Launcher. Do you want to import your Profiles?"), QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
         return
 
     try:
-        profiles = _importProfiles(env)
+        profiles = _importProfiles()
     except Exception:
-        msgBox = QMessageBox()
+        msgBox = QMessageBox(mainWindow)
         msgBox.setWindowTitle(QCoreApplication.translate("ProfileImporter", "Error"))
         msgBox.setText(QCoreApplication.translate("ProfileImporter", "Due to an error, the profiles could not be imported. Sorry for that."))
         msgBox.setDetailedText(traceback.format_exc())
         msgBox.exec()
         return
 
-    for i in profiles:
-        env.profileCollection.profileList.append(i)
-
-    mainWindow.updateProfileList()
+    profileCollection = ProfileCollection.getInstance()
+    for currentProfile in profiles:
+        profileCollection.updateProfile(currentProfile)

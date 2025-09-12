@@ -1,12 +1,13 @@
+from .core.ProfileCollection import ProfileCollection
 from PyQt6.QtCore import QThread, pyqtSignal
 from typing import Optional, TYPE_CHECKING
 import minecraft_launcher_lib
+from .Globals import Globals
 from enum import Enum
 import traceback
 
 
 if TYPE_CHECKING:
-    from .Environment import Environment
     from .Profile import Profile
 
 
@@ -18,15 +19,24 @@ class _InstallType(Enum):
 
 
 class InstallThread(QThread):
-    progress_max = pyqtSignal("int")
+    _instance: Optional["InstallThread"] = None
+
+    progressMax = pyqtSignal("int")
     progress = pyqtSignal("int")
     text = pyqtSignal("QString")
 
-    def __init__(self, env: "Environment") -> None:
+    @classmethod
+    def getInstance(cls) -> "InstallThread":
+        if cls._instance is None:
+            cls._instance = cls()
+
+        return cls._instance
+
+    def __init__(self) -> None:
         QThread.__init__(self)
         self.callback: minecraft_launcher_lib.types.CallbackDict = {
             "setStatus": lambda text: self.text.emit(text),
-            "setMax": lambda max_progress: self.progress_max.emit(max_progress),
+            "setMax": lambda max_progress: self.progressMax.emit(max_progress),
             "setProgress": lambda progress: self.progress.emit(progress),
         }
 
@@ -38,7 +48,6 @@ class InstallThread(QThread):
         self._modLoaderID: str | None = None
         self._mrpackPath: str | None = None
         self._versionNotFound = False
-        self._env = env
 
     def __del__(self) -> None:
         self.wait()
@@ -81,14 +90,23 @@ class InstallThread(QThread):
         try:
             match self._installType:
                 case _InstallType.Vanilla:
-                    minecraft_launcher_lib.install.install_minecraft_version(self._minecraftVersion, self._env.minecraftDir, callback=self.callback)
+                    assert self._minecraftVersion is not None
+
+                    minecraft_launcher_lib.install.install_minecraft_version(self._minecraftVersion, Globals.minecraftDir, callback=self.callback)
                 case _InstallType.ModLoader:
+                    assert self._minecraftVersion is not None
+                    assert self._modLoaderID is not None
+
                     modLoader = minecraft_launcher_lib.mod_loader.get_mod_loader(self._modLoaderID)
-                    modLoader.install(self._minecraftVersion, self._env.minecraftDir, callback=self.callback)
+                    modLoader.install(self._minecraftVersion, Globals.minecraftDir, callback=self.callback)
                 case _InstallType.Mrpack:
+                    assert self._mrpackOptionalFiles is not None
+                    assert self._currentProfile is not None
+                    assert self._mrpackPath is not None
+
                     minecraft_launcher_lib.mrpack.install_mrpack(
                         self._mrpackPath,
-                        self._env.minecraftDir,
+                        Globals.minecraftDir,
                         modpack_directory=self._currentProfile.getGameDirectoryPath(),
                         callback=self.callback,
                         mrpack_install_options={
@@ -97,7 +115,10 @@ class InstallThread(QThread):
                     )
 
                     self._currentProfile.setCustomVersion(minecraft_launcher_lib.mrpack.get_mrpack_launch_version(self._mrpackPath))
-                    self._env.profileCollection.save()
+
+                    profileCollection = ProfileCollection.getInstance()
+                    profileCollection.updateProfile(self._currentProfile)
+                    profileCollection.save()
         except minecraft_launcher_lib.exceptions.VersionNotFound:
             self._versionNotFound = True
         except Exception:

@@ -1,14 +1,12 @@
-from typing import TypedDict, TYPE_CHECKING
 from ...Constants import NewsTypeSetting
+from ...Settings import Settings
+from ...Globals import Globals
 import minecraft_launcher_lib
+from typing import TypedDict
 import requests
 import base64
 import html
 import os
-
-
-if TYPE_CHECKING:
-    from ...Environment import Environment
 
 
 class _NewsEntry(TypedDict):
@@ -46,11 +44,11 @@ def _getMinecraftNews() -> list[_NewsEntry]:
     return newsList
 
 
-def _parseRssFeed(env: "Environment") -> list[_NewsEntry]:
+def _parseRssFeed() -> list[_NewsEntry]:
     import feedparser  # type:ignore[import-untyped]
 
-    header = {"user-agent": f"jdMinecraftLauncher/{env.launcherVersion}"}
-    r = requests.get(env.settings.get("newsFeedURL"), headers=header)
+    header = {"user-agent": f"jdMinecraftLauncher/{Globals.launcherVersion}"}
+    r = requests.get(Settings.getInstance().get("newsFeedURL"), headers=header)
     feed = feedparser.parse(r.text)
 
     newsList = []
@@ -75,20 +73,41 @@ def _parseRssFeed(env: "Environment") -> list[_NewsEntry]:
     return newsList
 
 
-def GenerateNewsPage(env: "Environment") -> str:
-    with open(os.path.join(env.currentDir, "utils", "NewsGenerator", "files", "News.html"), "r", encoding="utf-8") as f:
+def _prepareTemplate() -> str:
+    with open(os.path.join(Globals.programDir, "utils", "NewsGenerator", "files", "News.html"), "r", encoding="utf-8") as f:
         template = f.read()
 
-    with open(os.path.join(env.currentDir, "utils", "NewsGenerator", "files", "Background.png"), "rb") as f:
+    with open(os.path.join(Globals.programDir, "utils", "NewsGenerator", "files", "Background.png"), "rb") as f:
         template = template.replace("{{BackgroundImage}}", base64.b64encode(f.read()).decode("utf-8"))
 
-    with open(os.path.join(env.currentDir, "utils", "NewsGenerator", "files", "Style.css"), "r", encoding="utf-8") as f:
+    with open(os.path.join(Globals.programDir, "utils", "NewsGenerator", "files", "Style.css"), "r", encoding="utf-8") as f:
         template = template.replace("{{Style}}", f.read())
 
-    match env.settings.get("newsType"):
+    return template
+
+
+def GenerateNewsPage() -> str:
+    with open(os.path.join(Globals.programDir, "utils", "NewsGenerator", "files", "News.html"), "r", encoding="utf-8") as f:
+        template = f.read()
+
+    with open(os.path.join(Globals.programDir, "utils", "NewsGenerator", "files", "Background.png"), "rb") as f:
+        template = template.replace("{{BackgroundImage}}", base64.b64encode(f.read()).decode("utf-8"))
+
+    with open(os.path.join(Globals.programDir, "utils", "NewsGenerator", "files", "Style.css"), "r", encoding="utf-8") as f:
+        template = template.replace("{{Style}}", f.read())
+
+    match Settings.getInstance().get("newsType"):
         case NewsTypeSetting.MINECRAFT:
             template = template.replace("{{ItemList}}", _newsListToHtml(_getMinecraftNews()))
         case NewsTypeSetting.RSS:
-            template = template.replace("{{ItemList}}", _newsListToHtml(_parseRssFeed(env)))
+            template = template.replace("{{ItemList}}", _newsListToHtml(_parseRssFeed()))
+
+    return template
+
+
+def GeneratePlaceholderNewsPage(text: str) -> str:
+    template = _prepareTemplate()
+
+    template = template.replace("{{ItemList}}", text)
 
     return template

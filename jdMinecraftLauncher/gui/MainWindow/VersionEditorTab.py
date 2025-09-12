@@ -1,19 +1,21 @@
 from PyQt6.QtWidgets import QTableWidget, QAbstractItemView, QMenu, QHeaderView, QTableWidgetItem
+from ...core.VersionCollection import VersionCollection
 from PyQt6.QtGui import QAction, QContextMenuEvent
 from PyQt6.QtCore import Qt, QCoreApplication
-from typing import TYPE_CHECKING
-import shutil
-import os
+from ...Functions import clearTableWidget
 
 
-if TYPE_CHECKING:
-    from ...Environment import Environment
+class _TableColumns:
+    VERSION = 0
+    TYPE = 1
 
 
 class VersionEditorTab(QTableWidget):
-    def __init__(self, env: "Environment") -> None:
+    def __init__(self) -> None:
         super().__init__(0, 2)
-        self._env = env
+
+        self._versionCollection = VersionCollection.getInstance()
+        self._versionCollection.versionsUpdated.connect(self._updateVersions)
 
         self._uninstallVersion = QAction(QCoreApplication.translate("VersionEditorTab", "Uninstall Version"), self)
         self._uninstallVersion.triggered.connect(self._uninstallVersionClicked)
@@ -26,37 +28,36 @@ class VersionEditorTab(QTableWidget):
         self.verticalHeader().hide()
         self.setShowGrid(False)
 
-        self.updateVersions()
+        self._updateVersions()
 
-    def updateVersions(self) -> None:
-        if len(self._env.installedVersion) == 0:
+    def _updateVersions(self) -> None:
+        installedVersions = VersionCollection.getInstance().getInstalledVersions()
+
+        if len(installedVersions) == 0:
             self._uninstallVersion.setEnabled(False)
         else:
             self._uninstallVersion.setEnabled(True)
 
-        while self.rowCount() > 0:
-            self.removeRow(0)
+        clearTableWidget(self)
 
-        count = 0
-        for i in self._env.installedVersion:
-            idItem = QTableWidgetItem(i["id"])
+        for row, version in enumerate(installedVersions):
+            idItem = QTableWidgetItem(version["id"])
             idItem.setFlags(idItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
-            typeItem = QTableWidgetItem(i["type"])
+
+            typeItem = QTableWidgetItem(version["type"])
             typeItem.setFlags(typeItem.flags() ^ Qt.ItemFlag.ItemIsEditable)
-            self.insertRow(count)
-            self.setItem(count, 0, idItem)
-            self.setItem(count, 1, typeItem)
-            count += 1
+
+            self.insertRow(row)
+            self.setItem(row, _TableColumns.VERSION, idItem)
+            self.setItem(row, _TableColumns.TYPE, typeItem)
 
     def _uninstallVersionClicked(self) -> None:
-        shutil.rmtree(os.path.join(self._env.minecraftDir, "versions", self._env.installedVersion[self.currentRow()]["id"]))
-        del self._env.installedVersion[self.currentRow()]
-        self._env.updateInstalledVersions()
-        self.updateVersions()
+        version = self.item(self.currentRow(), _TableColumns.VERSION).text()
+        self._versionCollection.uninstallVersion(version)
 
     def contextMenuEvent(self, event: QContextMenuEvent) -> None:  # type: ignore
-        self.menu = QMenu(self)
+        menu = QMenu(self)
 
-        self.menu.addAction(self._uninstallVersion)
+        menu.addAction(self._uninstallVersion)
 
-        self.menu.popup(event.globalPos())
+        menu.popup(event.globalPos())

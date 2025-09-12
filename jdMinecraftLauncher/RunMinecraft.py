@@ -1,7 +1,11 @@
+from .core.AccountManager import AccountManager
+from PyQt6.QtCore import QProcessEnvironment
 from .Functions import isFlatpak, isWayland
 from .Constants import DisplayServerSetting
-from typing import List, TYPE_CHECKING
+from typing import TypedDict, TYPE_CHECKING
+from .Settings import Settings
 import minecraft_launcher_lib
+from .Globals import Globals
 import pathlib
 import shutil
 import shlex
@@ -9,11 +13,15 @@ import os
 
 
 if TYPE_CHECKING:
-    from .Environment import Environment
     from .Profile import Profile
 
 
-def _getFlatpakSpawnCommand(profile: "Profile", env: "Environment") -> List[str]:
+class CommandResult(TypedDict):
+    command: list[str]
+    env: QProcessEnvironment
+
+
+def _getFlatpakSpawnCommand(profile: "Profile") -> list[str]:
     command = [
         "flatpak-spawn",
         "--sandbox",
@@ -26,12 +34,12 @@ def _getFlatpakSpawnCommand(profile: "Profile", env: "Environment") -> List[str]
 
     if profile.customGameDirectory:
         command += [
-            f"--sandbox-expose-path-ro={env.minecraftDir}",
+            f"--sandbox-expose-path-ro={Globals.minecraftDir}",
             f"--sandbox-expose-path={profile.getGameDirectoryPath()}",
-            "--sandbox-expose-path=" + os.path.join(env.minecraftDir, "versions", profile.getVersionID()),
+            "--sandbox-expose-path=" + os.path.join(Globals.minecraftDir, "versions", profile.getVersionID()),
         ]
     else:
-        command += [f"--sandbox-expose-path={env.minecraftDir}"]
+        command += [f"--sandbox-expose-path={Globals.minecraftDir}"]
 
     if profile.customExecutable:
         command += ["--sandbox-expose-path=" + str(pathlib.Path(profile.executable).parent.parent)]
@@ -39,17 +47,17 @@ def _getFlatpakSpawnCommand(profile: "Profile", env: "Environment") -> List[str]
     return command
 
 
-def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: str) -> List[str]:
+def getMinecraftCommand(profile: "Profile", natives_path: str | None) -> CommandResult:
     version = profile.getVersionID()
 
-    account = env.accountManager.getSelectedAccount()
+    account = AccountManager.getInstance().getSelectedAccount()
 
     options: minecraft_launcher_lib.types.MinecraftOptions = {
         "username": account.getName(),
         "uuid": account.getMinecraftUUID(),
         "token": account.getAccessToken(),
         "launcherName": "jdMinecraftLauncher",
-        "launcherVersion": env.launcherVersion,
+        "launcherVersion": Globals.launcherVersion,
         "gameDirectory": profile.getGameDirectoryPath(),
     }
 
@@ -78,11 +86,11 @@ def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: st
     if profile.disableChat:
         options["disableChat"] = True
 
-    if natives_path != "":
+    if natives_path is not None:
         options["nativesDirectory"] = natives_path
-        minecraft_launcher_lib.natives.extract_natives(version, env.minecraftDir, natives_path)
+        minecraft_launcher_lib.natives.extract_natives(version, Globals.minecraftDir, natives_path)
 
-    command = minecraft_launcher_lib.command.get_minecraft_command(version, env.minecraftDir, options)
+    command = minecraft_launcher_lib.command.get_minecraft_command(version, Globals.minecraftDir, options)
 
     if profile.hasMinecraftOptions:
         command += shlex.split(profile.minecraftOptions)
@@ -90,14 +98,23 @@ def getMinecraftCommand(profile: "Profile", env: "Environment", natives_path: st
     if profile.useGameMode and shutil.which("gamemoderun"):
         command.insert(0, "gamemoderun")
 
-    if isFlatpak() and env.settings.get("useFlatpakSubsandbox"):
-        command = _getFlatpakSpawnCommand(profile, env) + command
+    settings = Settings.getInstance()
+
+    if isFlatpak() and settings.get("useFlatpakSubsandbox"):
+        command = _getFlatpakSpawnCommand(profile) + command
+
+    env = QProcessEnvironment.systemEnvironment()
 
     if isWayland():
-        match env.settings.get("displayServer"):
+        match settings.get("displayServer"):
             case DisplayServerSetting.WAYLAND:
-                command = ["env", "-u", "DISPLAY"] + command
+                env.insert("XDG_SESSION_TYPE", "wayland")
+                env.remove("DISPLAY")
             case DisplayServerSetting.XWAYLAND:
-                command = ["env", "-u", "WAYLAND_DISPLAY"] + command
+                env.insert("XDG_SESSION_TYPE", "x11")
+                env.remove("WAYLAND_DISPLAY")
 
-    return command
+    return {
+        "command": command,
+        "env": env,
+    }
