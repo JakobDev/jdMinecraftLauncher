@@ -1,28 +1,24 @@
-from typing import Type, TYPE_CHECKING
+from .core.VersionCollection import VersionCollection
+from .Constants import LauncherVisibility
 import minecraft_launcher_lib
-import uuid
-
-
-if TYPE_CHECKING:
-    from jdMinecraftLauncher.Environment import Environment
+from .Globals import Globals
+from typing import Type
 
 
 class Profile:
-    def __init__(self, name: str, env: "Environment") -> None:
-        self.env: "Environment" = env
-
-        self.id = self._generateProfileID()
+    def __init__(self, id: str, name: str) -> None:
+        self.id = id
         self.name = name
         self.version = ""
         self.useLatestVersion = True
         self.useLatestSnapshot = False
         self.customGameDirectory = False
-        self.gameDirectoryPath = env.minecraftDir
+        self.gameDirectoryPath = Globals.minecraftDir
         self.customResolution = False
         self.resolutionX = "854"
         self.resolutionY = "480"
         self.customLauncherVisibility = False
-        self.launcherVisibility = 0
+        self.launcherVisibility = LauncherVisibility.HIDE
         self.enableSnapshots = False
         self.enableBeta = False
         self.enableAlpha = False
@@ -40,20 +36,11 @@ class Profile:
         self.minecraftOptions = ""
         self.useGameMode = False
 
-    def _generateProfileID(self) -> str:
-        while True:
-            current_id = str(uuid.uuid4())
-            for i in self.env.profileCollection.profileList:
-                if i.id == current_id:
-                    break
-            else:
-                return current_id
-
     def getVersionID(self) -> str:
         if self.useLatestVersion:
-            return self.env.versions["latest"]["release"]
+            return VersionCollection.getInstance().getLatestRelease()
         elif self.useLatestSnapshot:
-            return self.env.versions["latest"]["snapshot"]
+            return VersionCollection.getInstance().getLatestSnapshot()
         else:
             return self.version
 
@@ -61,7 +48,7 @@ class Profile:
         if self.customGameDirectory:
             return self.gameDirectoryPath
         else:
-            return self.env.minecraftDir
+            return Globals.minecraftDir
 
     def getJavaPath(self) -> str:
         if self.customExecutable:
@@ -75,13 +62,8 @@ class Profile:
         self.version = version
 
     @classmethod
-    def load(cls: Type["Profile"], env: "Environment", objects: dict, profileVersion: int) -> "Profile":
-        profile = Profile(objects["name"], env)
-
-        if "id" in objects:
-            profile.id = objects["id"]
-        else:
-            profile.id = profile._generateProfileID()
+    def load(cls: Type["Profile"], objects: dict, profileVersion: int) -> "Profile":
+        profile = Profile(objects["id"], objects["name"])
 
         profile.version = objects["version"]
         profile.useLatestVersion = objects["useLatestVersion"]

@@ -1,8 +1,9 @@
-from jdMinecraftLauncher.Functions import isFrozen
 from PyQt6.QtCore import QCoreApplication, QTranslator
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from typing import cast, TYPE_CHECKING
+from ..Functions import isFrozen
 from PyQt6.QtGui import QIcon
+from ..Globals import Globals
 from enum import Enum
 import subprocess
 import platform
@@ -12,7 +13,6 @@ import os
 
 
 if TYPE_CHECKING:
-    from jdMinecraftLauncher.Environment import Environment
     from jdMinecraftLauncher.Profile import Profile
 
 
@@ -21,7 +21,7 @@ class ShortcutLocation(Enum):
     MENU = 1
 
 
-def _createLinuxShortcut(env: "Environment", parent: QWidget | None, path: str, profile: "Profile") -> None:
+def _createLinuxShortcut(parent: QWidget | None, path: str, profile: "Profile") -> None:
     try:
         import desktop_entry_lib
     except ModuleNotFoundError:
@@ -31,16 +31,16 @@ def _createLinuxShortcut(env: "Environment", parent: QWidget | None, path: str, 
     entry = desktop_entry_lib.DesktopEntry()
     entry.Name.default_text = profile.name
     entry.Icon = "page.codeberg.JakobDev.jdMinecraftLauncher"
-    entry.Exec = subprocess.list2cmdline(["xdg-open", "jdMinecraftLauncher:LaunchProfileByID/" + profile.id])
+    entry.Exec = subprocess.list2cmdline(["xdg-open", f"jdMinecraftLauncher:LaunchProfileByID/{profile.id}"])
     entry.Categories.append("Game")
     entry.Comment.default_text = f"Start the {profile.name} profile in jdMinecraftLauncher"
 
-    for langFile in os.listdir(os.path.join(env.currentDir, "translations")):
+    for langFile in os.listdir(os.path.join(Globals.programDir, "translations")):
         if not langFile.endswith(".qm"):
             continue
 
         lang = langFile.removeprefix("jdMinecraftLauncher_").removesuffix(".qm")
-        fullPath = os.path.join(env.currentDir, "translations", langFile)
+        fullPath = os.path.join(Globals.programDir, "translations", langFile)
         translator = QTranslator()
         translator.load(fullPath)
         comment = translator.translate("Shortcut", "Start the {{name}} profile in jdMinecraftLauncher").replace("{{name}}", profile.name)
@@ -53,9 +53,10 @@ def _createLinuxShortcut(env: "Environment", parent: QWidget | None, path: str, 
     subprocess.run(["chmod", "+x", os.path.join(path, f"page.codeberg.JakobDev.Profile.{profile.name}.desktop")])
 
 
-def _ensureWindowsUrlSchema(env: "Environment", parent: QWidget | None) -> None:
+def _ensureWindowsUrlSchema(parent: QWidget | None) -> None:
     if sys.platform != "win32":
         return
+
     import winreg
 
     # Check if the Schema already exists
@@ -93,21 +94,22 @@ def canCreateShortcuts() -> bool:
     return platform.system() in ["Linux", "Windows"]
 
 
-def createShortcut(env: "Environment", parent: QWidget | None, profile: "Profile", location: ShortcutLocation) -> None:
-    if platform.system() == "Linux":
-        if location == ShortcutLocation.DESKTOP:
-            _createLinuxShortcut(env, parent, subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), profile)
-        elif location == ShortcutLocation.MENU:
-            _createLinuxShortcut(env, parent, os.path.expanduser("~/.local/share/applications"), profile)
-    elif platform.system() == "Windows":
-        _ensureWindowsUrlSchema(env, parent)
-        if location == ShortcutLocation.DESKTOP:
-            _createWindowsShortcut(str(pathlib.Path.home() / "Desktop"), profile)
-        elif location == ShortcutLocation.MENU:
-            _createWindowsShortcut(os.path.join(cast(str, os.getenv("APPDATA")), "Microsoft", "Windows", "Start Menu", "Programs"), profile)
+def createShortcut(parent: QWidget | None, profile: "Profile", location: ShortcutLocation) -> None:
+    match platform.system():
+        case "Linux":
+            if location == ShortcutLocation.DESKTOP:
+                _createLinuxShortcut(parent, subprocess.check_output(["xdg-user-dir", "DESKTOP"]).decode("utf-8").strip(), profile)
+            elif location == ShortcutLocation.MENU:
+                _createLinuxShortcut(parent, os.path.expanduser("~/.local/share/applications"), profile)
+        case "Windows":
+            _ensureWindowsUrlSchema(parent)
+            if location == ShortcutLocation.DESKTOP:
+                _createWindowsShortcut(str(pathlib.Path.home() / "Desktop"), profile)
+            elif location == ShortcutLocation.MENU:
+                _createWindowsShortcut(os.path.join(cast(str, os.getenv("APPDATA")), "Microsoft", "Windows", "Start Menu", "Programs"), profile)
 
 
-def askCreateShortcut(env: "Environment", parent: QWidget | None, profile: "Profile") -> None:
+def askCreateShortcut(parent: QWidget | None, profile: "Profile") -> None:
     box = QMessageBox(parent)
     box.setText(QCoreApplication.translate("Shortcut", "Select where you want to create the Shortcut"))
     box.setWindowTitle(QCoreApplication.translate("Shortcut", "Create Shortcut"))
@@ -128,9 +130,9 @@ def askCreateShortcut(env: "Environment", parent: QWidget | None, profile: "Prof
     box.exec()
 
     if box.clickedButton() == desktopButton:
-        createShortcut(env, parent, profile, ShortcutLocation.DESKTOP)
+        createShortcut(parent, profile, ShortcutLocation.DESKTOP)
     elif box.clickedButton() == menuButton:
-        createShortcut(env, parent, profile, ShortcutLocation.MENU)
+        createShortcut(parent, profile, ShortcutLocation.MENU)
     elif box.clickedButton() == bothButton:
-        createShortcut(env, parent, profile, ShortcutLocation.DESKTOP)
-        createShortcut(env, parent, profile, ShortcutLocation.MENU)
+        createShortcut(parent, profile, ShortcutLocation.DESKTOP)
+        createShortcut(parent, profile, ShortcutLocation.MENU)

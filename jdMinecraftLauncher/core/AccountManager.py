@@ -1,18 +1,15 @@
 from PyQt6.QtWidgets import QWidget, QInputDialog
-from .MicrosoftSecrets import MicrosoftSecrets
+from ..MicrosoftSecrets import MicrosoftSecrets
 from PyQt6.QtCore import QCoreApplication
-from .gui.LoginWindow import LoginWindow
-from typing import cast, TYPE_CHECKING
+from ..gui.LoginWindow import LoginWindow
+from typing import Optional, cast
 import minecraft_launcher_lib
+from ..Globals import Globals
 import traceback
 import uuid
 import json
 import sys
 import os
-
-
-if TYPE_CHECKING:
-    from .Environment import Environment
 
 
 class AccountBase:
@@ -90,10 +87,10 @@ class MicrosoftAccount(AccountBase):
         return True
 
     def reload(self) -> bool:
-        secrets = MicrosoftSecrets.get_secrets()
+        secrets = MicrosoftSecrets.getInstance()
 
         try:
-            data = minecraft_launcher_lib.microsoft_account.complete_refresh(secrets.client_id, secrets.secret, secrets.redirect_url, self._refreshToken)
+            data = minecraft_launcher_lib.microsoft_account.complete_refresh(secrets.clientID, secrets.secret, secrets.redirectURL, self._refreshToken)
 
             self._name = data["name"]
             self._uuid = data["id"]
@@ -170,19 +167,27 @@ class DummyAccount(AccountBase):
 
 
 class AccountManager:
-    def __init__(self, env: "Environment") -> None:
+    _instance: Optional["AccountManager"] = None
+
+    @classmethod
+    def getInstance(cls) -> "AccountManager":
+        if cls._instance is None:
+            cls._instance = cls()
+
+        return cls._instance
+
+    def __init__(self) -> None:
         self._accountList: list[AccountBase] = []
         self._currentID = ""
-        self._env = env
 
         self._loadData()
 
     def _loadData(self) -> None:
-        if not os.path.isfile(os.path.join(self._env.dataDir, "accounts.json")):
+        if not os.path.isfile(os.path.join(Globals.dataDir, "accounts.json")):
             return
 
         try:
-            with open(os.path.join(self._env.dataDir, "accounts.json"), "r", encoding="utf-8") as f:
+            with open(os.path.join(Globals.dataDir, "accounts.json"), "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             self._currentID = data["selectedAccount"]
@@ -199,7 +204,7 @@ class AccountManager:
             print(traceback.format_exc(), file=sys.stderr)
 
     def saveData(self) -> None:
-        if self._env.args.dont_save_data:
+        if Globals.dontSaveData:
             return
 
         try:
@@ -209,11 +214,11 @@ class AccountManager:
                 cast(list[dict], data["accounts"]).append(account.getJsonData())
 
             try:
-                os.makedirs(self._env.dataDir)
+                os.makedirs(Globals.dataDir)
             except FileExistsError:
                 pass
 
-            with open(os.path.join(self._env.dataDir, "accounts.json"), "w", encoding="utf-8") as f:
+            with open(os.path.join(Globals.dataDir, "accounts.json"), "w", encoding="utf-8") as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
         except Exception:
             print(traceback.format_exc(), file=sys.stderr)

@@ -1,31 +1,34 @@
 from ...Functions import isFlatpak, selectComboBoxData, isWayland
 from ...Constants import DisplayServerSetting, NewsTypeSetting
 from PyQt6.QtWidgets import QWidget, QMessageBox, QFileDialog
+from ...core.VersionCollection import VersionCollection
+from ...core.ProfileCollection import ProfileCollection
 from ...ui_compiled.OptionsTab import Ui_OptionsTab
 from PyQt6.QtCore import Qt, QCoreApplication
 from ...Languages import getLanguageNames
+from ...Settings import Settings
 from typing import TYPE_CHECKING
-import minecraft_launcher_lib
+from ...Globals import Globals
 import os
 
 
 if TYPE_CHECKING:
-    from ...Environment import Environment
     from .MainWindow import MainWindow
 
 
 class OptionsTab(QWidget, Ui_OptionsTab):
-    def __init__(self, env: "Environment", parent: "MainWindow") -> None:
+    def __init__(self, parent: "MainWindow") -> None:
         super().__init__()
 
         self.setupUi(self)
 
-        self._env = env
         self._parent = parent
+
+        settings = Settings.getInstance()
 
         languageNames = getLanguageNames()
         self.languageComboBox.addItem(languageNames.get("en", "en"), "en")
-        for i in os.listdir(os.path.join(env.currentDir, "translations")):
+        for i in os.listdir(os.path.join(Globals.programDir, "translations")):
             if not i.endswith(".qm"):
                 continue
 
@@ -38,9 +41,9 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "Wayland"), DisplayServerSetting.WAYLAND)
         self.displayServerBox.addItem(QCoreApplication.translate("OptionsTab", "XWayland"), DisplayServerSetting.XWAYLAND)
 
-        selectComboBoxData(self.languageComboBox, env.settings.get("language"))
+        selectComboBoxData(self.languageComboBox, settings.get("language"))
 
-        match env.settings.get("newsType"):
+        match settings.get("newsType"):
             case NewsTypeSetting.MINECRAFT:
                 self.newsMinecraftButton.setChecked(True)
             case NewsTypeSetting.RSS:
@@ -49,22 +52,22 @@ class OptionsTab(QWidget, Ui_OptionsTab):
                 self.newsWebsiteButton.setChecked(True)
 
         self._updateNewsEnabled()
-        self.newsFeedUrlEdit.setText(env.settings.get("newsFeedURL"))
-        self.newsFeedDefaultBrowserCheckBox.setChecked(env.settings.get("newsFeedDefaultBrowser"))
-        self.newsUrlEdit.setText(env.settings.get("newsURL"))
-        self.allowMultiLaunchCheckBox.setChecked(self._env.settings.get("enableMultiLaunch"))
-        self.extractNativesCheckBox.setChecked(self._env.settings.get("extractNatives"))
-        self.windowIconProgressCheckBox.setChecked(self._env.settings.get("windowIconProgress"))
-        self.flatpakSubsandboxCheckBox.setChecked(self._env.settings.get("useFlatpakSubsandbox"))
-        self.checkUpdatesStartupCheckBox.setChecked(self._env.settings.get("checkUpdatesStartup"))
-        selectComboBoxData(self.displayServerBox, self._env.settings.get("displayServer"))
+        self.newsFeedUrlEdit.setText(settings.get("newsFeedURL"))
+        self.newsFeedDefaultBrowserCheckBox.setChecked(settings.get("newsFeedDefaultBrowser"))
+        self.newsUrlEdit.setText(settings.get("newsURL"))
+        self.allowMultiLaunchCheckBox.setChecked(settings.get("enableMultiLaunch"))
+        self.extractNativesCheckBox.setChecked(settings.get("extractNatives"))
+        self.windowIconProgressCheckBox.setChecked(settings.get("windowIconProgress"))
+        self.flatpakSubsandboxCheckBox.setChecked(settings.get("useFlatpakSubsandbox"))
+        self.checkUpdatesStartupCheckBox.setChecked(settings.get("checkUpdatesStartup"))
+        selectComboBoxData(self.displayServerBox, settings.get("displayServer"))
 
         self.windowIconProgressCheckBox.setVisible(parent.windowIconProgress.isSupported())
 
         if not isFlatpak():
             self.flatpakSubsandboxCheckBox.setVisible(False)
 
-        self.checkUpdatesStartupCheckBox.setVisible(env.enableUpdater)
+        self.checkUpdatesStartupCheckBox.setVisible(Globals.enableUpdater)
         self.displayServerLabel.setVisible(isWayland())
         self.displayServerBox.setVisible(isWayland())
 
@@ -102,47 +105,49 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         self.newsUrlEdit.setEnabled(newsType == NewsTypeSetting.WEBSITE)
 
     def _newsTypeChanged(self) -> None:
-        self._env.settings.set("newsType", self._getSelectedNewsType())
+        Settings.getInstance().set("newsType", self._getSelectedNewsType())
 
         self._updateNewsEnabled()
         self._parent.updateNewsTab()
 
     def _newsFeedUrlChanged(self) -> None:
-        self._env.settings.set("newsFeedURL", self.newsFeedUrlEdit.text())
+        Settings.getInstance().set("newsFeedURL", self.newsFeedUrlEdit.text())
         self._parent.updateNewsTab()
 
     def _newsFeedDefaultBrowserCheckBoxChanged(self) -> None:
-        self._env.settings.set("newsFeedDefaultBrowser", self.newsFeedDefaultBrowserCheckBox.isChecked())
+        Settings.getInstance().set("newsFeedDefaultBrowser", self.newsFeedDefaultBrowserCheckBox.isChecked())
 
     def _newsUrlChanged(self) -> None:
-        self._env.settings.set("newsURL", self.newsUrlEdit.text())
+        Settings.getInstance().set("newsURL", self.newsUrlEdit.text())
         self._parent.updateNewsTab()
 
     def _multiLaunchCheckBoxChanged(self) -> None:
-        self._env.settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
+        Settings.getInstance().set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
 
     def _extractNativesCheckBoxChanged(self) -> None:
-        self._env.settings.set("extractNatives", self.extractNativesCheckBox.isChecked())
+        Settings.getInstance().set("extractNatives", self.extractNativesCheckBox.isChecked())
 
     def _windowIconProgressCheckBoxChanged(self) -> None:
         checked = self.windowIconProgressCheckBox.isChecked()
-        self._env.settings.set("windowIconProgress", checked)
+        Settings.getInstance().set("windowIconProgress", checked)
         if not checked:
             self._parent.windowIconProgress.hide()
 
     def _flatpakSubsandboxCheckBoxChanged(self) -> None:
-        self._env.settings.set("useFlatpakSubsandbox", self.flatpakSubsandboxCheckBox.isChecked())
+        Settings.getInstance().set("useFlatpakSubsandbox", self.flatpakSubsandboxCheckBox.isChecked())
 
     def _displayServerBoxChanged(self) -> None:
-        self._env.settings.set("displayServer", self.displayServerBox.currentData())
+        Settings.getInstance().set("displayServer", self.displayServerBox.currentData())
 
     def _updateMinecraftDirWidgets(self) -> None:
-        if (customMinecraftDir := self._env.settings.get("customMinecraftDir")) is not None:
+        settings = Settings.getInstance()
+
+        if (customMinecraftDir := settings.get("customMinecraftDir")) is not None:
             self.minecraftDirPathButton.setText(customMinecraftDir)
         else:
-            self.minecraftDirPathButton.setText(minecraft_launcher_lib.utils.get_minecraft_directory())
+            self.minecraftDirPathButton.setText(Globals.defaultMinecraftDir)
 
-        self.minecraftDirResetButton.setEnabled(self._env.settings.get("customMinecraftDir") is not None)
+        self.minecraftDirResetButton.setEnabled(settings.get("customMinecraftDir") is not None)
 
     def _minecraftDirChangeButtonClicked(self) -> None:
         text = QCoreApplication.translate("OptionsTab", "This will change your Minecraft directory.") + "<br><br>"
@@ -158,15 +163,14 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         if path == "":
             return
 
-        self._env.minecraftDir = path
+        Globals.minecraftDir = path
 
-        self._env.updateInstalledVersions()
-        self._parent.updateProfileList()
+        VersionCollection.getInstance().updateVersions()
+        ProfileCollection.getInstance().loadProfiles()
 
-        self._env.settings.set("customMinecraftDir", path)
-
-        if not self._env.args.dont_save_data:
-            self._env.settings.save(os.path.join(self._env.dataDir, "settings.json"))
+        settings = Settings.getInstance()
+        settings.set("customMinecraftDir", path)
+        settings.save()
 
         self._updateMinecraftDirWidgets()
 
@@ -174,34 +178,38 @@ class OptionsTab(QWidget, Ui_OptionsTab):
         if QMessageBox.question(self, QCoreApplication.translate("OptionsTab", "Reset Minecraft directory"), QCoreApplication.translate("OptionsTab", "Would you like to reset your Minecraft directory to its default location?"), QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No) != QMessageBox.StandardButton.Yes:
             return
 
-        self._env.minecraftDir = minecraft_launcher_lib.utils.get_minecraft_directory()
+        Globals.minecraftDir = Globals.defaultMinecraftDir
 
-        self._env.updateInstalledVersions()
-        self._parent.updateProfileList()
+        VersionCollection.getInstance().updateVersions()
+        ProfileCollection.getInstance().loadProfiles()
 
-        self._env.settings.set("customMinecraftDir", None)
+        settings = Settings.getInstance()
+        settings.set("customMinecraftDir", None)
 
-        if not self._env.args.dont_save_data:
-            self._env.settings.save(os.path.join(self._env.dataDir, "settings.json"))
+        if not Globals.dontSaveData:
+            settings.save()
 
         self._updateMinecraftDirWidgets()
 
     def saveSettings(self) -> None:
-        self._env.settings.set("language", self.languageComboBox.currentData())
+        settings = Settings.getInstance()
+
+        settings.set("language", self.languageComboBox.currentData())
 
         if self.newsMinecraftButton.isChecked():
-            self._env.settings.set("newsType", NewsTypeSetting.MINECRAFT)
+            settings.set("newsType", NewsTypeSetting.MINECRAFT)
         elif self.newsRssFeedButton.isChecked():
-            self._env.settings.set("newsType", NewsTypeSetting.RSS)
+            settings.set("newsType", NewsTypeSetting.RSS)
         elif self.newsWebsiteButton.isChecked():
-            self._env.settings.set("newsType", NewsTypeSetting.WEBSITE)
+            settings.set("newsType", NewsTypeSetting.WEBSITE)
 
-        self._env.settings.set("newsFeedURL", self.newsFeedUrlEdit.text())
-        self._env.settings.set("newsURL", self.newsUrlEdit.text())
-        self._env.settings.set("newsFeedDefaultBrowser", self.newsFeedDefaultBrowserCheckBox.isChecked())
-        self._env.settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
-        self._env.settings.set("extractNatives", self.extractNativesCheckBox.isChecked())
-        self._env.settings.set("useFlatpakSubsandbox", self.flatpakSubsandboxCheckBox.isChecked())
-        self._env.settings.set("checkUpdatesStartup", self.checkUpdatesStartupCheckBox.isChecked())
-        self._env.settings.set("displayServer", self.displayServerBox.currentData())
-        self._env.settings.save(os.path.join(self._env.dataDir, "settings.json"))
+        settings.set("newsFeedURL", self.newsFeedUrlEdit.text())
+        settings.set("newsURL", self.newsUrlEdit.text())
+        settings.set("newsFeedDefaultBrowser", self.newsFeedDefaultBrowserCheckBox.isChecked())
+        settings.set("enableMultiLaunch", self.allowMultiLaunchCheckBox.isChecked())
+        settings.set("extractNatives", self.extractNativesCheckBox.isChecked())
+        settings.set("useFlatpakSubsandbox", self.flatpakSubsandboxCheckBox.isChecked())
+        settings.set("checkUpdatesStartup", self.checkUpdatesStartupCheckBox.isChecked())
+        settings.set("displayServer", self.displayServerBox.currentData())
+
+        settings.save()

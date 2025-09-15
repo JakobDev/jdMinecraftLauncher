@@ -5,11 +5,11 @@ backend-path = ["."]
 
 [project]
 name = "jdMinecraftLauncher"
-description = "A classic styled Minecraft Launcher"
+description = "Unofficial classic styled Minecraft Launcher"
 readme = "README.md"
 requires-python = ">=3.11"
 keywords = ["JakobDev", "Minecraft", "Mojang", "launcher", "PyQt"]
-license = { text = "GPL v3" }
+license = "GPL-3.0-only"
 authors = [
     { name = "JakobDev", email = "jakobdev@gmx.de" }
 ]
@@ -18,7 +18,6 @@ classifiers = [
     "Intended Audience :: End Users/Desktop",
     "Environment :: Other Environment",
     "Environment :: X11 Applications :: Qt",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Natural Language :: English",
     "Natural Language :: German",
     "Topic :: Games/Entertainment",
@@ -30,6 +29,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: Implementation :: CPython"
 ]
@@ -71,9 +71,11 @@ gettext-desktop-entry = true
 appstream = "deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml"
 gettext-appstream = true
 gettext-directory = "deploy/translations"
-python-version = "3.12"
+python-version = "3.13"
 compression = "xz"
 additional-packages = ["desktop-entry-lib"]
 
 [tool.mypy]
+pretty = true
 disable_error_code = ["union-attr"]
+files = ["jdMinecraftLauncher/**/*.py"]

@@ -1,8 +1,11 @@
-from jdMinecraftLauncher.Functions import openFile, findJavaRuntimes, isFlatpak
-from jdMinecraftLauncher.Shortcut import canCreateShortcuts, askCreateShortcut
+from ..Functions import openFile, findJavaRuntimes, isFlatpak, selectComboBoxData
+from jdMinecraftLauncher.utils.Shortcut import canCreateShortcuts, askCreateShortcut
 from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from ..ui_compiled.ProfileWindow import Ui_ProfileWindow
+from ..core.VersionCollection import VersionCollection
+from ..core.ProfileCollection import ProfileCollection
 from jdMinecraftLauncher.Profile import Profile
+from ..Constants import LauncherVisibility
 from PyQt6.QtCore import QCoreApplication
 from PyQt6.QtGui import QIntValidator
 from typing import TYPE_CHECKING
@@ -13,24 +16,22 @@ import os
 
 if TYPE_CHECKING:
     from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
-    from jdMinecraftLauncher.Environment import Environment
 
 
 class ProfileWindow(QDialog, Ui_ProfileWindow):
-    def __init__(self, env: "Environment", parent: "MainWindow") -> None:
+    def __init__(self, parent: "MainWindow") -> None:
         super().__init__(parent)
 
         self.setupUi(self)
 
-        self.env = env
         self.mainWindow = parent
 
         self.resolutionEditX.setValidator(QIntValidator(self.resolutionEditX))
         self.resolutionEditY.setValidator(QIntValidator(self.resolutionEditY))
 
-        self.launcherVisibilityCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Hide Launcher and re-open when game closes"))
-        self.launcherVisibilityCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Close Launcher when Game starts"))
-        self.launcherVisibilityCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Keep the Launcher open"))
+        self.launcherVisibilityCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Hide Launcher and re-open when game closes"), LauncherVisibility.HIDE)
+        self.launcherVisibilityCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Close Launcher when Game starts"), LauncherVisibility.CLOSE)
+        self.launcherVisibilityCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Keep the Launcher open"), LauncherVisibility.KEEP_OPEN)
 
         self.executableEdit.setEditable(True)
         self.executableEdit.addItems(findJavaRuntimes())
@@ -118,7 +119,7 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         self.resolutionEditY.setText(profile.resolutionY)
         self.launcherVisibilityCheckbox.setChecked(profile.customLauncherVisibility)
         self.launcherVisibilityCombobox.setEnabled(profile.customLauncherVisibility)
-        self.launcherVisibilityCombobox.setCurrentIndex(profile.launcherVisibility)
+        selectComboBoxData(self.launcherVisibilityCombobox, profile.launcherVisibility)
         self.enableSnapshots.setChecked(profile.enableSnapshots)
         self.enableBeta.setChecked(profile.enableBeta)
         self.enableAlpha.setChecked(profile.enableAlpha)
@@ -152,10 +153,11 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         self.isNew = isNew
 
     def saveProfile(self) -> None:
+        profileCollection = ProfileCollection.getInstance()
         profile = self.profile
 
         if self.isNew:
-            profile = Profile(self.profileNameEdit.text(), self.env)
+            profile = ProfileCollection.getInstance().createProfile(self.profileNameEdit.text())
         else:
             profile.name = self.profileNameEdit.text()
 
@@ -165,7 +167,7 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         profile.resolutionX = self.resolutionEditX.text()
         profile.resolutionY = self.resolutionEditY.text()
         profile.customLauncherVisibility = self.launcherVisibilityCheckbox.isChecked()
-        profile.launcherVisibility = self.launcherVisibilityCombobox.currentIndex()
+        profile.launcherVisibility = self.launcherVisibilityCombobox.currentData()
         profile.enableSnapshots = self.enableSnapshots.isChecked()
         profile.enableBeta = self.enableBeta.isChecked()
         profile.enableAlpha = self.enableAlpha.isChecked()
@@ -195,12 +197,13 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
             profile.useLatestSnapshot = False
             profile.version = version
 
-        if self.isNew:
-            self.env.profileCollection.profileList.append(profile)
-            self.env.profileCollection.selectedProfile = profile.id
+        profileCollection.updateProfile(profile)
 
-        self.mainWindow.updateProfileList()
-        self.env.profileCollection.save()
+        if self.isNew:
+            profileCollection.setSelectedProfile(profile)
+
+        profileCollection.save()
+
         self.close()
 
     def updateVersionsList(self) -> None:
@@ -210,21 +213,21 @@ class ProfileWindow(QDialog, Ui_ProfileWindow):
         if self.enableSnapshots.isChecked():
             self.versionSelectCombobox.addItem(QCoreApplication.translate("ProfileWindow", "Use latest Snapshot"), "latestSnapshot")
 
-        for i in self.env.versions["versions"]:
-            if i["type"] == "release":
-                self.versionSelectCombobox.addItem("release " + i["id"], i["id"])
-            elif i["type"] == "snapshot" and self.enableSnapshots.isChecked():
-                self.versionSelectCombobox.addItem("snapshot " + i["id"], i["id"])
-            elif i["type"] == "old_beta" and self.enableBeta.isChecked():
-                self.versionSelectCombobox.addItem("old_beta " + i["id"], i["id"])
-            elif i["type"] == "old_alpha" and self.enableAlpha.isChecked():
-                self.versionSelectCombobox.addItem("old_alpha " + i["id"], i["id"])
+        for currentVersion in VersionCollection.getInstance().getVersionList():
+            if currentVersion["type"] == "release":
+                self.versionSelectCombobox.addItem("release " + currentVersion["id"], currentVersion["id"])
+            elif currentVersion["type"] == "snapshot" and self.enableSnapshots.isChecked():
+                self.versionSelectCombobox.addItem("snapshot " + currentVersion["id"], currentVersion["id"])
+            elif currentVersion["type"] == "old_beta" and self.enableBeta.isChecked():
+                self.versionSelectCombobox.addItem("old_beta " + currentVersion["id"], currentVersion["id"])
+            elif currentVersion["type"] == "old_alpha" and self.enableAlpha.isChecked():
+                self.versionSelectCombobox.addItem("old_alpha " + currentVersion["id"], currentVersion["id"])
 
         if self.selectLatestVersion:
             self.versionSelectCombobox.setCurrentIndex(0)
         elif self.selectLatestSnapshot and self.enableSnapshots.isChecked():
             self.versionSelectCombobox.setCurrentIndex(1)
         else:
-            for i in range(self.versionSelectCombobox.count()):
-                if self.versionSelectCombobox.itemText(i).split(" ", 1)[1] == self.selectedVersion:
-                    self.versionSelectCombobox.setCurrentIndex(i)
+            for pos in range(self.versionSelectCombobox.count()):
+                if self.versionSelectCombobox.itemText(pos).split(" ", 1)[1] == self.selectedVersion:
+                    self.versionSelectCombobox.setCurrentIndex(pos)

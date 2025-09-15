@@ -1,20 +1,16 @@
 from PyQt6.QtCore import QCoreApplication
 from PyQt6.QtWidgets import QMessageBox
-from typing import TYPE_CHECKING
+from ..Globals import Globals
 import webbrowser
 import traceback
 import requests
 import sys
 
 
-if TYPE_CHECKING:
-    from ..Environment import Environment
-
-
-def _checkUpdatesInternal(env: "Environment") -> None:
+def _checkUpdatesInternal() -> None:
     latestVersion = requests.get("https://codeberg.org/api/v1/repos/JakobDev/jdMinecraftLauncher/releases/latest").json()["name"]
 
-    if env.launcherVersion == latestVersion:
+    if Globals.launcherVersion == latestVersion:
         return
 
     sourceforgeURL = f"https://sourceforge.net/projects/jdminecraftlauncher/files/{latestVersion}"
@@ -33,8 +29,8 @@ def _checkUpdatesInternal(env: "Environment") -> None:
     sys.exit(0)
 
 
-def checkUpdates(env: "Environment") -> None:
+def checkUpdates() -> None:
     try:
-        _checkUpdatesInternal(env)
+        _checkUpdatesInternal()
     except Exception:
         print(traceback.format_exc(), file=sys.stderr)

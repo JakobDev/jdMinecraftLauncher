@@ -9,13 +9,13 @@ class LoginWindow(QDialog):
     def __init__(self, parent: QWidget | None) -> None:
         super().__init__(parent)
 
-        self._secrets = MicrosoftSecrets.get_secrets()
+        self._secrets = MicrosoftSecrets.getInstance()
 
         self.setWindowTitle(QCoreApplication.translate("LoginWindow", "Login"))
 
         self._webView = QWebEngineView()
 
-        loginUrl, self._state, self._codeVerifier = minecraft_launcher_lib.microsoft_account.get_secure_login_data(self._secrets.client_id, self._secrets.redirect_url)
+        loginUrl, self._state, self._codeVerifier = minecraft_launcher_lib.microsoft_account.get_secure_login_data(self._secrets.clientID, self._secrets.redirectURL)
 
         # Open the login url
         self._webView.load(QUrl(loginUrl))
@@ -41,7 +41,7 @@ class LoginWindow(QDialog):
         authCode = minecraft_launcher_lib.microsoft_account.parse_auth_code_url(url.toString(), self._state)
         # Do the login
         try:
-            accountInformation = minecraft_launcher_lib.microsoft_account.complete_login(self._secrets.client_id, self._secrets.secret, self._secrets.redirect_url, authCode, self._codeVerifier)
+            accountInformation = minecraft_launcher_lib.microsoft_account.complete_login(self._secrets.clientID, self._secrets.secret, self._secrets.redirectURL, authCode, self._codeVerifier)
         except minecraft_launcher_lib.exceptions.AccountNotOwnMinecraft:
             self.hide()
 
@@ -51,7 +51,7 @@ class LoginWindow(QDialog):
             text += " " + QCoreApplication.translate("LoginWindow", "If the error still persists, please write a bug report.")
             QMessageBox.critical(self, QCoreApplication.translate("LoginWindow", "Account does not own Minecraft"), text)
 
-            loginUrl, self._state, self._codeVerifier = minecraft_launcher_lib.microsoft_account.get_secure_login_data(self._secrets.client_id, self._secrets.redirect_url)
+            loginUrl, self._state, self._codeVerifier = minecraft_launcher_lib.microsoft_account.get_secure_login_data(self._secrets.clientID, self._secrets.redirectURL)
 
             self._webView.load(QUrl(loginUrl))
 

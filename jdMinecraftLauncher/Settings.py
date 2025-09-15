@@ -1,5 +1,6 @@
 from .Constants import NewsTypeSetting, DisplayServerSetting
 from typing import Optional, Any
+from .Globals import Globals
 import traceback
 import json
 import sys
@@ -7,6 +8,15 @@ import os
 
 
 class Settings():
+    _instance: Optional["Settings"] = None
+
+    @classmethod
+    def getInstance(cls) -> "Settings":
+        if cls._instance is None:
+            cls._instance = cls()
+
+        return cls._instance
+
     def __init__(self) -> None:
         self._default_settings: dict[str, Any] = {
             "language": "default",
@@ -39,8 +49,13 @@ class Settings():
         """Set the value of a setting"""
         self._user_settings[key] = value
 
-    def save(self, path: str) -> None:
+    def save(self) -> None:
         """Save settings into file"""
+        if Globals.dontSaveData:
+            return
+
+        path = os.path.join(Globals.dataDir, "settings.json")
+
         if len(self._user_settings) == 0 and not os.path.isfile(path):
             return
 
@@ -50,8 +65,10 @@ class Settings():
         except Exception:
             print(traceback.format_exc(), file=sys.stderr)
 
-    def load(self, path: str) -> None:
+    def load(self) -> None:
         """Load settings from file"""
+        path = os.path.join(Globals.dataDir, "settings.json")
+
         if not os.path.isfile(path):
             return
 

@@ -2,5 +2,5 @@ steps:
     flake8:
         image: python:latest
         commands:
-              - pip install flake8 flake8-annotations flake8-assert-finder
+              - pip install flake8 flake8-annotations
               - flake8 --show-source

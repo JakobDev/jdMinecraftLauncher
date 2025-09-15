@@ -1,12 +1,8 @@
 from PyQt6.QtWidgets import QWidget, QDialog, QScrollArea, QCheckBox, QLabel, QVBoxLayout, QDialogButtonBox, QMessageBox, QInputDialog
+from ..core.ProfileCollection import ProfileCollection
 from PyQt6.QtCore import Qt, QCoreApplication
-from typing import TYPE_CHECKING
+from ..InstallThread import InstallThread
 import minecraft_launcher_lib
-
-
-if TYPE_CHECKING:
-    from ..InstallThread import InstallThread
-    from ..Environment import Environment
 
 
 class OptionalFilesDialog(QDialog):
@@ -62,7 +58,9 @@ class OptionalFilesDialog(QDialog):
         return optionalFiles, self._ok
 
 
-def installMrpack(parent: QWidget, env: "Environment", installThread: "InstallThread", path: str) -> None:
+def installMrpack(parent: QWidget, path: str) -> None:
+    profileCollection = ProfileCollection.getInstance()
+
     info = minecraft_launcher_lib.mrpack.get_mrpack_information(path)
 
     text = QCoreApplication.translate("InstallMrpack", "This file includes the following Modpack:") + "<br><br>"
@@ -84,7 +82,7 @@ def installMrpack(parent: QWidget, env: "Environment", installThread: "InstallTh
         return
 
     nameList: list[str] = []
-    for currentProfile in env.profileCollection.profileList:
+    for currentProfile in profileCollection.getProfileList():
         nameList.append(currentProfile.name)
 
     selectedName, ok = QInputDialog.getItem(
@@ -99,14 +97,16 @@ def installMrpack(parent: QWidget, env: "Environment", installThread: "InstallTh
     if not ok:
         return
 
-    selectedProfile = env.profileCollection.getProfileByName(selectedName)
+    selectedProfile = profileCollection.getProfileByName(selectedName)
+    assert selectedProfile is not None
 
     if len(info["optionalFiles"]) == 0:
-        optionalFiles = []
+        optionalFiles: list[str] = []
     else:
         optionalFiles, ok = OptionalFilesDialog(parent, info["optionalFiles"]).getOptionalFiles()
         if not ok:
             return
 
+    installThread = InstallThread.getInstance()
     installThread.setupMrpackInstall(selectedProfile, path, optionalFiles)
     installThread.start()
