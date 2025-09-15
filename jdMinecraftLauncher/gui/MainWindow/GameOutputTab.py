@@ -68,7 +68,7 @@ class GameOutputTab(QPlainTextEdit):
             except Exception:
                 pass
 
-    def start(self):
+    def start(self) -> None:
         self._process.start(self._command[0], self._command[1:])
 
         if not self._process.waitForStarted():
