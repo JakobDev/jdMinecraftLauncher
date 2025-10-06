@@ -13,7 +13,7 @@ class OptionalFilesDialog(QDialog):
         self._ok = False
         self._checkboxList: list[QCheckBox] = []
 
-        firstLabel = QLabel(QCoreApplication.translate("InstallMrpack", "This Modpacks contains some optional files."))
+        firstLabel = QLabel(QCoreApplication.translate("InstallMrpack", "This modpacks contains some optional files."))
         firstLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         secondLabel = QLabel(QCoreApplication.translate("InstallMrpack", "Select which of them you want to install."))
@@ -72,7 +72,7 @@ def installMrpack(parent: QWidget, path: str) -> None:
         )
         return
 
-    text = QCoreApplication.translate("InstallMrpack", "This file includes the following Modpack:") + "<br><br>"
+    text = QCoreApplication.translate("InstallMrpack", "This file includes the following modpack:") + "<br><br>"
     text += QCoreApplication.translate("InstallMrpack", "Name:") + " "
     text += info["name"] + "<br>"
 

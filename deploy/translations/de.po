@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-28 19:32+0100\n"
-"PO-Revision-Date: 2024-05-17 11:18+0000\n"
+"POT-Creation-Date: 2025-10-06 19:51+0200\n"
+"PO-Revision-Date: 2025-10-06 19:52+0200\n"
 "Last-Translator: Dirk <Dirk@users.noreply.translate.codeberg.org>\n"
 "Language-Team: German <https://translate.codeberg.org/projects/"
 "jdMinecraftLauncher/UnixMetadata/de/>\n"
@@ -16,14 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Poedit 3.6\n"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:6
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:6
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:5
 msgid "Unofficial classic styled Minecraft Launcher"
 msgstr "Inoffizieller Minecraft Launcher im klassischen Stil"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:12
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:13
 msgid ""
 "jdMinecraftLauncher is a Minecraft launcher which Look and Feel is close to "
 "the the good old official Launcher"
@@ -31,64 +31,71 @@ msgstr ""
 "jdMinecraftLauncher ist ein Minecraft Launcher der sich am klassischem "
 "Launcher orientiert"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:13
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:14
 msgid "Features:"
 msgstr "Features:"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:15
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:16
 msgid "All Minecraft versions are supported"
 msgstr "Alle Minecraft Versionen werden unterstützt"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:16
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:17
 msgid "Offline mode is available after your first login"
 msgstr "Nach dem ersten Login ist ein Offlinemodus verfügbar"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:17
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:18
 msgid "One click install of Forge and Fabric"
 msgstr "Forge und Fabric können mit einem Klick installiert werden"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:18
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:19
 msgid "FeralInteractive GameMode is supported"
 msgstr "FeralInteractive GameMode wird unterstützt"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:19
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:20
 msgid ""
 "Create Shortcuts in the Menu and on the Desktop to directly launch Minecraft"
 msgstr ""
 "Erstelle Verknüpfungen auf dem Desktop und im Startmenü um Minecraft direkt "
 "starten zu können"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:20
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:21
 msgid "For Developers commandline arguments and a D-Bus Interface are provided"
 msgstr ""
 "Für Entwickler stehen Kommandozeilenoptionen und ein D-Bus Interface zur "
 "Verfügung"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:21
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:22
 msgid "Profiles can be imported from the vanilla launcher"
 msgstr "Profile können vom vanilla Launcher importiert werden"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:23
+msgid ""
+"Modrinth modpacks (.mrpack) can be installed directly through the Launcher"
+msgstr ""
+"Modrinth Modpacks (.mrpack) können direkt über den Launcher installiert "
+"werden"
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:25
 msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
 msgstr ""
 "Zum Benutzen dieses Launchers wird ein Microsoft Account, der Minecraft "
 "besitzt, benötigt"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:24
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:26
 msgid ""
 "This Launcher is completly fanmade and not supported by Mojang/Microsoft"
 msgstr ""
 "Dieser Launcher ist komplett Fanmade und wird nicht von Mojang/Microsoft "
 "unterstützt"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:28
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:30
 msgid "The main window"
 msgstr "Das Hauptfenster"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:32
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:38
 msgid "The profile editor"
 msgstr "Der Profileditor"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:18
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:17
 msgid "Offline Mode"
 msgstr "Offlinemodus"
