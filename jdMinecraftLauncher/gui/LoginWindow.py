@@ -3,6 +3,8 @@ from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtCore import QUrl, QCoreApplication
 from ..MicrosoftSecrets import MicrosoftSecrets
 import minecraft_launcher_lib
+import traceback
+import sys
 
 
 class LoginWindow(QDialog):
@@ -15,10 +17,7 @@ class LoginWindow(QDialog):
 
         self._webView = QWebEngineView()
 
-        loginUrl, self._state, self._codeVerifier = minecraft_launcher_lib.microsoft_account.get_secure_login_data(self._secrets.clientID, self._secrets.redirectURL)
-
-        # Open the login url
-        self._webView.load(QUrl(loginUrl))
+        self._loadLoginPage()
 
         # Connects a function that is called when the url changed
         self._webView.urlChanged.connect(self.newUrl)
@@ -32,6 +31,12 @@ class LoginWindow(QDialog):
 
         self.setLayout(mainLayout)
 
+    def _loadLoginPage(self) -> None:
+        loginUrl, self._state, self._codeVerifier = minecraft_launcher_lib.microsoft_account.get_secure_login_data(self._secrets.clientID, self._secrets.redirectURL)
+
+        # Open the login url
+        self._webView.load(QUrl(loginUrl))
+
     def newUrl(self, url: QUrl) -> None:
         # Check if the url contains the code
         if not minecraft_launcher_lib.microsoft_account.url_contains_auth_code(url.toString()):
@@ -39,11 +44,12 @@ class LoginWindow(QDialog):
 
         # Get the code from the url
         authCode = minecraft_launcher_lib.microsoft_account.parse_auth_code_url(url.toString(), self._state)
+
         # Do the login
         try:
             accountInformation = minecraft_launcher_lib.microsoft_account.complete_login(self._secrets.clientID, self._secrets.secret, self._secrets.redirectURL, authCode, self._codeVerifier)
         except minecraft_launcher_lib.exceptions.AccountNotOwnMinecraft:
-            self.hide()
+            self._loadLoginPage()
 
             text = QCoreApplication.translate("LoginWindow", "Your account appears to not own Minecraft.")
             text += " " + QCoreApplication.translate("LoginWindow", "You need an account that owns Minecraft to use jdMinecraftLauncher.")
@@ -51,11 +57,19 @@ class LoginWindow(QDialog):
             text += " " + QCoreApplication.translate("LoginWindow", "If the error still persists, please write a bug report.")
             QMessageBox.critical(self, QCoreApplication.translate("LoginWindow", "Account does not own Minecraft"), text)
 
-            loginUrl, self._state, self._codeVerifier = minecraft_launcher_lib.microsoft_account.get_secure_login_data(self._secrets.clientID, self._secrets.redirectURL)
+            return
+        except Exception:
+            self._loadLoginPage()
 
-            self._webView.load(QUrl(loginUrl))
+            error = traceback.format_exc()
+            print(error, file=sys.stderr)
 
-            self.show()
+            msgBox = QMessageBox(None)
+            msgBox.setIcon(QMessageBox.Icon.Critical)
+            msgBox.setWindowTitle(QCoreApplication.translate("LoginWindow", "Login failed"))
+            msgBox.setText(QCoreApplication.translate("LoginWindow", "The login failed due to an unknown error. Please try again. If the problem persists, please submit a bug report."))
+            msgBox.setDetailedText(error)
+            msgBox.exec()
 
             return
 
