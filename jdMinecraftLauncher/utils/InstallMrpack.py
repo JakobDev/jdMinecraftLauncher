@@ -61,7 +61,15 @@ class OptionalFilesDialog(QDialog):
 def installMrpack(parent: QWidget, path: str) -> None:
     profileCollection = ProfileCollection.getInstance()
 
-    info = minecraft_launcher_lib.mrpack.get_mrpack_information(path)
+    try:
+        info = minecraft_launcher_lib.mrpack.get_mrpack_information(path)
+    except Exception:
+        QMessageBox.critical(
+            parent,
+            QCoreApplication.translate("InstallMrpack", "Invalid file"),
+            QCoreApplication.translate("InstallMrpack", "{{path}} is not a valid Modrinth modpack").replace("{{path}}", path)
+        )
+        return
 
     text = QCoreApplication.translate("InstallMrpack", "This file includes the following Modpack:") + "<br><br>"
     text += QCoreApplication.translate("InstallMrpack", "Name:") + " "
