@@ -22,6 +22,7 @@ Features:
 - Create Shortcuts in the Menu and on the Desktop to directly launch Minecraft
 - For Developers commandline arguments and a D-Bus Interface are provided
 - Profiles can be imported from the vanilla launcher
+- Modrinth modpacks (.mrpack) can be installed directly through the Launcher
 
 You need a Microsoft Account which owns Minecraft to use this Launcher
 
