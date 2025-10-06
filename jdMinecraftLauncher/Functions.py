@@ -125,3 +125,10 @@ def getDataPath() -> str:
         return os.path.join(dataPath, "jdMinecraftLauncher")
 
     return os.path.join(dataPath, "JakobDev", "jdMinecraftLauncher")
+
+
+def getRealPath(path: str) -> str:
+    try:
+        return os.getxattr(path, "user.document-portal.host-path").decode("utf-8")
+    except Exception:
+        return path

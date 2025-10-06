@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QWidget, QDialog, QScrollArea, QCheckBox, QLabel, QV
 from ..core.ProfileCollection import ProfileCollection
 from PyQt6.QtCore import Qt, QCoreApplication
 from ..InstallThread import InstallThread
+from ..Functions import getRealPath
 import minecraft_launcher_lib
 
 
@@ -67,7 +68,7 @@ def installMrpack(parent: QWidget, path: str) -> None:
         QMessageBox.critical(
             parent,
             QCoreApplication.translate("InstallMrpack", "Invalid file"),
-            QCoreApplication.translate("InstallMrpack", "{{path}} is not a valid Modrinth modpack").replace("{{path}}", path)
+            QCoreApplication.translate("InstallMrpack", "{{path}} is not a valid Modrinth modpack").replace("{{path}}", getRealPath(path))
         )
         return
 
