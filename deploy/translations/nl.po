@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-06 19:51+0200\n"
-"PO-Revision-Date: 2024-03-01 09:56+0000\n"
-"Last-Translator: Vistaus <vistausss@fastmail.com>\n"
+"PO-Revision-Date: 2025-10-08 09:09+0000\n"
+"Last-Translator: Vistaus <vistaus@noreply.codeberg.org>\n"
 "Language-Team: Dutch <https://translate.codeberg.org/projects/"
 "jdMinecraftLauncher/UnixMetadata/nl/>\n"
 "Language: nl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.13.2\n"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:6
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:5
@@ -69,6 +69,8 @@ msgstr "Profielen kunnen uit de officiële starter worden geïmporteerd"
 msgid ""
 "Modrinth modpacks (.mrpack) can be installed directly through the Launcher"
 msgstr ""
+"Modrinth-modpacks (.mrpack) kunnen met behulp van de starter worden "
+"geïnstalleerd"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:25
 msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
