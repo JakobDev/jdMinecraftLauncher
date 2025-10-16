@@ -6,32 +6,32 @@
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>This Launcher is fanmade and not from Mojang/Microsoft</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce launcher est fait par la communauté, et non par Mojang/Microsoft</translation>
     </message>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>This Program uses minecraft-launcher-lib {{version}}</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce logiciel utilise minecraft-launcher-lib {{version}}</translation>
     </message>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>This Program is licensed under GPL 3.0</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce logiciel est sous la licence GPL 3.0</translation>
     </message>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>View Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir Source</translation>
     </message>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>Open Minecraft directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir le dossier Minecraft</translation>
     </message>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>Open data directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir le dossier data</translation>
     </message>
 </context>
 <context>
@@ -39,12 +39,12 @@
     <message>
         <location filename="../core/AccountManager.py" line="147"/>
         <source>Enter name</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrer nom</translation>
     </message>
     <message>
         <location filename="../core/AccountManager.py" line="147"/>
         <source>Please enter a name for the dummy account</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez un nom pour le compte dummy (factice)</translation>
     </message>
 </context>
 <context>
@@ -53,48 +53,48 @@
         <location filename="../ui/AccountTab.ui" line="0"/>
         <location filename="../gui/MainWindow/AccountTab.py" line="24"/>
         <source>Switch</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer</translation>
     </message>
     <message>
         <location filename="../ui/AccountTab.ui" line="0"/>
         <location filename="../gui/MainWindow/AccountTab.py" line="42"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Retirer</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/AccountTab.py" line="51"/>
         <source>No Internet Connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas de connexion internet</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/AccountTab.py" line="51"/>
         <source>This Feature needs a internet connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette fonctionnalité requiert une connexion internet</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/AccountTab.py" line="86"/>
         <source>Add Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter compte</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/AccountTab.py" line="91"/>
         <source>Add Dummy Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un compte dummy (factice)</translation>
     </message>
     <message>
         <location filename="../ui/AccountTab.ui" line="0"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../ui/AccountTab.ui" line="0"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Type</translation>
     </message>
     <message>
         <location filename="../ui/AccountTab.ui" line="0"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter</translation>
     </message>
 </context>
 <context>
@@ -102,12 +102,12 @@
     <message>
         <location filename="../gui/MainWindow/GameOutputTab.py" line="75"/>
         <source>Failed to start Minecraft</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec du démarrage de Minecraft</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/GameOutputTab.py" line="76"/>
         <source>Failed to start</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec du démarrage</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/GameOutputTab.py" line="76"/>
