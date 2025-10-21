@@ -266,6 +266,7 @@
   <categories>
     <category>Game</category>
     <category>Qt</category>
+    <category>PackageManager</category>
   </categories>
   <requires>
     <internet>first-run</internet>
