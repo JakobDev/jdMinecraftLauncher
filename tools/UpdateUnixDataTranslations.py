@@ -28,6 +28,7 @@ def main() -> None:
 
     subprocess.run(["xgettext", "-l", "xml", "--its", str(root_path / "deploy" / "translations" / "AppStream.its"), "-o", pot_path, "deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml"], cwd=root_path, check=True)
     subprocess.run(["xgettext", "-l", "desktop", "-k", "-kComment", "-kName", "-o", pot_path, "-j", "deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop"], cwd=root_path, check=True)
+    subprocess.run(["xgettext", "-l", "desktop", "-k", "-kComment", "-o", pot_path, "-j", "deploy/krunner.desktop"], cwd=root_path, check=True)
 
     filter_name(pot_path)
 

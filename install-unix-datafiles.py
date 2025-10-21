@@ -7,23 +7,6 @@ import sys
 import os
 
 
-def install_data_file(src: str, dest: str) -> None:
-    try:
-        os.makedirs(os.path.dirname(dest))
-    except FileExistsError:
-        pass
-    except PermissionError as ex:
-        print(f"Don't have Permission to create {ex.filename}. Use --prefix to change the Prefix.", file=sys.stderr)
-        sys.exit(1)
-
-    try:
-        shutil.copyfile(src, dest)
-        os.chmod(dest, 0o644)
-    except PermissionError as ex:
-        print(f"Don't have Permission to create {ex.filename}. Use --prefix to change the Prefix.", file=sys.stderr)
-        sys.exit(1)
-
-
 def create_directory(path: str) -> None:
     try:
         os.makedirs(path)
@@ -31,6 +14,18 @@ def create_directory(path: str) -> None:
         pass
     except PermissionError as ex:
         print(f"Don't have Permission to create {ex.filename}. Use --prefix to change the Prefix.", file=sys.stderr)
+        sys.exit(1)
+
+
+def install_data_file(src: str, dest: str) -> None:
+    create_directory(os.path.dirname(dest))
+
+    try:
+        shutil.copyfile(src, dest)
+        os.chmod(dest, 0o644)
+    except PermissionError as ex:
+        print(f"Don't have Permission to create {ex.filename}. Use --prefix to change the Prefix.", file=sys.stderr)
+        sys.exit(1)
 
 
 def get_translation_percentage(path: str) -> int:
@@ -79,7 +74,9 @@ def main() -> None:
 
     install_data_file(os.path.join(project_root, "jdMinecraftLauncher", "Icon.svg"), os.path.join(args.prefix, "share", "icons", "hicolor", "scalable", "apps", "page.codeberg.JakobDev.jdMinecraftLauncher.svg"))
     install_data_file(os.path.join(project_root, "deploy", "page.codeberg.JakobDev.jdMinecraftLauncher.service"), os.path.join(args.prefix, "share", "dbus-1", "services", "page.codeberg.JakobDev.jdMinecraftLauncher.service"))
+    install_data_file(os.path.join(project_root, "deploy", "gnome-search-provider.ini"), os.path.join(args.prefix, "share", "gnome-shell", "search-providers", "page.codeberg.JakobDev.jdMinecraftLauncher.ini"))
 
+    create_directory(os.path.join(args.prefix, "share", "krunner", "dbusplugins"))
     create_directory(os.path.join(args.prefix, "share", "applications"))
     create_directory(os.path.join(args.prefix, "share", "metainfo"))
 
@@ -87,6 +84,7 @@ def main() -> None:
 
     subprocess.run(["msgfmt", "--desktop", "--template", os.path.join(project_root, "deploy", "page.codeberg.JakobDev.jdMinecraftLauncher.desktop"), "-d", os.path.join(project_root, "deploy", "translations"), "-o", os.path.join(args.prefix, "share", "applications", "page.codeberg.JakobDev.jdMinecraftLauncher.desktop")], check=True)
     subprocess.run(["msgfmt", "--xml", "--template", os.path.join(project_root, "deploy", "page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml"), "-d", os.path.join(project_root, "deploy", "translations"), "-o", appstream_path], check=True)
+    subprocess.run(["msgfmt", "--desktop", "--template", os.path.join(project_root, "deploy", "krunner.desktop"), "-d", os.path.join(project_root, "deploy", "translations"), "-o", os.path.join(args.prefix, "share", "krunner", "dbusplugins", "page.codeberg.JakobDev.jdMinecraftLauncher.desktop")], check=True)
 
     write_translation_status(project_root, appstream_path)
 

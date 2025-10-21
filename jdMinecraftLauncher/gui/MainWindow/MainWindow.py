@@ -7,6 +7,7 @@ from ...core.AccountManager import AccountManager
 from PyQt6.QtCore import QCoreApplication, QEvent
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from ...utils.InstallMrpack import installMrpack
+from ...core.ActionManager import ActionManager
 from ...core.AccountManager import AccountBase
 from .ProfileEditorTab import ProfileEditorTab
 from .VersionEditorTab import VersionEditorTab
@@ -25,7 +26,6 @@ from .AboutTab import AboutTab
 from .NewsTab import NewsTab
 import urllib.parse
 import traceback
-import platform
 import sys
 import os
 
@@ -54,6 +54,7 @@ class MainWindow(QWidget, Ui_MainWindow):
         self._newsTab = NewsTab()
         self._newsTab.updateNews()
 
+        self._actionManager = ActionManager.getInstance()
         self._installThread = InstallThread.getInstance()
         self._profileCollection = ProfileCollection.getInstance()
 
@@ -92,23 +93,10 @@ class MainWindow(QWidget, Ui_MainWindow):
 
         self._isFirstOpen = False
 
-    def openMainWindow(self, launchProfile: str | None, url: str | None) -> None:
+    def openMainWindow(self) -> None:
         if self._isFirstOpen:
             self.show()
             return
-
-        if platform.system() == "Linux":
-            from jdMinecraftLauncher.DBusService import DBusService
-            DBusService(self)
-
-        if launchProfile:
-            profile = self._profileCollection.getProfileByName(launchProfile)
-            if profile:
-                self.launchProfile(profile)
-            else:
-                QMessageBox.critical(self, QCoreApplication.translate("MainWindow", "Profile not found"), QCoreApplication.translate("MainWindow", "The given Profile was not found"))
-        elif url:
-            self.openURL(url)
 
         self._isFirstOpen = True
         self.show()
@@ -126,6 +114,15 @@ class MainWindow(QWidget, Ui_MainWindow):
             msgBox.setText(QCoreApplication.translate("MainWindow", "jdMinecraft was unable to load your settings due to an error. Apologies for any inconvenience. Please report this bug."))
             msgBox.setDetailedText(loadError)
             msgBox.exec()
+
+        if (launchProfile := self._actionManager.getCurrentLaunchProfile()) is not None:
+            self.launchProfile(launchProfile)
+
+        if (currentURI := self._actionManager.getCurrentURI()) is not None:
+            self.openURL(currentURI)
+
+        self._actionManager.profileLaunched.connect(self.launchProfile)
+        self._actionManager.uriOpened.connect(self.openURL)
 
     def updateNewsTab(self) -> None:
         self._newsTab.updateNews()

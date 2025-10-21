@@ -1,5 +1,5 @@
+include jdMinecraftLauncher/utils/DBusService/Introspect.xml
 include jdMinecraftLauncher/utils/NewsGenerator/files/*
-include jdMinecraftLauncher/DBusInterface.xml
 include jdMinecraftLauncher/translations/*.ts
 include jdMinecraftLauncher/Distribution.toml
 exclude jdMinecraftLauncher/ui_compiled/*
