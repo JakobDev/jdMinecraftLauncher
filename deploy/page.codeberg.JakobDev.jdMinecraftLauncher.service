@@ -1,3 +1,3 @@
 [D-BUS Service]
 Name=page.codeberg.JakobDev.jdMinecraftLauncher
-Exec=jdMinecraftLauncher
+Exec=jdMinecraftLauncher --no-activate

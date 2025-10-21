@@ -1,9 +1,11 @@
 from PyQt6.QtCore import QCoreApplication, QTranslator, QLibraryInfo
 from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
 from .Functions import hasInternetConnection, getDataPath, isFlatpak
+from .core.ProfileCollection import ProfileCollection
 from .utils.ProfileImporter import askProfileImport
 from .core.AccountManager import AccountManager
 from .utils.UpdateChecker import checkUpdates
+from .core.ActionManager import ActionManager
 from .Settings import Settings
 from PyQt6.QtGui import QIcon
 import minecraft_launcher_lib
@@ -71,6 +73,52 @@ def _handleAccount(splashScreen: QSplashScreen) -> bool:
     return account.login(None)
 
 
+def _activate(args: argparse.Namespace, icon: QIcon) -> None:
+    settings = Settings.getInstance()
+
+    if Globals.firstLaunch:
+        welcomeText = QCoreApplication.translate("jdMinecraftLauncher", "It appears to be your first time using jdMinecraftLauncher.") + " "
+        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "This is a custom Minecraft Launcher designed to resemble the old official launcher in appearance and feel, but with modern features like Microsoft account support.") + "<br><br>"
+        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "If you encounter any issues, please report them so that they can be addressed and resolved.") + "<br><br>"
+        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "This launcher is not an official product of Mojang/Microsoft.")
+        QMessageBox.information(None, QCoreApplication.translate("jdMinecraftLauncher", "Welcome"), welcomeText)
+
+    if Globals.enableUpdater and not Globals.offlineMode and settings.get("checkUpdatesStartup"):
+        checkUpdates()
+
+    _ensureMinecraftDirectoryExists()
+
+    splashScreen = QSplashScreen()
+    splashScreen.setPixmap(icon.pixmap(128, 128))
+    splashScreen.show()
+
+    # We import it here, so jdMinecraftLauncher doesn't crash if the compiled ui files and missing and is able to show the error message
+    from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
+
+    if not _handleAccount(splashScreen):
+        sys.exit(0)
+
+    mainWindow = MainWindow()
+
+    accountManager = AccountManager.getInstance()
+    accountManager.saveData()
+
+    if args.account:
+        account = accountManager.getAccountByName(args.account)
+        if account is not None:
+            accountManager.setSelectedAccount(account)
+        else:
+            print(QCoreApplication.translate("jdMinecraftLauncher", "Account {{name}} does not exist").replace("{{name}}", args.account), file=sys.stderr)
+
+    if Globals.firstLaunch:
+        askProfileImport(mainWindow)
+
+    mainWindow.updateAccountInformation()
+    mainWindow.openMainWindow()
+
+    splashScreen.close()
+
+
 def main() -> None:
     if not os.path.isdir(os.path.join(os.path.dirname(__file__), "ui_compiled")):
         print("Could not find compiled ui files. Please run tools/CompileUI.py first.", file=sys.stderr)
@@ -94,6 +142,7 @@ def main() -> None:
     parser.add_argument("--force-start", help="Forces the start on unsupported Platforms", action="store_true")
     parser.add_argument("--dont-save-data", help="Don't save data to the disk (only for development usage)", action="store_true")
     parser.add_argument("--debug", help="Start in Debug Mode", action="store_true")
+    parser.add_argument("--no-activate", help="Don't run in foreground", action="store_true")
     args = parser.parse_known_args()[0]
 
     if args.data_dir:
@@ -155,52 +204,40 @@ def main() -> None:
     if args.offline_mode or not hasInternetConnection():
         Globals.offlineMode = True
 
-    if Globals.firstLaunch:
-        welcomeText = QCoreApplication.translate("jdMinecraftLauncher", "It appears to be your first time using jdMinecraftLauncher.") + " "
-        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "This is a custom Minecraft Launcher designed to resemble the old official launcher in appearance and feel, but with modern features like Microsoft account support.") + "<br><br>"
-        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "If you encounter any issues, please report them so that they can be addressed and resolved.") + "<br><br>"
-        welcomeText += QCoreApplication.translate("jdMinecraftLauncher", "This launcher is not an official product of Mojang/Microsoft.")
-        QMessageBox.information(None, QCoreApplication.translate("jdMinecraftLauncher", "Welcome"), welcomeText)
-
-    if Globals.enableUpdater and not Globals.offlineMode and settings.get("checkUpdatesStartup"):
-        checkUpdates()
-
-    _ensureMinecraftDirectoryExists()
-
-    splashScreen = QSplashScreen()
-    splashScreen.setPixmap(icon.pixmap(128, 128))
-    splashScreen.show()
-
     try:
         import setproctitle
         setproctitle.setproctitle("jdMinecraftLauncher")
     except ModuleNotFoundError:
         pass
 
-    # We import it here, so jdMinecraftLauncher doesn't crash if the compiled ui files and missing and is able to show the error message
-    from jdMinecraftLauncher.gui.MainWindow.MainWindow import MainWindow
+    if os.getenv("DBUS_SESSION_BUS_ADDRESS") is not None:
+        try:
+            from .utils.DBusService import DBusService
+            DBusService.start()
+        except ModuleNotFoundError as ex:
+            print(QCoreApplication.translate("jdMinecraftLauncher",
+                                             "The DBus service failed to start because the optional Python module {{name}} was not found"
+                                             ).replace("{{name}}", str(ex.name)), file=sys.stderr)
 
-    if not _handleAccount(splashScreen):
-        sys.exit(0)
+    actionManager = ActionManager.getInstance()
+    actionManager.activated.connect(lambda: _activate(args, icon))
 
-    mainWindow = MainWindow()
-
-    accountManager = AccountManager.getInstance()
-    accountManager.saveData()
-
-    if args.account:
-        account = accountManager.getAccountByName(args.account)
-        if account is not None:
-            accountManager.setSelectedAccount(account)
+    if args.launch_profile is not None:
+        profileCollection = ProfileCollection.getInstance()
+        profile = profileCollection.getProfileByName(args.launch_profile)
+        if profile is not None:
+            actionManager.launchProfile(profile)
         else:
-            print(QCoreApplication.translate("jdMinecraftLauncher", "Account {{name}} does not exist").replace("{{name}}", args.account), file=sys.stderr)
+            QMessageBox.critical(None,
+                                 QCoreApplication.translate("jdMinecraftLauncher", "Profile not found"),
+                                 QCoreApplication.translate("jdMinecraftLauncher", "The given Profile was not found")
+                                 )
+    elif args.url is not None:
+        actionManager.openURI(args.url)
 
-    if Globals.firstLaunch:
-        askProfileImport(mainWindow)
-
-    mainWindow.updateAccountInformation()
-    mainWindow.openMainWindow(args.launch_profile, args.url)
-
-    splashScreen.close()
+    if args.no_activate:
+        actionManager.resetExitTimer()
+    else:
+        actionManager.activate()
 
     sys.exit(app.exec())

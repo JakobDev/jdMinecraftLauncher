@@ -1,0 +1,15 @@
+# Created with jdDesktopEntryEdit 1.7
+[Desktop Entry]
+Type=Service
+Name=jdMinecraftLauncher
+Comment=Start Minecraft
+Icon=page.codeberg.JakobDev.jdMinecraftLauncher
+X-KDE-PluginInfo-Author=JakobDev
+X-KDE-PluginInfo-Email=jakobdev@gmx.de
+X-KDE-PluginInfo-Name=jdMinecraftLauncher
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-License=GPL-3.0-only
+X-KDE-PluginInfo-EnabledByDefault=true
+X-Plasma-API=DBus
+X-Plasma-DBusRunner-Service=page.codeberg.JakobDev.jdMinecraftLauncher
+X-Plasma-DBusRunner-Path=/

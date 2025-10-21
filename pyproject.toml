@@ -45,6 +45,7 @@ dynamic = ["version"]
 [project.optional-dependencies]
 window-icon-progress-windows = ["PyTaskbarProgress"]
 shortcut-linux = ["desktop-entry-lib"]
+dbus-service = ["jeepney"]
 
 [project.urls]
 Source = "https://codeberg.org/JakobDev/jdMinecraftLauncher"
@@ -77,5 +78,6 @@ additional-packages = ["desktop-entry-lib"]
 
 [tool.mypy]
 pretty = true
+ignore_missing_imports = true
 disable_error_code = ["union-attr"]
 files = ["jdMinecraftLauncher/**/*.py"]
