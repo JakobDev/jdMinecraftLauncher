@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-06 19:51+0200\n"
+"POT-Creation-Date: 2025-10-27 17:02+0100\n"
 "PO-Revision-Date: 2024-03-08 11:13+0000\n"
 "Last-Translator: 0ko <0ko@users.noreply.translate.codeberg.org>\n"
 "Language-Team: Russian <https://translate.codeberg.org/projects/"
@@ -46,7 +46,8 @@ msgid "Offline mode is available after your first login"
 msgstr "Оффлайн-режим доступен после входа"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:18
-msgid "One click install of Forge and Fabric"
+#, fuzzy
+msgid "One click install of Forge, NeoForge, Fabric and Quilt"
 msgstr "Установка Forge и Fabric в одно нажатие"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:19
@@ -72,25 +73,33 @@ msgid ""
 "Modrinth modpacks (.mrpack) can be installed directly through the Launcher"
 msgstr ""
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:25
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:24
+msgid "Integrated into KRunner and GNOME Search"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:26
 msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
 msgstr ""
 "Для использования лаунчера вам необходима учётная запись Mincosoft, имеющая "
 "Minecraft"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:26
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:27
 msgid ""
 "This Launcher is completly fanmade and not supported by Mojang/Microsoft"
 msgstr "Этот лаунчер создан сообществом и не связан с Microsoft или Mojang"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:30
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:31
 msgid "The main window"
 msgstr "Главное окно"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:38
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:39
 msgid "The profile editor"
 msgstr "Редактор профилей"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:17
 msgid "Offline Mode"
 msgstr "Автономный режим"
+
+#: deploy/krunner.desktop:5
+msgid "Start Minecraft"
+msgstr ""

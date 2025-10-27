@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-06 19:51+0200\n"
+"POT-Creation-Date: 2025-10-27 17:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -40,7 +40,7 @@ msgid "Offline mode is available after your first login"
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:18
-msgid "One click install of Forge and Fabric"
+msgid "One click install of Forge, NeoForge, Fabric and Quilt"
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:19
@@ -65,23 +65,31 @@ msgid ""
 "Modrinth modpacks (.mrpack) can be installed directly through the Launcher"
 msgstr ""
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:25
-msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:24
+msgid "Integrated into KRunner and GNOME Search"
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:26
+msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:27
 msgid ""
 "This Launcher is completly fanmade and not supported by Mojang/Microsoft"
 msgstr ""
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:30
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:31
 msgid "The main window"
 msgstr ""
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:38
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:39
 msgid "The profile editor"
 msgstr ""
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:17
 msgid "Offline Mode"
+msgstr ""
+
+#: deploy/krunner.desktop:5
+msgid "Start Minecraft"
 msgstr ""

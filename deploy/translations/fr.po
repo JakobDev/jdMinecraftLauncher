@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-06 19:51+0200\n"
+"POT-Creation-Date: 2025-10-27 17:02+0100\n"
 "PO-Revision-Date: 2025-10-16 23:09+0000\n"
 "Last-Translator: DaveS <daves@noreply.codeberg.org>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/"
@@ -45,7 +45,8 @@ msgid "Offline mode is available after your first login"
 msgstr "Le mode hors ligne sera disponible après la première connexion"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:18
-msgid "One click install of Forge and Fabric"
+#, fuzzy
+msgid "One click install of Forge, NeoForge, Fabric and Quilt"
 msgstr "Installation en un clic de Forge et Fabric"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:19
@@ -60,8 +61,7 @@ msgstr ""
 "directement"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:21
-msgid ""
-"For Developers commandline arguments and a D-Bus Interface are provided"
+msgid "For Developers commandline arguments and a D-Bus Interface are provided"
 msgstr ""
 "Pour les développeurs, des arguments de ligne de commande et une interface D-"
 "Bus sont fournis"
@@ -77,27 +77,35 @@ msgstr ""
 "Les modpacks Modrinth (.mrpack) peuvent être installés directement dans le "
 "launcher"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:25
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:24
+msgid "Integrated into KRunner and GNOME Search"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:26
 msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
 msgstr ""
 "Il vous faut un compte Microsoft qui possède Minecraft pour utiliser ce "
 "launcher"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:26
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:27
 msgid ""
 "This Launcher is completly fanmade and not supported by Mojang/Microsoft"
 msgstr ""
 "Ce launcher est complètement fait par la communauté et non endossé par "
 "Mojang/Microsoft"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:30
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:31
 msgid "The main window"
 msgstr "La fenêtre principale"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:38
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:39
 msgid "The profile editor"
 msgstr "L'éditeur de profile"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:17
 msgid "Offline Mode"
 msgstr "Mode hors ligne"
+
+#: deploy/krunner.desktop:5
+msgid "Start Minecraft"
+msgstr ""

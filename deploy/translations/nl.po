@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-06 19:51+0200\n"
+"POT-Creation-Date: 2025-10-27 17:02+0100\n"
 "PO-Revision-Date: 2025-10-08 09:09+0000\n"
 "Last-Translator: Vistaus <vistaus@noreply.codeberg.org>\n"
 "Language-Team: Dutch <https://translate.codeberg.org/projects/"
@@ -45,7 +45,8 @@ msgid "Offline mode is available after your first login"
 msgstr "Offlinemodus na de eerste keer inloggen"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:18
-msgid "One click install of Forge and Fabric"
+#, fuzzy
+msgid "One click install of Forge, NeoForge, Fabric and Quilt"
 msgstr "Installeer Forge en Fabric met één muisklik"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:19
@@ -72,26 +73,34 @@ msgstr ""
 "Modrinth-modpacks (.mrpack) kunnen met behulp van de starter worden "
 "geïnstalleerd"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:25
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:24
+msgid "Integrated into KRunner and GNOME Search"
+msgstr ""
+
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:26
 msgid "You need a Microsoft Account which owns Minecraft to use this Launcher"
 msgstr ""
 "Let op: je hebt een Microsoftaccount nodig om deze starter te kunnen "
 "gebruiken"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:26
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:27
 msgid ""
 "This Launcher is completly fanmade and not supported by Mojang/Microsoft"
 msgstr ""
 "Let op: deze starter is gemaakt door fans en niet door Mojang/Microsoft"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:30
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:31
 msgid "The main window"
 msgstr "Het hoofdvenster"
 
-#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:38
+#: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.metainfo.xml:39
 msgid "The profile editor"
 msgstr "Het profielvenster"
 
 #: deploy/page.codeberg.JakobDev.jdMinecraftLauncher.desktop:17
 msgid "Offline Mode"
 msgstr "Offline-modus"
+
+#: deploy/krunner.desktop:5
+msgid "Start Minecraft"
+msgstr ""
