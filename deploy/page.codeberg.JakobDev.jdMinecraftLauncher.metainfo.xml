@@ -15,12 +15,13 @@
     <ul>
       <li>All Minecraft versions are supported</li>
       <li>Offline mode is available after your first login</li>
-      <li>One click install of Forge and Fabric</li>
+      <li>One click install of Forge, NeoForge, Fabric and Quilt</li>
       <li>FeralInteractive GameMode is supported</li>
       <li>Create Shortcuts in the Menu and on the Desktop to directly launch Minecraft</li>
       <li>For Developers commandline arguments and a D-Bus Interface are provided</li>
       <li>Profiles can be imported from the vanilla launcher</li>
       <li>Modrinth modpacks (.mrpack) can be installed directly through the Launcher</li>
+      <li>Integrated into KRunner and GNOME Search</li>
     </ul>
     <p>You need a Microsoft Account which owns Minecraft to use this Launcher</p>
     <p>This Launcher is completly fanmade and not supported by Mojang/Microsoft</p>

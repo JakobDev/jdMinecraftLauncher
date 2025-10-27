@@ -17,12 +17,13 @@ Features:
 
 - All Minecraft versions are supported
 - Offline mode is available after your first login
-- One click install of Forge and Fabric
+- One click install of Forge, NeoForge, Fabric and Quilt
 - FeralInteractive GameMode is supported
 - Create Shortcuts in the Menu and on the Desktop to directly launch Minecraft
 - For Developers commandline arguments and a D-Bus Interface are provided
 - Profiles can be imported from the vanilla launcher
 - Modrinth modpacks (.mrpack) can be installed directly through the Launcher
+- Integrated into KRunner and GNOME Search
 
 You need a Microsoft Account which owns Minecraft to use this Launcher
 
