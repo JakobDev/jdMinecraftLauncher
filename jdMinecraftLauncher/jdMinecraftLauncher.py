@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QApplication, QSplashScreen, QMessageBox
 from .Functions import hasInternetConnection, getDataPath, isFlatpak
 from .core.ProfileCollection import ProfileCollection
 from .utils.ProfileImporter import askProfileImport
+from .utils.InterProcessCommunication import getIPC
 from .core.AccountManager import AccountManager
 from .utils.UpdateChecker import checkUpdates
 from .core.ActionManager import ActionManager
@@ -98,7 +99,7 @@ def _activate(args: argparse.Namespace, icon: QIcon) -> None:
     if not _handleAccount(splashScreen):
         sys.exit(0)
 
-    mainWindow = MainWindow()
+    mainWindow = MainWindow.getInstance()
 
     accountManager = AccountManager.getInstance()
     accountManager.saveData()
@@ -144,6 +145,12 @@ def main() -> None:
     parser.add_argument("--debug", help="Start in Debug Mode", action="store_true")
     parser.add_argument("--no-activate", help="Don't run in foreground", action="store_true")
     args = parser.parse_known_args()[0]
+
+    ipc = getIPC()
+
+    if args.url is not None and ipc.isAlreadyRunning():
+        ipc.openURI(args.url)
+        return
 
     if args.data_dir:
         Globals.dataDir = args.data_dir
@@ -209,6 +216,8 @@ def main() -> None:
         setproctitle.setproctitle("jdMinecraftLauncher")
     except ModuleNotFoundError:
         pass
+
+    ipc.startup()
 
     if os.getenv("DBUS_SESSION_BUS_ADDRESS") is not None:
         try:

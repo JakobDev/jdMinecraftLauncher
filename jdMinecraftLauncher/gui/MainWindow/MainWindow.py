@@ -1,6 +1,7 @@
 from jdMinecraftLauncher.utils.WindowIconProgress import createWindowIconProgress
 from ...core.ProfileCollection import ProfileCollection
 from ...core.VersionCollection import VersionCollection
+from typing import cast, Optional, Type, TYPE_CHECKING
 from ...ui_compiled.MainWindow import Ui_MainWindow
 from PyQt6.QtWebEngineCore import QWebEngineProfile
 from ...core.AccountManager import AccountManager
@@ -15,7 +16,6 @@ from ...InstallThread import InstallThread
 from ..ProfileWindow import ProfileWindow
 from .GameOutputTab import GameOutputTab
 from .ModLoaderTab import ModLoaderTab
-from typing import cast, TYPE_CHECKING
 from PyQt6.QtGui import QCloseEvent
 from .OptionsTab import OptionsTab
 from .AccountTab import AccountTab
@@ -35,6 +35,15 @@ if TYPE_CHECKING:
 
 
 class MainWindow(QWidget, Ui_MainWindow):
+    _instance: Optional["MainWindow"] = None
+
+    @classmethod
+    def getInstance(cls: Type["MainWindow"]) -> "MainWindow":
+        if cls._instance is None:
+            cls._instance = cls()
+
+        return cls._instance
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -214,6 +223,11 @@ class MainWindow(QWidget, Ui_MainWindow):
         self.profileWindow.open()
 
     def launchProfile(self, profile: "Profile") -> None:
+        if not self.playButton.isEnabled():
+            return
+
+        self.activateWindow()
+
         if Globals.offlineMode:
             if os.path.isdir(os.path.join(Globals.minecraftDir, "versions", profile.getVersionID())):
                 self.startMinecraft(profile)

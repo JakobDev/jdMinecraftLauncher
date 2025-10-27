@@ -4,6 +4,7 @@
   <interface name="page.codeberg.JakobDev.jdMinecraftLauncher">
     <method name="OpenURI">
       <arg direction="in" type="s" name="uri"/>
+      <arg direction="in" type="s" name="xdg_activation_token"/>
     </method>
 
     <method name="ListProfiles">
@@ -12,6 +13,7 @@
 
     <method name="LaunchProfile">
       <arg direction="in" type="s" name="id"/>
+      <arg direction="in" type="s" name="xdg_activation_token"/>
     </method>
 
     <method name="GetProfileDetails">

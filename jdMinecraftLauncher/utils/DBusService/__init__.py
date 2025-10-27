@@ -49,9 +49,21 @@ class DBusService:
         self._actionManager.activate()
         self._actionManager.launchProfile(profile)
 
+    def _setActivationToken(self, activationToken: str) -> None:
+        if activationToken == "":
+            return
+
+        os.putenv("XDG_ACTIVATION_TOKEN", activationToken)
+
+        try:
+            os.reload_environ()  # type: ignore[attr-defined]
+        except AttributeError:
+            pass
+
     def _handleMain(self, msg: jeepney.Message) -> None:
         match msg.header.fields[jeepney.HeaderFields.member]:
             case "OpenURI":
+                self._setActivationToken(msg.body[1])
                 self._actionManager.openURI(msg.body[0])
 
                 return jeepney.new_method_return(msg, "", ())
@@ -65,6 +77,7 @@ class DBusService:
             case "LaunchProfile":
                 profile = self._profileCollection.getProfileByID(msg.body[0])
                 if profile is not None:
+                    self._setActivationToken(msg.body[1])
                     self._launchProfile(profile)
                     return jeepney.new_method_return(msg, "", ())
                 else:
