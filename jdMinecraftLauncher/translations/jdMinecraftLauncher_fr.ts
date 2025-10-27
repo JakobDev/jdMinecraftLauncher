@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="nl_NL">
+<TS version="2.1" language="fr">
 <context>
     <name>AboutTab</name>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>This Launcher is fanmade and not from Mojang/Microsoft</source>
-        <translation>Deze starter is gemaakt door fans en niet door Mojang/Microsoft</translation>
+        <translation>Ce launcher est fait par la communauté, et non par Mojang/Microsoft</translation>
     </message>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>This Program uses minecraft-launcher-lib {{version}}</source>
-        <translation>Dit programma maakt gebruik van minecraft-launcher-lib {{version}}</translation>
+        <translation>Ce logiciel utilise minecraft-launcher-lib {{version}}</translation>
     </message>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>This Program is licensed under GPL 3.0</source>
-        <translation>Dit programma is uitgebracht onder de GPL 3.0-licentie</translation>
+        <translation>Ce logiciel est sous la licence GPL 3.0</translation>
     </message>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>View Source</source>
-        <translation>Broncode bekijken</translation>
+        <translation>Voir Source</translation>
     </message>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>Open Minecraft directory</source>
-        <translation>Minecraftmap openen</translation>
+        <translation>Ouvrir le dossier Minecraft</translation>
     </message>
     <message>
         <location filename="../ui/AboutTab.ui" line="0"/>
         <source>Open data directory</source>
-        <translation>Gegevensmap openen</translation>
+        <translation>Ouvrir le dossier data</translation>
     </message>
 </context>
 <context>
@@ -39,12 +39,12 @@
     <message>
         <location filename="../core/AccountManager.py" line="147"/>
         <source>Enter name</source>
-        <translation>Voer een naam in</translation>
+        <translation>Entrer nom</translation>
     </message>
     <message>
         <location filename="../core/AccountManager.py" line="147"/>
         <source>Please enter a name for the dummy account</source>
-        <translation>Geef het testaccount een naam</translation>
+        <translation>Entrez un nom pour le compte dummy (factice)</translation>
     </message>
 </context>
 <context>
@@ -53,48 +53,48 @@
         <location filename="../ui/AccountTab.ui" line="0"/>
         <location filename="../gui/MainWindow/AccountTab.py" line="24"/>
         <source>Switch</source>
-        <translation>Overschakelen</translation>
+        <translation>Changer</translation>
     </message>
     <message>
         <location filename="../ui/AccountTab.ui" line="0"/>
         <location filename="../gui/MainWindow/AccountTab.py" line="42"/>
         <source>Remove</source>
-        <translation>Verwijderen</translation>
+        <translation>Retirer</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/AccountTab.py" line="51"/>
         <source>No Internet Connection</source>
-        <translation>Geen internetverbinding</translation>
+        <translation>Pas de connexion internet</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/AccountTab.py" line="51"/>
         <source>This Feature needs a internet connection</source>
-        <translation>Voor deze functie is een internetverbinding vereist</translation>
+        <translation>Cette fonctionnalité requiert une connexion internet</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/AccountTab.py" line="86"/>
         <source>Add Account</source>
-        <translation>Account toevoegen</translation>
+        <translation>Ajouter compte</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/AccountTab.py" line="91"/>
         <source>Add Dummy Account</source>
-        <translation>Testaccount toevoegen</translation>
+        <translation>Ajouter un compte dummy (factice)</translation>
     </message>
     <message>
         <location filename="../ui/AccountTab.ui" line="0"/>
         <source>Name</source>
-        <translation>Naam</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <location filename="../ui/AccountTab.ui" line="0"/>
         <source>Type</source>
-        <translation>Type</translation>
+        <translation type="unfinished">Type</translation>
     </message>
     <message>
         <location filename="../ui/AccountTab.ui" line="0"/>
         <source>Add</source>
-        <translation>Toevoegen</translation>
+        <translation>Ajouter</translation>
     </message>
 </context>
 <context>
@@ -102,17 +102,17 @@
     <message>
         <location filename="../gui/MainWindow/GameOutputTab.py" line="75"/>
         <source>Failed to start Minecraft</source>
-        <translation>Minecraft kan niet worden gestart</translation>
+        <translation>Échec du démarrage de Minecraft</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/GameOutputTab.py" line="76"/>
         <source>Failed to start</source>
-        <translation>Opstarten mislukt</translation>
+        <translation>Échec du démarrage</translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/GameOutputTab.py" line="76"/>
         <source>Minecraft could not be started. Maybe you&apos;re using an invalid Java executable.</source>
-        <translation>Minecraft kan niet worden gestart. Controleer het uitvoerbare Java-bestand.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -120,59 +120,59 @@
     <message>
         <location filename="../utils/InstallMrpack.py" line="16"/>
         <source>This modpacks contains some optional files.</source>
-        <translation>Deze modpacks bevatten optionele bestanden.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/InstallMrpack.py" line="19"/>
         <source>Select which of them you want to install.</source>
-        <translation>Geef aan welke je wilt installeren.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/InstallMrpack.py" line="99"/>
         <location filename="../utils/InstallMrpack.py" line="88"/>
         <location filename="../utils/InstallMrpack.py" line="45"/>
         <source>Install modpack</source>
-        <translation>Modpack installeren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/InstallMrpack.py" line="70"/>
         <source>Invalid file</source>
-        <translation>Ongeldig bestand</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/InstallMrpack.py" line="71"/>
         <source>{{path}} is not a valid Modrinth modpack</source>
-        <translation>{{path}} is geen geldig Modrinth-modpack</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/InstallMrpack.py" line="75"/>
         <source>This file includes the following modpack:</source>
-        <translation>Dit bestand bevat het volgende modpack:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/InstallMrpack.py" line="76"/>
         <source>Name:</source>
-        <translation>Naam:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/InstallMrpack.py" line="80"/>
         <source>Summary:</source>
-        <translation>Samenvatting:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/InstallMrpack.py" line="83"/>
         <source>Minecraft version:</source>
-        <translation>Minecraft-versie:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/InstallMrpack.py" line="84"/>
         <source>Do you want to install it?</source>
-        <translation>Wil je dit installeren?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/InstallMrpack.py" line="100"/>
         <source>Please select a profile for which you would like to install the modpack</source>
-        <translation>Geef aan op welk profiel het modpack moet worden geïnstalleerd</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -180,32 +180,32 @@
     <message>
         <location filename="../Languages.py" line="6"/>
         <source>English</source>
-        <translation>Engels</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Languages.py" line="7"/>
         <source>German</source>
-        <translation>Duits</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Languages.py" line="8"/>
         <source>Dutch</source>
-        <translation>Nederlands</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Languages.py" line="9"/>
         <source>Spanish</source>
-        <translation>Spaans</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Languages.py" line="10"/>
         <source>Russian</source>
-        <translation>Russisch</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Languages.py" line="11"/>
         <source>Hebrew</source>
-        <translation>Hebreeuws</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -213,42 +213,42 @@
     <message>
         <location filename="../gui/LoginWindow.py" line="16"/>
         <source>Login</source>
-        <translation>Inloggen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/LoginWindow.py" line="54"/>
         <source>Your account appears to not own Minecraft.</source>
-        <translation>Het lijkt erop dat je Minecraft niet bezit.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/LoginWindow.py" line="55"/>
         <source>You need an account that owns Minecraft to use jdMinecraftLauncher.</source>
-        <translation>Je hebt een account nodig dat Minecraft bezit om gebruik te maken van jdMinecraftLauncher.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/LoginWindow.py" line="56"/>
         <source>If you&apos;ve purchased Minecraft and still encounter this error, try logging in with the official launcher first.</source>
-        <translation>Als je Minecraft reeds in bezit hebt en deze foutmelding krijgt, probeer dan eerst in te loggen via de officiële starter.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/LoginWindow.py" line="57"/>
         <source>If the error still persists, please write a bug report.</source>
-        <translation>Als deze foutmelding getoond blijft worden, meld deze dan als bug.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/LoginWindow.py" line="58"/>
         <source>Account does not own Minecraft</source>
-        <translation>Account beschikt niet over Minecraft</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/LoginWindow.py" line="69"/>
         <source>Login failed</source>
-        <translation>Inloggen mislukt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/LoginWindow.py" line="70"/>
         <source>The login failed due to an unknown error. Please try again. If the problem persists, please submit a bug report.</source>
-        <translation>Er is een onbekende fout opgetreden tijdens het inloggen. Probeer het opnieuw. Als het probleem zich blijft voordoen, meld het dan.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -256,188 +256,188 @@
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="68"/>
         <source>News</source>
-        <translation>Nieuws</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="69"/>
         <source>Profile Editor</source>
-        <translation>Profielbewerker</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="70"/>
         <source>Version Editor</source>
-        <translation>Versiebewerker</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="71"/>
         <source>Options</source>
-        <translation>Opties</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="72"/>
         <source>Install mod loader</source>
-        <translation>Modlader installeren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="73"/>
         <source>Install modpack</source>
-        <translation>Modpack installeren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="74"/>
         <source>Accounts</source>
-        <translation>Accounts</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="75"/>
         <source>About</source>
-        <translation>Over</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="167"/>
         <location filename="../gui/MainWindow/MainWindow.py" line="157"/>
         <location filename="../gui/MainWindow/MainWindow.py" line="109"/>
         <source>Profile not found</source>
-        <translation>Profiel niet gevonden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="168"/>
         <location filename="../gui/MainWindow/MainWindow.py" line="158"/>
         <location filename="../gui/MainWindow/MainWindow.py" line="109"/>
         <source>The given Profile was not found</source>
-        <translation>Het gekozen profiel is niet gevonden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="118"/>
         <source>Unable to load Profiles</source>
-        <translation>Laden van profielen mislukt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="119"/>
         <source>jdMinecraft was unable to load your profiles due to an error. Apologies for any inconvenience. Please report this bug.</source>
-        <translation>jdMinecraft kon de profielen wegens een foutmelding niet laden. Onze excuses voor het ongemak. Meld deze bug aan de ontwikkelaars.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="125"/>
         <source>Unable to load Settings</source>
-        <translation>Laden van instellingen mislukt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="126"/>
         <source>jdMinecraft was unable to load your settings due to an error. Apologies for any inconvenience. Please report this bug.</source>
-        <translation>jdMinecraft kon de instellingen wegens een foutmelding niet laden. Onze excuses voor het ongemak. Meld deze bug aan de ontwikkelaars.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="175"/>
         <source>File not found</source>
-        <translation>Bestand niet gevonden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="176"/>
         <source>{{path}} was not found</source>
-        <translation>{{path}} is niet aangetroffen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="184"/>
         <source>Could not open file</source>
-        <translation>Openen mislukt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="185"/>
         <source>{{path}} is not a supported file format</source>
-        <translation>{{path}} wordt niet ondersteund</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="233"/>
         <location filename="../gui/MainWindow/MainWindow.py" line="224"/>
         <source>No Internet Connection</source>
-        <translation>Geen internetverbinding</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="224"/>
         <source>You need a internet connection to install a new version, but you are still able to play already installed versions.</source>
-        <translation>Maak verbinding met het internet om een nieuwe versie te installeren. Zonder verbinding kun je alleen reeds geïnstalleerde versies spelen.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="233"/>
         <source>This Feature needs a internet connection</source>
-        <translation>Voor deze functie is een internetverbinding vereist</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="258"/>
         <source>Could not create game directory</source>
-        <translation>Maken van gamemap mislukt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="259"/>
         <source>jdMinecraftLauncher was unable to create {{path}}</source>
-        <translation>jdMinecraftLauncher kan {{path}} niet aanmaken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="265"/>
         <source>Game Output</source>
-        <translation>Game-uitvoer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="273"/>
         <source>Version not found</source>
-        <translation>Versie niet aangetroffen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="273"/>
         <source>The version used by this profile was not found and could not be installed. Perhaps you have uninstalled it.</source>
-        <translation>De versie die door dit profiel gebruikt wordt is niet aangetroffen. Mogelijk heb je de versie verwijderd.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="277"/>
         <source>Due to an error, the installation could not be completed</source>
-        <translation>De installatie kan niet worden afgerond door een foutmelding</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="278"/>
         <source>This may have been caused by a network error</source>
-        <translation>Mogelĳk wordt dit veroorzaakt door een netwerkfout</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="281"/>
         <source>Installation failed</source>
-        <translation>Installatie mislukt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="306"/>
         <source>Welcome, {{name}}</source>
-        <translation>Welkom, {{name}}</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/MainWindow.py" line="309"/>
         <source>Play Offline</source>
-        <translation>Offline spelen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/MainWindow.ui" line="0"/>
         <location filename="../gui/MainWindow/MainWindow.py" line="311"/>
         <source>Play</source>
-        <translation>Spelen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/MainWindow.ui" line="0"/>
         <source>Profile:</source>
-        <translation>Profiel:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/MainWindow.ui" line="0"/>
         <source>New Profile</source>
-        <translation>Nieuw profiel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/MainWindow.ui" line="0"/>
         <source>Edit Profile</source>
-        <translation>Profiel bewerken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/MainWindow.ui" line="0"/>
         <source>Logout</source>
-        <translation>Uitloggen</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -445,7 +445,7 @@
     <message>
         <location filename="../gui/MainWindow/ModLoaderTab.py" line="53"/>
         <source>Install</source>
-        <translation>Installeren</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -453,22 +453,22 @@
     <message>
         <location filename="../gui/MainWindow/ModpackTab.py" line="29"/>
         <source>Modrinth modpack</source>
-        <translation>Modrinth-modpack</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ModpackTab.py" line="30"/>
         <source>All Files</source>
-        <translation>Alle bestanden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ModpackTab.ui" line="0"/>
         <source>You can install a Modrinth modpack (.mrpack) here</source>
-        <translation>Hier kun je een Modrinth-modpack (.mrpack) installeren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ModpackTab.ui" line="0"/>
         <source>Browse</source>
-        <translation>Bladeren</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -477,31 +477,31 @@
         <location filename="../gui/MainWindow/NewsTab.py" line="54"/>
         <location filename="../gui/MainWindow/NewsTab.py" line="24"/>
         <source>{{name}} not installed</source>
-        <translation>{{name}} is niet geïnstalleerd</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/NewsTab.py" line="55"/>
         <location filename="../gui/MainWindow/NewsTab.py" line="25"/>
         <source>You need the {{name}} Python package installed to use this feature</source>
-        <translation>Installeer het Python-pakket ‘{{name}}’ om deze functie te gebruiken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/NewsTab.py" line="58"/>
         <location filename="../gui/MainWindow/NewsTab.py" line="28"/>
         <source>Error</source>
-        <translation>Foutmelding</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/NewsTab.py" line="61"/>
         <location filename="../gui/MainWindow/NewsTab.py" line="31"/>
         <source>Unable to render Minecraft News</source>
-        <translation>Het Minecraftnieuws kan niet worden geladen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/NewsTab.py" line="65"/>
         <location filename="../gui/MainWindow/NewsTab.py" line="35"/>
         <source>Unable to render RSS feed {{url}}</source>
-        <translation>De rss-feed op {{url}} kan niet worden geladen</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -509,138 +509,138 @@
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="38"/>
         <source>Use System Language</source>
-        <translation>Systeemtaal gebruiken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="40"/>
         <source>Auto</source>
-        <translation>Automatisch</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="41"/>
         <source>Wayland</source>
-        <translation>Wayland</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="42"/>
         <source>XWayland</source>
-        <translation>XWayland</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="153"/>
         <source>This will change your Minecraft directory.</source>
-        <translation>Hiermee kies je een andere Minecraftmap.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="154"/>
         <source>This is the directory where Minecraft is installed.</source>
-        <translation>Dit is de map waar Minecraft geïnstalleerd is.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="155"/>
         <source>If you don&apos;t set a game directory for your profile, Minecraft will also save its data (saves, options, etc.) there.</source>
-        <translation>Als je geen map instelt op je profiel, dan slaat Minecraft alle gegevens (opties, opslagbestanden, etc.) daar op.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="156"/>
         <source>Would you like to proceed?</source>
-        <translation>Wil je doorgaan?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="158"/>
         <source>Change Minecraft directory</source>
-        <translation>Minecraftmap wĳzigen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="178"/>
         <source>Reset Minecraft directory</source>
-        <translation>Standaardwaarde herstellen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/OptionsTab.py" line="178"/>
         <source>Would you like to reset your Minecraft directory to its default location?</source>
-        <translation>Wil je de standaard Minecraftmap weer instellen?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Language:</source>
-        <translation>Taal:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>News Tab</source>
-        <translation>Nieuwstabblad</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Minecraft News</source>
-        <translation>Minecraftnieuws</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>RSS Feed</source>
-        <translation>Rss-feed</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>URL:</source>
-        <translation>Url:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Website</source>
-        <translation>Website</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Open links in default browser</source>
-        <translation>Links openen in standaardbrowser</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Allow starting multiple instances (not recommended)</source>
-        <translation>Starten van meerdere processen toestaan (niet aanbevolen)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Unpack natives separately for each instance</source>
-        <translation>Natives per instantie uitpakken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Display installation progress in the window icon</source>
-        <translation>Installatievoortgang tonen op vensterpictogram</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Launch Minecraft in a Subsandbox</source>
-        <translation>Minecraft opstarten in subsandbox</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Check for Updates on Startup</source>
-        <translation>Automatisch controleren op updates</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Minecraft directory:</source>
-        <translation>Minecraftmap:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Change</source>
-        <translation>Wĳzigen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Reset</source>
-        <translation>Standaardwaarden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/OptionsTab.ui" line="0"/>
         <source>Displayserver for Minecraft:</source>
-        <translation>Grafische omgeving:</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -648,7 +648,7 @@
     <message>
         <location filename="../core/ProfileCollection.py" line="47"/>
         <source>Default</source>
-        <translation>Standaard</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -656,72 +656,72 @@
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="32"/>
         <source>Profile Name</source>
-        <translation>Profielnaam</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="33"/>
         <source>Minecraft Version</source>
-        <translation>Minecraftversie</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="34"/>
         <source>ID</source>
-        <translation>Id</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="53"/>
         <source>(Latest version)</source>
-        <translation>(nieuwste versie)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="55"/>
         <source>(Latest snapshot)</source>
-        <translation>(nieuwste momentopname)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="81"/>
         <source>Add Profile</source>
-        <translation>Profiel toevoegen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="85"/>
         <source>Edit Profile</source>
-        <translation>Profiel bewerken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="89"/>
         <source>Copy Profile</source>
-        <translation>Profiel kopiëren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="93"/>
         <source>Remove Profile</source>
-        <translation>Profiel verwijderen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="97"/>
         <source>Open Game Folder</source>
-        <translation>Gamemap openen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="102"/>
         <source>Create Shortcut</source>
-        <translation>Snelkoppeling maken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="109"/>
         <source>New Profile</source>
-        <translation>Nieuw profiel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="126"/>
         <source>Can&apos;t delete Profile</source>
-        <translation>Verwijderen mislukt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/ProfileEditorTab.py" line="127"/>
         <source>You can&apos;t delete all Profiles. At least one Profile must stay.</source>
-        <translation>Eén profiel dient behouden te worden.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -729,22 +729,22 @@
     <message>
         <location filename="../utils/ProfileImporter.py" line="69"/>
         <source>Import Profiles</source>
-        <translation>Profielen importeren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/ProfileImporter.py" line="69"/>
         <source>jdMinecraftLauncher can import Profiles from the vanilla Launcher. Do you want to import your Profiles?</source>
-        <translation>jdMinecraftLauncher kan profielen importeren uit de standaard Minecraftstarter. Wil je dit doen?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/ProfileImporter.py" line="76"/>
         <source>Error</source>
-        <translation>Foutmelding</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/ProfileImporter.py" line="77"/>
         <source>Due to an error, the profiles could not be imported. Sorry for that.</source>
-        <translation>Het importeren is mislukt vanwege een foutmelding. Onze excuses voor het ongemak.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -752,193 +752,193 @@
     <message>
         <location filename="../gui/ProfileWindow.py" line="32"/>
         <source>Hide Launcher and re-open when game closes</source>
-        <translation>Starter minimaliseren en weer tonen na afsluiten van game</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="33"/>
         <source>Close Launcher when Game starts</source>
-        <translation>Starter sluiten na starten van game</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="34"/>
         <source>Keep the Launcher open</source>
-        <translation>Starter openhouden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="90"/>
         <source>Note for Flatpak users</source>
-        <translation>Opmerking voor flatpakgebruikers</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="90"/>
         <source>Please select in the following dialog the directory which contains bin/java</source>
-        <translation>Kies het in het volgende venster de map met bin/java</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="98"/>
         <source>Invalid directory</source>
-        <translation>Ongeldige map</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="98"/>
         <source>This directory does not contain bin/java</source>
-        <translation>Deze map bevat niet bin/java</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="107"/>
         <source>Copy of {{name}}</source>
-        <translation>Kopie van {{name}}</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="211"/>
         <source>Use latest Version</source>
-        <translation>Nieuwste versie gebruiken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/ProfileWindow.py" line="214"/>
         <source>Use latest Snapshot</source>
-        <translation>Nieuwste momentopname gebruiken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Profile Editor</source>
-        <translation>Profielbewerker</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Profile Info</source>
-        <translation>Profielinformatie</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Profile Name:</source>
-        <translation>Profielnaam:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Game Directory:</source>
-        <translation>Gamemap:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Browse</source>
-        <translation>Bladeren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Resolution:</source>
-        <translation>Resolutie:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Launcher Visibility:</source>
-        <translation>Zichtbaarheid van starter:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Version Select</source>
-        <translation>Versie kiezen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Enable experimental development Versions (&quot;snapshots&quot;)</source>
-        <translation>Experimentele vooraf vrijgegeven versies (‘momentopnamen’) gebruiken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Allow use of old &quot;Beta&quot; Minecraft Versions (From 2010-2011)</source>
-        <translation>Oude bètaversies van Minecraft gebruiken (2010-2011)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Allow use of old &quot;Alpha&quot; Minecraft Versions (From 2010)</source>
-        <translation>Oude alfaversies van Minecraft gebruiken (2010)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Use Version:</source>
-        <translation>Versie gebruiken:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Java Settings (Advanced)</source>
-        <translation>Java-instellingen (geavanceerd)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Executable:</source>
-        <translation>Uitvoerbaar bestand:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>JVM Arguments:</source>
-        <translation>JVM-opties:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Other</source>
-        <translation>Overig</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Connect to Server</source>
-        <translation>Verbinden met server</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Server IP:</source>
-        <translation>Server-ip:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Server Port:</source>
-        <translation>Serverpoort:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Start in demo mode</source>
-        <translation>Opstarten in demomodus</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Disable Multiplayer</source>
-        <translation>Multiplayer uitschakelen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Disable Chat</source>
-        <translation>Chat uitschakelen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Additional Options:</source>
-        <translation>Aanvullende opties:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Use Gamemode</source>
-        <translation>Gamemode gebruiken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Cancel</source>
-        <translation>Annuleren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Create Shortcut</source>
-        <translation>Snelkoppeling maken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Open Game Dir</source>
-        <translation>Gamemap openen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ProfileWindow.ui" line="0"/>
         <source>Save Profile</source>
-        <translation>Profiel opslaan</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -946,52 +946,52 @@
     <message>
         <location filename="../utils/Shortcut.py" line="28"/>
         <source>desktop-entry-lib not found</source>
-        <translation>desktop-entry-lib niet aangetroffen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/Shortcut.py" line="28"/>
         <source>You need the desktop-entry-lib Python package to create a shortcut</source>
-        <translation>Installeer het Python-pakket ‘desktop-entry-lib’ om een snelkoppeling te kunnen maken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/Shortcut.py" line="46"/>
         <source>Start the {{name}} profile in jdMinecraftLauncher</source>
-        <translation>{{name}}-profiel openen in jdMinecraftLauncher</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/Shortcut.py" line="69"/>
         <source>Add URL Schema</source>
-        <translation>Url-schema toevoegen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/Shortcut.py" line="69"/>
         <source>To make Shortcuts work, you need to add the jdMinecraftLauncher URL Schema to Windows. Should it be added?</source>
-        <translation>Om snelkoppelingen te laten werken dient het jdMinecraftLauncher-url-schema te worden toegevoegd aan Windows. Wil je dat nu doen?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/Shortcut.py" line="114"/>
         <source>Select where you want to create the Shortcut</source>
-        <translation>Geef aan waar je de snelkoppeling wilt plaatsen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/Shortcut.py" line="115"/>
         <source>Create Shortcut</source>
-        <translation>Snelkoppeling maken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/Shortcut.py" line="119"/>
         <source>Desktop</source>
-        <translation>Bureaublad</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/Shortcut.py" line="123"/>
         <source>Menu</source>
-        <translation>Menu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/Shortcut.py" line="127"/>
         <source>Both</source>
-        <translation>Beide</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -999,22 +999,22 @@
     <message>
         <location filename="../utils/UpdateChecker.py" line="21"/>
         <source>Version {{version}} of jdMinecraftLauncher is now available.</source>
-        <translation>Versie {{version}} van jdMinecraftLauncher is beschikbaar.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/UpdateChecker.py" line="22"/>
         <source>You are currently using version {{version}}.</source>
-        <translation>Momenteel beschik je over versie {{version}}.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/UpdateChecker.py" line="23"/>
         <source>Do you want to download the latest version?</source>
-        <translation>Wil je de nieuwste versie downloaden?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../utils/UpdateChecker.py" line="25"/>
         <source>New version available</source>
-        <translation>Nieuwe versie beschikbaar</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1022,17 +1022,17 @@
     <message>
         <location filename="../gui/MainWindow/VersionEditorTab.py" line="20"/>
         <source>Uninstall Version</source>
-        <translation>Versie verwijderen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/VersionEditorTab.py" line="24"/>
         <source>Minecraft Version</source>
-        <translation>Minecraftversie</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/MainWindow/VersionEditorTab.py" line="24"/>
         <source>Version Type</source>
-        <translation>Versietype</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1040,68 +1040,68 @@
     <message>
         <location filename="../jdMinecraftLauncher.py" line="29"/>
         <source>The Minecraft directory was not found and could not be created.</source>
-        <translation>De Minecraftmap is niet aangetroffen en kan niet worden aangemaakt.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="37"/>
         <location filename="../jdMinecraftLauncher.py" line="32"/>
         <source>Minecraft directory not found</source>
-        <translation>Minecraftmap niet aangetroffen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="35"/>
         <source>You have set a custom Minecraft directory. Would you like to revert it back to the default?</source>
-        <translation>Je hebt een eigen Minecraftmap gekozen. Wil je de standaardmap herstellen?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="58"/>
         <source>No Internet Connection</source>
-        <translation>Geen internetverbinding</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="59"/>
         <source>You have no Internet connection. If you start jdMinecraftLauncher for the first time, you have to login using the Internet before you can use the offline Mode.</source>
-        <translation>Je bent niet verbonden met het internet. Als je jdMinecraftLauncher voor het eerst start, dan dien je in te loggen met behulp van een internetverbinding voordat je de offline-modus kunt gebruiken.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="152"/>
         <source>Unsupported Platform</source>
-        <translation>Niet-ondersteund platform</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="152"/>
         <source>Your current Platform is not supported by jdMinecraftLauncher</source>
-        <translation>Het huidige platform wordt niet ondersteund door jdMinecraftLauncher</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="159"/>
         <source>It appears to be your first time using jdMinecraftLauncher.</source>
-        <translation>Het lijkt erop dat dit de eerste keer is dat je jdMinecraftLauncher gebruikt.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="160"/>
         <source>This is a custom Minecraft Launcher designed to resemble the old official launcher in appearance and feel, but with modern features like Microsoft account support.</source>
-        <translation>Dit is een aangepaste Minecraftstarter die op de oude, officiële starter lijkt, maar over moderne functies beschikt, zoals ondersteuning voor Microsoft-accounts.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="161"/>
         <source>If you encounter any issues, please report them so that they can be addressed and resolved.</source>
-        <translation>Als je problemen ervaart, meld ze dan, zodat ze kunnen worden opgelost.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="162"/>
         <source>This launcher is not an official product of Mojang/Microsoft.</source>
-        <translation>Deze starter is geen officieel product van Mojang/Microsoft.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="163"/>
         <source>Welcome</source>
-        <translation>Welkom</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../jdMinecraftLauncher.py" line="196"/>
         <source>Account {{name}} does not exist</source>
-        <translation>“{{name}}” bestaat niet</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
