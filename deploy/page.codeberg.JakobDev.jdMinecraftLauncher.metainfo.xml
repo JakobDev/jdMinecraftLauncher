@@ -45,6 +45,19 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="7.0" date="2025-10-30" type="stable">
+      <url>https://jakobdev.codeberg.page/blog/2025-10-30-jdminecraftlauncher-7-0</url>
+      <description>
+        <ul>
+          <li>A new Icon</li>
+          <li>Startup times have been reduced</li>
+          <li>It's now possible to install Mrpack files directly</li>
+          <li>One-click installers for NeoForge and Quilt have been added</li>
+          <li>Profiles now open in the existing instance instead of a new one</li>
+          <li>Integration with KRunner and GNOME Search allows direct launching by entering the profile name</li>
+        </ul>
+      </description>
+    </release>
     <release version="6.2" date="2025-02-01" type="stable">
       <description>
         <ul>
@@ -298,4 +311,8 @@
   <replaces>
     <id>com.gitlab.JakobDev.jdMinecraftLauncher</id>
   </replaces>
+  <branding>
+    <color type="primary" scheme_preference="light">#0000f4</color>
+    <color type="primary" scheme_preference="dark">#000080</color>
+  </branding>
 </component>

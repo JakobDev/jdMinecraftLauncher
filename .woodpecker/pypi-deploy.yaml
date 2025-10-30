@@ -3,7 +3,7 @@
 
 steps:
     pypi_deploy:
-        image: python:latest
+        image: python:3.13
         commands:
             - pip install twine build
             - python -m build
